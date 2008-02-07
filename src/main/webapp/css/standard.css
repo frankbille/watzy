@@ -1,0 +1,157 @@
+body,html {
+	margin: 0;
+	margin-left: 10px;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10.5pt;
+}
+
+.dice {
+	float: left;
+}
+
+.dice .empty {
+	width: 80px;
+	height: 90px;
+	display: block;
+	/* 
+	Load the image but place it way out of sight. In this way we have ensured 
+	that the image is loaded and ready when needed.  
+	*/
+	background: url(../images/cube_dice.png) no-repeat 1000px 1000px;
+}
+
+.dice .dice_1 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat 0 0;
+}
+
+.dice .dice_2 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat -80px 0;
+}
+
+.dice .dice_3 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat -160px 0;
+}
+
+.dice .dice_4 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat -240px 0;
+}
+
+.dice .dice_5 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat -320px 0;
+}
+
+.dice .dice_6 {
+	width: 80px;
+	height: 90px;
+	display: block;
+	background: url(../images/cube_dice.png) no-repeat -400px 0;
+}
+
+.dice .hold {
+	display: block;
+	text-align: center;
+	font-weight: bold;
+}
+
+.rollLink {
+	clear: both;
+	display: block;
+	padding-top: 20px;
+}
+
+.rollLink img {
+	border: 0;	
+}
+
+span.rollLink {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+/* SCORE CARD */
+
+.scoreCard a {
+	text-decoration: none;
+	display: block;
+	color: #EB5A0A;
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.scoreCard a:hover {
+	text-decoration: underline;
+	background-color: #F5F5F5;
+}
+
+.scoreCard {
+	border-top: 1px solid #666666;
+	border-left: 1px solid #666666;
+	width: 100%;
+}
+
+.scoreCard td,.scoreCard th {
+	border-right: 1px solid #666666;
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.scoreCard td.combination {
+	padding: 0;
+}
+
+.scoreCard td.combination span {
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.scoreCard tbody td {
+	border-top: 1px solid #CCCCCC;
+}
+
+.scoreCard tfoot td {
+	border-bottom: 1px solid #666666;
+}
+
+.scoreCard .value {
+	text-align: right;
+}
+
+.scoreCard .currentPlayer {
+	background-color: #FFFFCC;
+}
+
+.scoreCard .sum {
+	background-color: #F0F0F0;
+	font-weight: bold;
+}
+
+.scoreCard .currentPlayerSum {
+	background-color: #F0F0C0;
+}
+
+.scoreCard .grandTotal {
+	background-color: #E0E0E0;
+	font-weight: bold;
+}
+
+.scoreCard .currentPlayerGrandTotal {
+	background-color: #E0E0B3;
+}
