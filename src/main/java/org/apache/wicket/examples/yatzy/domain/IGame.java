@@ -15,6 +15,8 @@ public interface IGame extends Serializable {
 
 	IRound newRound();
 
+	boolean isComplete();
+
 	IGame newGame();
 
 }

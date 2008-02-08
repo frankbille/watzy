@@ -26,6 +26,10 @@ public abstract class AbstractStandardGame implements IGame {
 		return new StandardRound(players, getDiceFactory(), getRollsCount());
 	}
 
+	public boolean isComplete() {
+		return scoreCard.isComplete();
+	}
+
 	public IScoreCard getScoreCard() {
 		if (scoreCard == null) {
 			scoreCard = createScoreCard();

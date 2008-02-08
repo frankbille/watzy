@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.examples.yatzy.domain.IGame;
 import org.apache.wicket.examples.yatzy.domain.IRound;
 import org.apache.wicket.examples.yatzy.domain.ITurn;
+import org.apache.wicket.examples.yatzy.panels.GameResultPanel;
 import org.apache.wicket.examples.yatzy.panels.ScoreCardPanel;
 import org.apache.wicket.examples.yatzy.panels.TurnPanel;
 import org.apache.wicket.model.IModel;
@@ -37,14 +38,26 @@ public class GamePage extends BasePage {
 
 			@Override
 			protected void combinationSelected(AjaxRequestTarget target, IModel scoreModel) {
-				if (round.hasMoreTurns() == false) {
-					newRound();
-				}
+				IGame game = (IGame) GamePage.this.getModelObject();
 
-				turn = round.nextTurn();
+				if (game.isComplete()) {
+					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", GamePage.this.getModel());
+					gameResultPanel.setOutputMarkupId(true);
+					turnPanel.replaceWith(gameResultPanel);
 
-				if (target != null) {
-					target.addComponent(turnPanel);
+					if (target != null) {
+						target.addComponent(gameResultPanel);
+					}
+				} else {
+					if (round.hasMoreTurns() == false) {
+						newRound();
+					}
+
+					turn = round.nextTurn();
+
+					if (target != null) {
+						target.addComponent(turnPanel);
+					}
 				}
 			}
 		});
