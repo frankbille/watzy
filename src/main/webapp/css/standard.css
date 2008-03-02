@@ -1,12 +1,45 @@
-body,html {
+html, body {
 	margin: 0;
-	margin-left: 10px;
+	padding: 0;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 10.5pt;
 }
 
-.dice {
-	float: left;
+.expandableMenu {
+	background-color: #AAAAAA;
+	opacity: 0.98;
+	filter: alpha(opacity=98);
+	position: absolute;
+}
+
+.expandableMenu .content {
+	display: none;
+}
+
+.expandableMenu .linkBar {
+	text-align: center;
+	padding: 3px;
+	font-size: 0.8em;	
+	border-bottom: 1px solid #666666;
+}
+
+.expandableMenu .linkBar a {
+	color: #333333;
+	text-decoration: none;
+}
+
+.expandableMenu .linkBar a:hover {
+	text-decoration: underline;
+}
+
+.expandableMenu .linkBar .separator {
+	width: 15px;
+	height: 5px;
+	background: url(../images/separator.png) no-repeat center center;
+}
+
+.expandableMenuSeparator {
+	height: 20px;	
 }
 
 .dice .empty {

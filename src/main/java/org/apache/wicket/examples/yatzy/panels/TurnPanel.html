@@ -1,8 +1,12 @@
 <wicket:panel>
-<div class="dice" wicket:id="diceList">
-	<a wicket:id="holdLink"></a>
-	<span class="hold" wicket:id="hold"></span>
-</div>
+<table>
+	<tr>
+		<td class="dice" wicket:id="diceList">
+			<a onfocus="this.blur()" wicket:id="holdLink"></a>
+			<span class="hold" wicket:id="hold"></span>
+		</td>
+	</tr>
+</table>
 <a class="rollLink" onfocus="this.blur()" wicket:id="rollLink"><img wicket:id="rollImage" /></a>
 <span wicket:id="turnLabel"></span>
 </wicket:panel>

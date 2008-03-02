@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.examples.yatzy.domain.IDice;
 import org.apache.wicket.examples.yatzy.domain.ITurn;
+import org.apache.wicket.examples.yatzy.domain.StandardTurn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -20,10 +21,10 @@ public class TurnPanel extends Panel {
 	private final AjaxFallbackLink rollLink;
 	private final Label turnLabel;
 
-	public TurnPanel(String id, IModel model) {
-		super(id, model);
+	public TurnPanel(String id, IModel turnModel) {
+		super(id, turnModel);
 
-		final ListView diceList = new ListView("diceList", new PropertyModel(model, "diceList")) {
+		final ListView diceList = new ListView("diceList", new PropertyModel(turnModel, "diceList")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -116,9 +117,7 @@ public class TurnPanel extends Panel {
 				turn.roll();
 
 				if (target != null) {
-					target.addChildren(diceList, ListItem.class);
-					target.addComponent(rollLink);
-					target.addComponent(turnLabel);
+					target.addComponent(TurnPanel.this);
 				}
 			}
 
@@ -133,22 +132,16 @@ public class TurnPanel extends Panel {
 
 		rollLink.add(new Image("rollImage", "roll.png"));
 
-		// Label rollLabel = new Label("label", new StringResourceModel("roll",
-		// this, null));
-		// rollLabel.setRenderBodyOnly(true);
-		// rollLink.add(rollLabel);
-
-		turnLabel = new Label("turnLabel",
-				new StringResourceModel("rollsLeft", this, new PropertyModel(model, "rules"))) {
+		turnLabel = new Label("turnLabel", new StringResourceModel("rollsLeft", this, turnModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isVisible() {
-				return false;
+				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+				return turn instanceof StandardTurn;
 			}
 		};
 		turnLabel.setOutputMarkupId(true);
 		add(turnLabel);
 	}
-
 }

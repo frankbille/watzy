@@ -60,7 +60,8 @@ public class GameResultPanel extends Panel {
 						int score1 = scoreCard.getScore(o1);
 						int score2 = scoreCard.getScore(o2);
 
-						return new Integer(score1).compareTo(score2);
+						// Reverse the list
+						return new Integer(score1).compareTo(score2) * -1;
 					}
 				});
 

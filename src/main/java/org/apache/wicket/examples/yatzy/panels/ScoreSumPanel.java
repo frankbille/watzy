@@ -33,7 +33,7 @@ public class ScoreSumPanel extends Panel {
 					@Override
 					public Object getObject() {
 						ITurn turn = (ITurn) turnModel.getObject();
-						return turn.getPlayer() == player ? "currentPlayerSum" : null;
+						return turn != null && turn.getPlayer() == player ? "currentPlayerSum" : null;
 					}
 				}, " "));
 

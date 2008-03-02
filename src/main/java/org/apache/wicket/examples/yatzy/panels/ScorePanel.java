@@ -39,7 +39,7 @@ public abstract class ScorePanel extends Panel {
 			public boolean isEnabled() {
 				ITurnScore turnScore = (ITurnScore) scoreModel.getObject();
 				ITurn turn = (ITurn) turnModel.getObject();
-				return turnScore.hasScore(turn.getPlayer()) == false;
+				return turn != null && turnScore.hasScore(turn.getPlayer()) == false;
 			}
 		};
 		add(combinationLink);
@@ -60,7 +60,7 @@ public abstract class ScorePanel extends Panel {
 					@Override
 					public Object getObject() {
 						ITurn turn = (ITurn) turnModel.getObject();
-						return turn.getPlayer() == player ? "currentPlayer" : null;
+						return turn != null && turn.getPlayer() == player ? "currentPlayer" : null;
 					}
 				}, " "));
 

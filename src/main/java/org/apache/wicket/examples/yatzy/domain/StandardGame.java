@@ -37,7 +37,8 @@ public class StandardGame extends AbstractStandardGame {
 		return 3;
 	}
 
-	public IGame newGame() {
+	@Override
+	protected IGame createNewGame() {
 		return new StandardGame();
 	}
 

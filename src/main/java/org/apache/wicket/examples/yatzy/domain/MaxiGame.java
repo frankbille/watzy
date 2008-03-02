@@ -38,7 +38,8 @@ public class MaxiGame extends AbstractStandardGame {
 		return 3;
 	}
 
-	public IGame newGame() {
+	@Override
+	protected IGame createNewGame() {
 		return new MaxiGame();
 	}
 

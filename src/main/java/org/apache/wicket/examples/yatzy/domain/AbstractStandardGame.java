@@ -38,6 +38,18 @@ public abstract class AbstractStandardGame implements IGame {
 		return scoreCard;
 	}
 
+	public final IGame newGame() {
+		IGame game = createNewGame();
+
+		for (IPlayer player : players) {
+			game.addPlayer(player);
+		}
+
+		return game;
+	}
+
+	protected abstract IGame createNewGame();
+
 	protected abstract int getRollsCount();
 
 	protected abstract IDiceFactory getDiceFactory();

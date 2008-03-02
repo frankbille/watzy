@@ -16,7 +16,7 @@ public class StandardLowerScoreGroup extends AbstractScoreGroup {
 		addScore(new FullHouseScore());
 
 		addScore(new ChanceScore());
-		addScore(new MaxiYatzyScore());
+		addScore(new YatzyScore());
 	}
 
 }
