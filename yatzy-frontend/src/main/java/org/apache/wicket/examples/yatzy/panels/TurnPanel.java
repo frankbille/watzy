@@ -3,9 +3,6 @@ package org.apache.wicket.examples.yatzy.panels;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.examples.yatzy.domain.IDice;
-import org.apache.wicket.examples.yatzy.domain.ITurn;
-import org.apache.wicket.examples.yatzy.domain.StandardTurn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -15,6 +12,9 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.examples.yatzy.IDice;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.StandardTurn;
 
 public class TurnPanel extends Panel {
 	private static final long serialVersionUID = 1L;

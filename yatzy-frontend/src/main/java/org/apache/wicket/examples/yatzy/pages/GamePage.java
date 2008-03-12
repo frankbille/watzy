@@ -10,9 +10,6 @@ import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.examples.yatzy.components.menu.AbstractSimpleLabelMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.IMenuItem;
-import org.apache.wicket.examples.yatzy.domain.IGame;
-import org.apache.wicket.examples.yatzy.domain.IRound;
-import org.apache.wicket.examples.yatzy.domain.ITurn;
 import org.apache.wicket.examples.yatzy.panels.GameResultPanel;
 import org.apache.wicket.examples.yatzy.panels.ScoreCardPanel;
 import org.apache.wicket.examples.yatzy.panels.TurnPanel;
@@ -22,6 +19,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.examples.yatzy.IGame;
+import org.examples.yatzy.IRound;
+import org.examples.yatzy.ITurn;
 
 public class GamePage extends BasePage {
 	private static final long serialVersionUID = 1L;

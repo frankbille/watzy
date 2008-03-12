@@ -2,10 +2,10 @@ package org.apache.wicket.examples.yatzy.panels;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
-import org.apache.wicket.examples.yatzy.domain.score.IScore;
-import org.apache.wicket.examples.yatzy.domain.score.SumScore;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.examples.yatzy.score.IScore;
+import org.examples.yatzy.score.SumScore;
 
 public abstract class ScoreResourceModelFactory {
 

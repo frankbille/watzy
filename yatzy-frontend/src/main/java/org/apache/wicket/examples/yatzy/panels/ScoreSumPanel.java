@@ -1,9 +1,6 @@
 package org.apache.wicket.examples.yatzy.panels;
 
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.examples.yatzy.domain.IPlayer;
-import org.apache.wicket.examples.yatzy.domain.ITurn;
-import org.apache.wicket.examples.yatzy.domain.score.IScoreGroup;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -11,6 +8,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.score.IScoreGroup;
 
 public class ScoreSumPanel extends Panel {
 	private static final long serialVersionUID = 1L;

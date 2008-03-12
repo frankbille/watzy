@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.examples.yatzy.domain.AdhocPlayer;
-import org.apache.wicket.examples.yatzy.domain.IGame;
-import org.apache.wicket.examples.yatzy.domain.IPlayer;
-import org.apache.wicket.examples.yatzy.domain.MaxiGame;
-import org.apache.wicket.examples.yatzy.domain.StandardGame;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -26,6 +21,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.examples.yatzy.AdhocPlayer;
+import org.examples.yatzy.IGame;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.MaxiGame;
+import org.examples.yatzy.StandardGame;
 
 public class NewGamePage extends BasePage {
 	private static final long serialVersionUID = 1L;

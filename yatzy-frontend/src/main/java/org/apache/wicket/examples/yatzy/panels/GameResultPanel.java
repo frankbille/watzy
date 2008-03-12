@@ -4,9 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.wicket.examples.yatzy.domain.IGame;
-import org.apache.wicket.examples.yatzy.domain.IPlayer;
-import org.apache.wicket.examples.yatzy.domain.score.IScoreCard;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -14,6 +11,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.examples.yatzy.IGame;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.score.IScoreCard;
 
 public class GameResultPanel extends Panel {
 	private static final long serialVersionUID = 1L;

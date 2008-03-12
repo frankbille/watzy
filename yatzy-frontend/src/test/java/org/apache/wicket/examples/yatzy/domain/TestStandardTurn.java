@@ -6,6 +6,12 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.examples.yatzy.AdhocPlayer;
+import org.examples.yatzy.CubeDice;
+import org.examples.yatzy.IDice;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.StandardTurn;
 import org.junit.Test;
 
 public class TestStandardTurn {

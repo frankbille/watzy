@@ -3,10 +3,16 @@ package org.apache.wicket.examples.yatzy.domain;
 import java.text.NumberFormat;
 import java.util.List;
 
-import org.apache.wicket.examples.yatzy.domain.score.IScore;
-import org.apache.wicket.examples.yatzy.domain.score.IScoreGroup;
-import org.apache.wicket.examples.yatzy.domain.score.ITurnScore;
-import org.apache.wicket.examples.yatzy.domain.score.SumScore;
+import org.examples.yatzy.AdhocPlayer;
+import org.examples.yatzy.IGame;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.MaxiGame;
+import org.examples.yatzy.StandardGame;
+import org.examples.yatzy.score.IScore;
+import org.examples.yatzy.score.IScoreGroup;
+import org.examples.yatzy.score.ITurnScore;
+import org.examples.yatzy.score.SumScore;
 import org.junit.Test;
 
 public class TestDice {

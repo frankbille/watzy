@@ -3,12 +3,6 @@ package org.apache.wicket.examples.yatzy.panels;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.examples.yatzy.domain.IPlayer;
-import org.apache.wicket.examples.yatzy.domain.ITurn;
-import org.apache.wicket.examples.yatzy.domain.score.IScore;
-import org.apache.wicket.examples.yatzy.domain.score.IScoreCard;
-import org.apache.wicket.examples.yatzy.domain.score.IScoreGroup;
-import org.apache.wicket.examples.yatzy.domain.score.ITurnScore;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -20,6 +14,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.score.IScore;
+import org.examples.yatzy.score.IScoreCard;
+import org.examples.yatzy.score.IScoreGroup;
+import org.examples.yatzy.score.ITurnScore;
 
 public abstract class ScoreCardPanel extends Panel {
 
