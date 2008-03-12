@@ -1,4 +1,4 @@
-package org.apache.wicket.examples.yatzy.domain;
+package org.examples.yatzy;
 
 import java.text.NumberFormat;
 import java.util.List;

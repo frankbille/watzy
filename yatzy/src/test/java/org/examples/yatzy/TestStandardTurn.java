@@ -1,4 +1,4 @@
-package org.apache.wicket.examples.yatzy.domain;
+package org.examples.yatzy;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
