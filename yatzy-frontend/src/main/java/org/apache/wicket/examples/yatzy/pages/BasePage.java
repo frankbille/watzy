@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.examples.yatzy.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.ExpandableContentMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.IMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.Menu;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.StringResourceModel;
 
 public abstract class BasePage extends WebPage {
 
@@ -39,6 +41,9 @@ public abstract class BasePage extends WebPage {
 		List<IMenuItem> menuItems = new ArrayList<IMenuItem>();
 
 		addMenuItems(menuItems);
+
+		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("highscore", this, null), HighscorePage.class));
+
 		menuItems.add(new ExpandableContentMenuItem("About") {
 			private static final long serialVersionUID = 1L;
 

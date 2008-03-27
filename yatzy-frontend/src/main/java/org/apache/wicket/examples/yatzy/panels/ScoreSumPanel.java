@@ -1,5 +1,7 @@
 package org.apache.wicket.examples.yatzy.panels;
 
+import java.io.Serializable;
+
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -15,7 +17,14 @@ import org.examples.yatzy.score.IScoreGroup;
 public class ScoreSumPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public ScoreSumPanel(String id, final IModel turnModel, IModel labelModel, IModel scoreModel) {
+	public static interface SumProvider extends Serializable {
+		boolean hasSum(IScoreGroup scoreGroup, IPlayer player);
+
+		int getSum(IScoreGroup scoreGroup, IPlayer player);
+	}
+
+	public ScoreSumPanel(String id, final IModel turnModel, IModel labelModel, IModel scoreModel,
+			final SumProvider sumProvider) {
 		super(id, scoreModel);
 
 		add(new Label("sumLabel", labelModel));
@@ -43,19 +52,18 @@ public class ScoreSumPanel extends Panel {
 					@Override
 					public Object getObject() {
 						IScoreGroup scoreGroup = (IScoreGroup) ScoreSumPanel.this.getModelObject();
-						return scoreGroup.getScore(player);
+						if (sumProvider.hasSum(scoreGroup, player)) {
+							return sumProvider.getSum(scoreGroup, player);
+						} else {
+							return "&nbsp;";
+						}
 					}
 				};
 
-				item.add(new Label("sum", model) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean isVisible() {
-						IScoreGroup score = (IScoreGroup) ScoreSumPanel.this.getModelObject();
-						return score.hasScore(player);
-					}
-				});
+				Label sumLabel = new Label("sum", model);
+				sumLabel.setEscapeModelStrings(false);
+				sumLabel.setRenderBodyOnly(true);
+				item.add(sumLabel);
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package org.apache.wicket.examples.yatzy.panels;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.examples.yatzy.panels.ScoreSumPanel.SumProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -16,12 +17,15 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.ITurn;
+import org.examples.yatzy.score.AbstractStandardBonusScoreGroup;
 import org.examples.yatzy.score.IScore;
 import org.examples.yatzy.score.IScoreCard;
 import org.examples.yatzy.score.IScoreGroup;
 import org.examples.yatzy.score.ITurnScore;
 
 public abstract class ScoreCardPanel extends Panel {
+
+	private final RepeatingView scores;
 
 	private final IModel turnModel;
 
@@ -52,10 +56,10 @@ public abstract class ScoreCardPanel extends Panel {
 		});
 
 		// Body
-		RepeatingView scores = new RepeatingView("scores");
+		scores = new RepeatingView("scores");
 		add(scores);
 
-		addScores(scores, (IScoreGroup) model.getObject());
+		addScores((IScoreGroup) model.getObject());
 
 		// Footer
 		add(new ListView("playerTotals", new PropertyModel(model, "players")) {
@@ -81,24 +85,23 @@ public abstract class ScoreCardPanel extends Panel {
 					@Override
 					public Object getObject() {
 						IScoreCard scoreCard = (IScoreCard) ScoreCardPanel.this.getModelObject();
-						return scoreCard.getScore(player);
+						if (scoreCard.hasScore(player)) {
+							return scoreCard.getScore(player);
+						} else {
+							return "&nbsp;";
+						}
 					}
 				};
 
-				item.add(new Label("total", model) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean isVisible() {
-						IScoreCard scoreCard = (IScoreCard) ScoreCardPanel.this.getModelObject();
-						return scoreCard.hasScore(player);
-					}
-				});
+				Label totalLabel = new Label("total", model);
+				totalLabel.setRenderBodyOnly(true);
+				totalLabel.setEscapeModelStrings(false);
+				item.add(totalLabel);
 			}
 		});
 	}
 
-	private void addScores(RepeatingView scores, IScoreGroup scoreGroup) {
+	private void addScores(IScoreGroup scoreGroup) {
 		for (IScore score : scoreGroup.getScores()) {
 			if (score instanceof ITurnScore) {
 				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
@@ -122,13 +125,45 @@ public abstract class ScoreCardPanel extends Panel {
 			} else if (score instanceof IScoreGroup) {
 				IScoreGroup childScoreGroup = (IScoreGroup) score;
 
-				addScores(scores, childScoreGroup);
+				addScores(childScoreGroup);
+
+				if (childScoreGroup instanceof AbstractStandardBonusScoreGroup) {
+					final AbstractStandardBonusScoreGroup bonusScoreGroup = (AbstractStandardBonusScoreGroup) childScoreGroup;
+
+					WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
+					scores.add(scoreContainer);
+
+					ScoreSumPanel scoreSumPanel = new ScoreSumPanel("scorePanel", turnModel, new StringResourceModel(
+							"bonus", this, null), new Model(childScoreGroup), new SumProvider() {
+						private static final long serialVersionUID = 1L;
+
+						public int getSum(IScoreGroup scoreGroup, IPlayer player) {
+							return bonusScoreGroup.getBonus(player);
+						}
+
+						public boolean hasSum(IScoreGroup scoreGroup, IPlayer player) {
+							return bonusScoreGroup.isBonusAvailable(player);
+						}
+					});
+					scoreSumPanel.setRenderBodyOnly(true);
+					scoreContainer.add(scoreSumPanel);
+				}
 
 				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
 				scores.add(scoreContainer);
 
 				ScoreSumPanel scoreSumPanel = new ScoreSumPanel("scorePanel", turnModel, new StringResourceModel(
-						"total", this, null), new Model(childScoreGroup));
+						"total", this, null), new Model(childScoreGroup), new SumProvider() {
+					private static final long serialVersionUID = 1L;
+
+					public int getSum(IScoreGroup scoreGroup, IPlayer player) {
+						return scoreGroup.getScore(player);
+					}
+
+					public boolean hasSum(IScoreGroup scoreGroup, IPlayer player) {
+						return scoreGroup.hasScore(player);
+					}
+				});
 				scoreSumPanel.setRenderBodyOnly(true);
 				scoreContainer.add(scoreSumPanel);
 			}

@@ -1,0 +1,24 @@
+<wicket:extend>
+
+<div wicket:id="gameTypes" class="highscore">
+	<h2 wicket:id="gameType"></h2>
+	
+	<table cellspacing="0" cellpadding="0" border="0">
+		<thead>
+			<tr>
+				<th><wicket:message key="rank"></wicket:message></th>
+				<th><wicket:message key="score"></wicket:message></th>
+				<th><wicket:message key="name"></wicket:message></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr wicket:id="highscores">
+				<td wicket:id="rank"></td>
+				<td wicket:id="score"></td>
+				<td wicket:id="name"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</wicket:extend>

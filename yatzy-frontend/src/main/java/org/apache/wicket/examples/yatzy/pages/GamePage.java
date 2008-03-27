@@ -7,6 +7,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.examples.yatzy.YatzyApplication;
 import org.apache.wicket.examples.yatzy.components.menu.AbstractSimpleLabelMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.IMenuItem;
@@ -20,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IGame;
+import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
 import org.examples.yatzy.ITurn;
 
@@ -54,6 +56,14 @@ public class GamePage extends BasePage {
 					round = null;
 					turn = null;
 
+					// Register the highscores
+					List<IPlayer> players = game.getPlayers();
+					for (IPlayer player : players) {
+						int score = game.getScoreCard().getScore(player);
+						YatzyApplication.get().registerHighscore(game.getClass(), player.getName(), score);
+					}
+
+					// Show the result
 					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", GamePage.this.getModel());
 					gameResultPanel.setOutputMarkupId(true);
 					turnPanel.replaceWith(gameResultPanel);

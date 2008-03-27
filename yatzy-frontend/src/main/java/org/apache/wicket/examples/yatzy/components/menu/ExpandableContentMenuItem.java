@@ -2,14 +2,21 @@ package org.apache.wicket.examples.yatzy.components.menu;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.examples.yatzy.behaviours.jquery.JQueryBehavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuItem implements
 		IExpandableContentMenuItem {
+
+	public static final ResourceReference JS_EXPANDABLE_CONTENT = new JavascriptResourceReference(
+			ExpandableContentMenuItem.class, "expandable-content.js");
+
 	private ContentHolderMarkupIdProvider markupIdProvider;
 
 	public ExpandableContentMenuItem(String label) {
@@ -26,6 +33,7 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 
 	public MarkupContainer createLink(String wicketId) {
 		WebMarkupContainer link = new WebMarkupContainer(wicketId);
+		link.add(new SimpleAttributeModifier("href", "#"));
 		link.add(new JQueryBehavior() {
 			private static final long serialVersionUID = 1L;
 
@@ -35,16 +43,7 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 
 				String lf = System.getProperty("line.separator");
 
-				StringBuilder js = new StringBuilder();
-				js.append("function displayContent(content) {").append(lf);
-				js.append("if ($('.expandableMenu .content').hasClass('displayed')) {").append(lf);
-				js.append("$('.expandableMenu .content').hide();").append(lf);
-				js.append("$('#' + content).show();").append(lf);
-				js.append("} else {").append(lf);
-				js.append("$('#' + content).slideDown().addClass('displayed');").append(lf);
-				js.append("}").append(lf);
-				js.append("}").append(lf);
-				response.renderJavascript(js, "expandableContent");
+				response.renderJavascriptReference(JS_EXPANDABLE_CONTENT);
 
 				StringBuilder jsConf = new StringBuilder();
 				jsConf.append("$('.expandableMenu').width('100%');").append(lf);
@@ -59,7 +58,7 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 
 			@Override
 			public Object getObject() {
-				return "displayContent('" + markupIdProvider.getMarkupId() + "'); return false;";
+				return "ExpandableContent.displayContent('" + markupIdProvider.getMarkupId() + "'); return false;";
 			}
 		}));
 		return link;

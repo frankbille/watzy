@@ -70,18 +70,15 @@ public abstract class ScorePanel extends Panel {
 					@Override
 					public Object getObject() {
 						IScore score = (IScore) scoreModel.getObject();
-						return score.getScore(player);
+						if (score.hasScore(player)) {
+							return score.getScore(player);
+						} else {
+							return "&nbsp;";
+						}
 					}
 				};
-				Label scoreLabel = new Label("score", model) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean isVisible() {
-						IScore score = (IScore) scoreModel.getObject();
-						return score.hasScore(player);
-					}
-				};
+				Label scoreLabel = new Label("score", model);
+				scoreLabel.setEscapeModelStrings(false);
 				scoreLabel.setRenderBodyOnly(true);
 				item.add(scoreLabel);
 			}

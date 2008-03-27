@@ -5,6 +5,11 @@ html, body {
 	font-size: 10.5pt;
 }
 
+/* Fix png's in IE */
+img, div { 
+	behavior: url(iepngfix.htc); 
+}
+
 .expandableMenu {
 	background-color: #AAAAAA;
 	opacity: 0.98;
@@ -40,6 +45,16 @@ html, body {
 
 .expandableMenuSeparator {
 	height: 20px;	
+}
+
+.title {
+	font-size: 2.5em;
+	font-weight: bold;
+	margin-top: 25px;	
+}
+
+.description {
+	font-size: 0.9em;	
 }
 
 .dice .empty {
@@ -111,7 +126,7 @@ html, body {
 	border: 0;	
 }
 
-span.rollLink {
+span.rollLink img {
 	opacity: 0.5;
 	filter: alpha(opacity=50);
 }
@@ -187,4 +202,20 @@ span.rollLink {
 
 .scoreCard .currentPlayerGrandTotal {
 	background-color: #E0E0B3;
+}
+
+.highscore h2 {
+	margin-top: 20px;
+	margin-bottom: 20px;	
+}
+
+.highscore table th, .highscore table td {
+	text-align: left;
+	padding: 2px;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.highscore table td {
+	border-top: 1px solid #669966;
 }

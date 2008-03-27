@@ -2,7 +2,10 @@ package org.apache.wicket.examples.yatzy.panels;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.examples.yatzy.behaviours.jquery.JQueryScrollToBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -126,7 +129,23 @@ public class TurnPanel extends Panel {
 				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
 				return turn.mayRoll();
 			}
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator() {
+				return new AjaxCallDecorator() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public CharSequence decorateScript(CharSequence script) {
+						StringBuilder b = new StringBuilder();
+						b.append(script);
+						b.append("$.scrollTo($(body), 0);");
+						return b;
+					}
+				};
+			}
 		};
+		rollLink.add(new JQueryScrollToBehavior());
 		rollLink.setOutputMarkupId(true);
 		add(rollLink);
 
