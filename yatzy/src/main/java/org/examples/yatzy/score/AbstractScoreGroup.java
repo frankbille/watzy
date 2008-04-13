@@ -31,6 +31,12 @@ public abstract class AbstractScoreGroup implements IScoreGroup {
 		}
 	}
 
+	public void removePlayer(IPlayer player) {
+		for (IScore score : scores) {
+			score.removePlayer(player);
+		}
+	}
+
 	public List<IPlayer> getPlayers() {
 		Set<IPlayer> players = new LinkedHashSet<IPlayer>();
 		for (IScore score : scores) {

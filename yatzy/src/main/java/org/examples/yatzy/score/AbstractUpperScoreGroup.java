@@ -15,9 +15,13 @@ public abstract class AbstractUpperScoreGroup extends AbstractStandardBonusScore
 
 	@Override
 	public boolean isBonusAvailable(IPlayer player) {
-		int vc = getValueCount();
-		int bonusScore = vc * 1 + vc * 2 + vc * 3 + vc * 4 + vc * 5 + vc * 6;
-		return getScoreWithoutBonus(player) >= bonusScore;
+		if (hasScore(player)) {
+			int vc = getValueCount();
+			int bonusScore = vc * 1 + vc * 2 + vc * 3 + vc * 4 + vc * 5 + vc * 6;
+			return getScoreWithoutBonus(player) >= bonusScore;
+		}
+
+		return false;
 	}
 
 	protected abstract int getValueCount();

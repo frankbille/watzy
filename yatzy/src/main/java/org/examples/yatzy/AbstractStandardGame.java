@@ -22,12 +22,18 @@ public abstract class AbstractStandardGame implements IGame {
 		}
 	}
 
+	public void removePlayer(IPlayer player) {
+		players.remove(player);
+
+		getScoreCard().removePlayer(player);
+	}
+
 	public IRound newRound() {
 		return new StandardRound(players, getDiceFactory(), getRollsCount());
 	}
 
 	public boolean isComplete() {
-		return scoreCard.isComplete();
+		return getScoreCard().isComplete();
 	}
 
 	public IScoreCard getScoreCard() {

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.examples.yatzy.Highscore;
 import org.apache.wicket.examples.yatzy.YatzyApplication;
-import org.apache.wicket.examples.yatzy.YatzyApplication.Highscore;
 import org.apache.wicket.examples.yatzy.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.IMenuItem;
 import org.apache.wicket.markup.html.basic.Label;

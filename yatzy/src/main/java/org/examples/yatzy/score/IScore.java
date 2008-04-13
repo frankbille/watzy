@@ -9,6 +9,8 @@ public interface IScore extends Serializable {
 
 	void addPlayer(IPlayer player);
 
+	void removePlayer(IPlayer player);
+
 	List<IPlayer> getPlayers();
 
 	int getScore(IPlayer player);

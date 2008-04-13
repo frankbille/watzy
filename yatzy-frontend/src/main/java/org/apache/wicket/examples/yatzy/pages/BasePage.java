@@ -8,6 +8,7 @@ import org.apache.wicket.examples.yatzy.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.ExpandableContentMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.IMenuItem;
 import org.apache.wicket.examples.yatzy.components.menu.Menu;
+import org.apache.wicket.examples.yatzy.panels.AboutPanel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -44,7 +45,7 @@ public abstract class BasePage extends WebPage {
 
 		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("highscore", this, null), HighscorePage.class));
 
-		menuItems.add(new ExpandableContentMenuItem("About") {
+		menuItems.add(new ExpandableContentMenuItem(new StringResourceModel("about", this, null)) {
 			private static final long serialVersionUID = 1L;
 
 			public Component createExpandableContent(String wicketId) {

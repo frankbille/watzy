@@ -29,14 +29,14 @@ public abstract class ScoreCardPanel extends Panel {
 
 	private final IModel turnModel;
 
-	public ScoreCardPanel(String id, final IModel turnModel, IModel model) {
-		super(id, model);
+	public ScoreCardPanel(String id, final IModel turnModel, IModel scoreCardModel) {
+		super(id, scoreCardModel);
 		this.turnModel = turnModel;
 
 		setOutputMarkupId(true);
 
 		// Header
-		add(new ListView("players", new PropertyModel(model, "players")) {
+		add(new ListView("players", new PropertyModel(scoreCardModel, "players")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -59,10 +59,10 @@ public abstract class ScoreCardPanel extends Panel {
 		scores = new RepeatingView("scores");
 		add(scores);
 
-		addScores((IScoreGroup) model.getObject());
+		addScores((IScoreGroup) scoreCardModel.getObject());
 
 		// Footer
-		add(new ListView("playerTotals", new PropertyModel(model, "players")) {
+		add(new ListView("playerTotals", new PropertyModel(scoreCardModel, "players")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -119,6 +119,11 @@ public abstract class ScoreCardPanel extends Panel {
 							target.addComponent(ScoreCardPanel.this);
 						}
 					}
+
+					@Override
+					protected boolean combinationSelectable(IModel scoreModel) {
+						return ScoreCardPanel.this.combinationSelectable(scoreModel);
+					}
 				};
 				scorePanel.setRenderBodyOnly(true);
 				scoreContainer.add(scorePanel);
@@ -171,5 +176,9 @@ public abstract class ScoreCardPanel extends Panel {
 	}
 
 	protected abstract void combinationSelected(AjaxRequestTarget target, IModel scoreModel);
+
+	protected boolean combinationSelectable(IModel scoreModel) {
+		return true;
+	}
 
 }

@@ -20,6 +20,10 @@ public abstract class AbstractTurnScore implements ITurnScore {
 		}
 	}
 
+	public void removePlayer(IPlayer player) {
+		playerScores.remove(player);
+	}
+
 	public List<IPlayer> getPlayers() {
 		return new ArrayList<IPlayer>(playerScores.keySet());
 	}

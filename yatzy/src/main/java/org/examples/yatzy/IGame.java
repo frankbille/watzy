@@ -11,6 +11,8 @@ public interface IGame extends Serializable {
 
 	void addPlayer(IPlayer player);
 
+	void removePlayer(IPlayer player);
+
 	IScoreCard getScoreCard();
 
 	IRound newRound();

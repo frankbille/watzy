@@ -1,4 +1,4 @@
-package org.apache.wicket.examples.yatzy.pages;
+package org.apache.wicket.examples.yatzy.panels;
 
 import org.apache.wicket.markup.html.panel.Panel;
 

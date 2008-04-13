@@ -39,7 +39,8 @@ public abstract class ScorePanel extends Panel {
 			public boolean isEnabled() {
 				ITurnScore turnScore = (ITurnScore) scoreModel.getObject();
 				ITurn turn = (ITurn) turnModel.getObject();
-				return turn != null && turnScore.hasScore(turn.getPlayer()) == false;
+				return turn != null && turnScore.hasScore(turn.getPlayer()) == false
+						&& combinationSelectable(scoreModel);
 			}
 		};
 		add(combinationLink);
@@ -86,5 +87,9 @@ public abstract class ScorePanel extends Panel {
 	}
 
 	protected abstract void combinationSelected(AjaxRequestTarget target, IModel scoreModel);
+
+	protected boolean combinationSelectable(IModel scoreModel) {
+		return true;
+	}
 
 }

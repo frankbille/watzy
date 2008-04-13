@@ -75,8 +75,9 @@ public class TurnPanel extends Panel {
 
 					@Override
 					public boolean isEnabled() {
+						ITurn turn = (ITurn) TurnPanel.this.getModelObject();
 						IDice dice = (IDice) item.getModelObject();
-						return dice.hasValue();
+						return dice.hasValue() && TurnPanel.this.isEnabled() && turn.mayRoll();
 					}
 
 					@Override
@@ -127,7 +128,7 @@ public class TurnPanel extends Panel {
 			@Override
 			public boolean isEnabled() {
 				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
-				return turn.mayRoll();
+				return turn.mayRoll() && TurnPanel.this.isEnabled();
 			}
 
 			@Override
