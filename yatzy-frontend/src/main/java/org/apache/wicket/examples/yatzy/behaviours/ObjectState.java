@@ -2,8 +2,6 @@ package org.apache.wicket.examples.yatzy.behaviours;
 
 import java.io.Serializable;
 
-import org.apache.wicket.util.diff.Diff;
-import org.apache.wicket.util.diff.DifferentiationFailedException;
 import org.apache.wicket.util.lang.Objects;
 
 public final class ObjectState implements Serializable {
@@ -36,18 +34,19 @@ public final class ObjectState implements Serializable {
 			newState = "";
 		}
 
-		if (state.equals(newState) == false) {
-			try {
-				System.out.println(Diff.diff(new Object[] { state }, new Object[] { newState }));
-			} catch (DifferentiationFailedException e) {
-				e.printStackTrace();
-			}
+		if (state == null) {
+			changed = true;
+		} else if (state.equals(newState) == false) {
 			changed = true;
 		}
 
 		state = newState;
 
 		return changed;
+	}
+
+	public void reset() {
+		state = null;
 	}
 
 	private String createStateObject(Serializable object) {

@@ -34,7 +34,7 @@ public class MultiPlayerTurn implements ITurn {
 	}
 
 	public boolean mayRoll() {
-		return multiPlayerGame.isCurrent(getPlayer()) && turn.mayRoll();
+		return multiPlayerGame.isReady() && multiPlayerGame.isCurrent(getPlayer()) && turn.mayRoll();
 	}
 
 	public void roll() {
@@ -45,7 +45,7 @@ public class MultiPlayerTurn implements ITurn {
 		return turn.shouldHold(dice);
 	}
 
-	public Object getInnerTurn() {
+	public ITurn getInnerTurn() {
 		return turn;
 	}
 

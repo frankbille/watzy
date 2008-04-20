@@ -13,12 +13,12 @@ public interface IGame extends Serializable {
 
 	void removePlayer(IPlayer player);
 
-	IScoreCard getScoreCard();
-
-	IRound newRound();
-
 	boolean isComplete();
 
 	IGame newGame();
+
+	IScoreCard getScoreCard();
+
+	IRound newRound();
 
 }

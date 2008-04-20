@@ -2,7 +2,7 @@ package org.examples.yatzy;
 
 import java.util.List;
 
-public class StandardTurn extends AbstractTurn {
+public class StandardTurn extends AbstractTurn implements IRollTurn {
 	private static final long serialVersionUID = 1L;
 
 	private int rolls;

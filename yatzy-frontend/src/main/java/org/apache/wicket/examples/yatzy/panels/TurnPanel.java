@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.examples.yatzy.MultiPlayerTurn;
 import org.apache.wicket.examples.yatzy.behaviours.jquery.JQueryScrollToBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -16,8 +17,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IDice;
+import org.examples.yatzy.IRollTurn;
 import org.examples.yatzy.ITurn;
-import org.examples.yatzy.StandardTurn;
 
 public class TurnPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -152,13 +153,33 @@ public class TurnPanel extends Panel {
 
 		rollLink.add(new Image("rollImage", "roll.png"));
 
-		turnLabel = new Label("turnLabel", new StringResourceModel("rollsLeft", this, turnModel)) {
+		IModel rollsLeftModel = new AbstractReadOnlyModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Object getObject() {
+				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+
+				if (turn instanceof MultiPlayerTurn) {
+					turn = ((MultiPlayerTurn) turn).getInnerTurn();
+				}
+
+				return turn;
+			}
+		};
+
+		turnLabel = new Label("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isVisible() {
 				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
-				return turn instanceof StandardTurn;
+
+				if (turn instanceof MultiPlayerTurn) {
+					turn = ((MultiPlayerTurn) turn).getInnerTurn();
+				}
+
+				return turn instanceof IRollTurn;
 			}
 		};
 		turnLabel.setOutputMarkupId(true);

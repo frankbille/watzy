@@ -16,7 +16,7 @@ import org.apache.wicket.examples.yatzy.pages.multi.MultiPlayerGameSetupPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.examples.yatzy.IGame;
-import org.examples.yatzy.MaxiGame;
+import org.examples.yatzy.StandardGame;
 
 public class YatzyApplication extends WebApplication {
 
@@ -37,7 +37,7 @@ public class YatzyApplication extends WebApplication {
 
 		resetHighscores();
 
-		addMultiPlayerGame(new MultiPlayerGame(2, new MaxiGame()));
+		addMultiPlayerGame(new MultiPlayerGame(2, new StandardGame()));
 		// addMultiPlayerGame(new MultiPlayerGame(4, new MaxiGame()));
 		// addMultiPlayerGame(new MultiPlayerGame(2, new StandardGame()));
 	}

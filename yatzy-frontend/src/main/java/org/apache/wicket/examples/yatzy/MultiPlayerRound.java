@@ -28,7 +28,7 @@ public class MultiPlayerRound implements IRound {
 		MultiPlayerTurn turn = null;
 
 		if (currentTurn != null) {
-			if (currentTurn.getPlayer() != YatzySession.get().getPlayer()) {
+			if (multiPlayerGame.isPlaying() == false) {
 				turn = currentTurn;
 			}
 		}
