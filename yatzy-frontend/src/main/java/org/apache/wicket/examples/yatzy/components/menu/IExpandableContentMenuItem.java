@@ -10,7 +10,7 @@ public interface IExpandableContentMenuItem extends IMenuItem {
 		String getMarkupId();
 	}
 
-	Component createExpandableContent(String wicketId);
+	Component<?> createExpandableContent(String wicketId);
 
 	void setContentHolderMarkupIdProvider(ContentHolderMarkupIdProvider markupIdProvider);
 

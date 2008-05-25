@@ -17,16 +17,19 @@ import org.apache.wicket.examples.yatzy.panels.TurnPanel;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
 import org.examples.yatzy.ITurn;
+import org.examples.yatzy.score.IScoreCard;
+import org.examples.yatzy.score.ITurnScore;
 
-public class GamePage extends AuthenticatedBasePage {
+public class GamePage extends BasePage<Void> {
 	private static final long serialVersionUID = 1L;
+
+	private final IGame game;
 
 	private IRound round;
 
@@ -36,22 +39,20 @@ public class GamePage extends AuthenticatedBasePage {
 		throw new RestartResponseAtInterceptPageException(getApplication().getHomePage());
 	}
 
-	public GamePage(IGame game) {
-		super(new Model(game));
+	public GamePage(IGame g) {
+		this.game = g;
 
-		PropertyModel turnModel = new PropertyModel(this, "turn");
+		PropertyModel<ITurn> turnModel = new PropertyModel<ITurn>(this, "turn");
 
 		final TurnPanel turnPanel = new TurnPanel("turnPanel", turnModel);
 		turnPanel.setOutputMarkupId(true);
 		add(turnPanel);
 
-		add(new ScoreCardPanel("scoreCard", turnModel, new PropertyModel(getModel(), "scoreCard")) {
+		add(new ScoreCardPanel("scoreCard", turnModel, new PropertyModel<IScoreCard>(game, "scoreCard")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void combinationSelected(AjaxRequestTarget target, IModel scoreModel) {
-				IGame game = (IGame) GamePage.this.getModelObject();
-
+			protected void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel) {
 				if (game.isComplete()) {
 					round = null;
 					turn = null;
@@ -64,7 +65,8 @@ public class GamePage extends AuthenticatedBasePage {
 					}
 
 					// Show the result
-					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", GamePage.this.getModel());
+					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", new PropertyModel<IGame>(
+							GamePage.this, "game"));
 					gameResultPanel.setOutputMarkupId(true);
 					turnPanel.replaceWith(gameResultPanel);
 
@@ -95,12 +97,11 @@ public class GamePage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected IModel getPageTitleModel() {
-		return new StringResourceModel("game.${class.simpleName}", this, getModel());
+	protected IModel<String> getPageTitleModel() {
+		return new StringResourceModel("game.${class.simpleName}", this, new PropertyModel<IGame>(this, "game"));
 	}
 
 	private void newRound() {
-		IGame game = (IGame) getModelObject();
 		round = game.newRound();
 	}
 
@@ -114,12 +115,12 @@ public class GamePage extends AuthenticatedBasePage {
 
 	@Override
 	protected void addMenuItems(List<IMenuItem> menuItems) {
-		final IBehavior endGameConfirm = new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+		final IBehavior endGameConfirm = new AttributeModifier("onclick", true, new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
-				IModel confirmText = new StringResourceModel("confirmQuitExistingGame", GamePage.this, null);
+			public String getObject() {
+				IModel<String> confirmText = new StringResourceModel("confirmQuitExistingGame", GamePage.this, null);
 
 				return "return confirm('" + confirmText.getObject() + "');";
 			}
@@ -129,8 +130,8 @@ public class GamePage extends AuthenticatedBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public MarkupContainer createLink(String wicketId) {
-				MarkupContainer link = super.createLink(wicketId);
+			public MarkupContainer<?> createLink(String wicketId) {
+				MarkupContainer<?> link = super.createLink(wicketId);
 				link.add(endGameConfirm);
 				return link;
 			}
@@ -138,14 +139,12 @@ public class GamePage extends AuthenticatedBasePage {
 		menuItems.add(new AbstractSimpleLabelMenuItem(new StringResourceModel("restartGame", this, null)) {
 			private static final long serialVersionUID = 1L;
 
-			public MarkupContainer createLink(String wicketId) {
-				Link link = new Link(wicketId) {
+			public MarkupContainer<?> createLink(String wicketId) {
+				Link<?> link = new Link<Object>(wicketId) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick() {
-						IGame game = (IGame) GamePage.this.getModelObject();
-
 						getRequestCycle().setResponsePage(new GamePage(game.newGame()));
 					}
 				};

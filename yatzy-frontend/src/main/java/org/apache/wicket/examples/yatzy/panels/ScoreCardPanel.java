@@ -1,5 +1,7 @@
 package org.apache.wicket.examples.yatzy.panels;
 
+import java.util.List;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -23,77 +25,81 @@ import org.examples.yatzy.score.IScoreCard;
 import org.examples.yatzy.score.IScoreGroup;
 import org.examples.yatzy.score.ITurnScore;
 
-public abstract class ScoreCardPanel extends Panel {
+public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 
-	private final RepeatingView scores;
+	private final RepeatingView<Object> scores;
 
-	private final IModel turnModel;
+	private final IModel<ITurn> turnModel;
 
-	public ScoreCardPanel(String id, final IModel turnModel, IModel scoreCardModel) {
+	public ScoreCardPanel(String id, final IModel<ITurn> turnModel, IModel<IScoreCard> scoreCardModel) {
 		super(id, scoreCardModel);
 		this.turnModel = turnModel;
 
 		setOutputMarkupId(true);
 
+		PropertyModel<List<IPlayer>> playersModel = new PropertyModel<List<IPlayer>>(scoreCardModel, "players");
+
 		// Header
-		add(new ListView("players", new PropertyModel(scoreCardModel, "players")) {
+		ListView<IPlayer> players = new ListView<IPlayer>("players", playersModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item) {
-				final IPlayer player = (IPlayer) item.getModelObject();
-				item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel() {
+			protected void populateItem(ListItem<IPlayer> item) {
+				final IPlayer player = item.getModelObject();
+				item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
-						ITurn turn = (ITurn) turnModel.getObject();
+					public String getObject() {
+						ITurn turn = turnModel.getObject();
 						return turn != null && turn.getPlayer() == player ? "currentPlayer" : null;
 					}
 				}));
-				item.add(new Label("playerName", new PropertyModel(item.getModel(), "name")).setRenderBodyOnly(true));
+				item.add(new Label<String>("playerName", new PropertyModel<String>(item.getModel(), "name"))
+						.setRenderBodyOnly(true));
 			}
-		});
+		};
+		add(players);
 
 		// Body
-		scores = new RepeatingView("scores");
+		scores = new RepeatingView<Object>("scores");
 		add(scores);
 
-		addScores((IScoreGroup) scoreCardModel.getObject());
+		addScores(scoreCardModel.getObject());
 
 		// Footer
-		add(new ListView("playerTotals", new PropertyModel(scoreCardModel, "players")) {
+		add(new ListView<IPlayer>("playerTotals", playersModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item) {
-				final IPlayer player = (IPlayer) item.getModelObject();
+			protected void populateItem(ListItem<IPlayer> item) {
+				final IPlayer player = item.getModelObject();
 
-				item.add(new AttributeAppender("class", true, new AbstractReadOnlyModel() {
+				item.add(new AttributeAppender("class", true, new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
-						ITurn turn = (ITurn) turnModel.getObject();
+					public String getObject() {
+						ITurn turn = turnModel.getObject();
 						return turn != null && turn.getPlayer() == player ? "currentPlayerGrandTotal" : null;
 					}
 				}, " "));
 
-				IModel model = new AbstractReadOnlyModel() {
+				IModel<String> model = new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
-						IScoreCard scoreCard = (IScoreCard) ScoreCardPanel.this.getModelObject();
+					public String getObject() {
+						IScoreCard scoreCard = ScoreCardPanel.this.getModelObject();
 						if (scoreCard.hasScore(player)) {
-							return scoreCard.getScore(player);
+							return "" + scoreCard.getScore(player);
 						} else {
 							return "&nbsp;";
 						}
 					}
 				};
 
-				Label totalLabel = new Label("total", model);
+				Label<String> totalLabel = new Label<String>("total", model);
 				totalLabel.setRenderBodyOnly(true);
 				totalLabel.setEscapeModelStrings(false);
 				item.add(totalLabel);
@@ -104,15 +110,15 @@ public abstract class ScoreCardPanel extends Panel {
 	private void addScores(IScoreGroup scoreGroup) {
 		for (IScore score : scoreGroup.getScores()) {
 			if (score instanceof ITurnScore) {
-				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
+				WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(scores.newChildId());
 				scores.add(scoreContainer);
 
 				ITurnScore turnScore = (ITurnScore) score;
-				ScorePanel scorePanel = new ScorePanel("scorePanel", turnModel, new Model(turnScore)) {
+				ScorePanel scorePanel = new ScorePanel("scorePanel", turnModel, new Model<ITurnScore>(turnScore)) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void combinationSelected(AjaxRequestTarget target, IModel scoreModel) {
+					protected void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel) {
 						ScoreCardPanel.this.combinationSelected(target, scoreModel);
 
 						if (target != null) {
@@ -121,7 +127,7 @@ public abstract class ScoreCardPanel extends Panel {
 					}
 
 					@Override
-					protected boolean combinationSelectable(IModel scoreModel) {
+					protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
 						return ScoreCardPanel.this.combinationSelectable(scoreModel);
 					}
 				};
@@ -135,11 +141,11 @@ public abstract class ScoreCardPanel extends Panel {
 				if (childScoreGroup instanceof AbstractStandardBonusScoreGroup) {
 					final AbstractStandardBonusScoreGroup bonusScoreGroup = (AbstractStandardBonusScoreGroup) childScoreGroup;
 
-					WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
+					WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(scores.newChildId());
 					scores.add(scoreContainer);
 
 					ScoreSumPanel scoreSumPanel = new ScoreSumPanel("scorePanel", turnModel, new StringResourceModel(
-							"bonus", this, null), new Model(childScoreGroup), new SumProvider() {
+							"bonus", this, null), new Model<IScoreGroup>(childScoreGroup), new SumProvider() {
 						private static final long serialVersionUID = 1L;
 
 						public int getSum(IScoreGroup scoreGroup, IPlayer player) {
@@ -154,11 +160,11 @@ public abstract class ScoreCardPanel extends Panel {
 					scoreContainer.add(scoreSumPanel);
 				}
 
-				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores.newChildId());
+				WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(scores.newChildId());
 				scores.add(scoreContainer);
 
 				ScoreSumPanel scoreSumPanel = new ScoreSumPanel("scorePanel", turnModel, new StringResourceModel(
-						"total", this, null), new Model(childScoreGroup), new SumProvider() {
+						"total", this, null), new Model<IScoreGroup>(childScoreGroup), new SumProvider() {
 					private static final long serialVersionUID = 1L;
 
 					public int getSum(IScoreGroup scoreGroup, IPlayer player) {
@@ -175,9 +181,9 @@ public abstract class ScoreCardPanel extends Panel {
 		}
 	}
 
-	protected abstract void combinationSelected(AjaxRequestTarget target, IModel scoreModel);
+	protected abstract void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel);
 
-	protected boolean combinationSelectable(IModel scoreModel) {
+	protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
 		return true;
 	}
 

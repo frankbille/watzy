@@ -1,5 +1,7 @@
 package org.apache.wicket.examples.yatzy.panels;
 
+import java.util.List;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -20,39 +22,40 @@ import org.examples.yatzy.IDice;
 import org.examples.yatzy.IRollTurn;
 import org.examples.yatzy.ITurn;
 
-public class TurnPanel extends Panel {
+public class TurnPanel extends Panel<ITurn> {
 	private static final long serialVersionUID = 1L;
-	private final AjaxFallbackLink rollLink;
-	private final Label turnLabel;
+	private final AjaxFallbackLink<ITurn> rollLink;
+	private final Label<String> turnLabel;
 
-	public TurnPanel(String id, IModel turnModel) {
+	public TurnPanel(String id, IModel<ITurn> turnModel) {
 		super(id, turnModel);
 
-		final ListView diceList = new ListView("diceList", new PropertyModel(turnModel, "diceList")) {
+		final ListView<IDice> diceList = new ListView<IDice>("diceList", new PropertyModel<List<IDice>>(turnModel,
+				"diceList")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem item) {
+			protected void populateItem(final ListItem<IDice> item) {
 				item.setOutputMarkupId(true);
 
-				final IModel holdModel = new StringResourceModel("hold", TurnPanel.this, null);
-				final Label holdLabel = new Label("hold", new AbstractReadOnlyModel() {
+				final IModel<String> holdModel = new StringResourceModel("hold", TurnPanel.this, null);
+				final Label<String> holdLabel = new Label<String>("hold", new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
-						IDice dice = (IDice) item.getModelObject();
-						ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+					public String getObject() {
+						IDice dice = item.getModelObject();
+						ITurn turn = TurnPanel.this.getModelObject();
 
-						Object object = null;
+						String label = null;
 
 						if (turn.shouldHold(dice)) {
-							object = holdModel.getObject();
+							label = holdModel.getObject();
 						} else {
-							object = "&nbsp;";
+							label = "&nbsp;";
 						}
 
-						return object;
+						return label;
 					}
 
 				});
@@ -60,13 +63,13 @@ public class TurnPanel extends Panel {
 				holdLabel.setOutputMarkupId(true);
 				item.add(holdLabel);
 
-				AjaxFallbackLink holdLink = new AjaxFallbackLink("holdLink") {
+				AjaxFallbackLink<ITurn> holdLink = new AjaxFallbackLink<ITurn>("holdLink", TurnPanel.this.getModel()) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						IDice dice = (IDice) item.getModelObject();
-						ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+						IDice dice = item.getModelObject();
+						ITurn turn = getModelObject();
 						turn.changeHold(dice);
 
 						if (target != null) {
@@ -76,8 +79,8 @@ public class TurnPanel extends Panel {
 
 					@Override
 					public boolean isEnabled() {
-						ITurn turn = (ITurn) TurnPanel.this.getModelObject();
-						IDice dice = (IDice) item.getModelObject();
+						ITurn turn = getModelObject();
+						IDice dice = item.getModelObject();
 						return dice.hasValue() && TurnPanel.this.isEnabled() && turn.mayRoll();
 					}
 
@@ -91,13 +94,13 @@ public class TurnPanel extends Panel {
 						return null;
 					}
 				};
-				holdLink.add(new AttributeModifier("class", true, new AbstractReadOnlyModel() {
+				holdLink.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
+					public String getObject() {
 						String className;
-						IDice dice = (IDice) item.getModelObject();
+						IDice dice = item.getModelObject();
 
 						if (dice.hasValue()) {
 							className = "dice_" + dice.getValue();
@@ -113,12 +116,12 @@ public class TurnPanel extends Panel {
 		};
 		add(diceList);
 
-		rollLink = new AjaxFallbackLink("rollLink") {
+		rollLink = new AjaxFallbackLink<ITurn>("rollLink", turnModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+				ITurn turn = getModelObject();
 				turn.roll();
 
 				if (target != null) {
@@ -128,7 +131,7 @@ public class TurnPanel extends Panel {
 
 			@Override
 			public boolean isEnabled() {
-				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+				ITurn turn = getModelObject();
 				return turn.mayRoll() && TurnPanel.this.isEnabled();
 			}
 
@@ -151,14 +154,14 @@ public class TurnPanel extends Panel {
 		rollLink.setOutputMarkupId(true);
 		add(rollLink);
 
-		rollLink.add(new Image("rollImage", "roll.png"));
+		rollLink.add(new Image<String>("rollImage", "roll_white.png"));
 
-		IModel rollsLeftModel = new AbstractReadOnlyModel() {
+		IModel<ITurn> rollsLeftModel = new AbstractReadOnlyModel<ITurn>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
-				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+			public ITurn getObject() {
+				ITurn turn = TurnPanel.this.getModelObject();
 
 				if (turn instanceof MultiPlayerTurn) {
 					turn = ((MultiPlayerTurn) turn).getInnerTurn();
@@ -168,12 +171,12 @@ public class TurnPanel extends Panel {
 			}
 		};
 
-		turnLabel = new Label("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
+		turnLabel = new Label<String>("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isVisible() {
-				ITurn turn = (ITurn) TurnPanel.this.getModelObject();
+				ITurn turn = TurnPanel.this.getModelObject();
 
 				if (turn instanceof MultiPlayerTurn) {
 					turn = ((MultiPlayerTurn) turn).getInnerTurn();

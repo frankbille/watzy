@@ -6,18 +6,18 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 public abstract class AbstractSimpleLabelMenuItem implements IMenuItem {
-	private final IModel labelModel;
+	private final IModel<String> labelModel;
 
 	public AbstractSimpleLabelMenuItem(String label) {
-		this.labelModel = new Model(label);
+		this.labelModel = new Model<String>(label);
 	}
 
-	public AbstractSimpleLabelMenuItem(IModel labelModel) {
+	public AbstractSimpleLabelMenuItem(IModel<String> labelModel) {
 		this.labelModel = labelModel;
 	}
 
-	public Component createLabelComponent(String wicketId) {
-		return new Label(wicketId, labelModel);
+	public Component<String> createLabelComponent(String wicketId) {
+		return new Label<String>(wicketId, labelModel);
 	}
 
 }

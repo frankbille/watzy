@@ -1,10 +1,8 @@
 package org.apache.wicket.examples.yatzy.pages;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -27,7 +25,7 @@ import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.MaxiGame;
 import org.examples.yatzy.StandardGame;
 
-public class NewGamePage extends BasePage {
+public class NewGamePage extends BasePage<Void> {
 	private static final long serialVersionUID = 1L;
 
 	private IGame game;
@@ -41,7 +39,7 @@ public class NewGamePage extends BasePage {
 		players.add(new AdhocPlayer());
 		players.add(new AdhocPlayer());
 
-		Form playersForm = new Form("playersForm") {
+		Form<Object> playersForm = new Form<Object>("playersForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -59,14 +57,14 @@ public class NewGamePage extends BasePage {
 
 		playersForm.add(new FeedbackPanel("feedback"));
 
-		final ListView playerList = new ListView("players", players) {
+		final ListView<IPlayer> playerList = new ListView<IPlayer>("players", players) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item) {
-				item.add(new Label("playerLabel", new StringResourceModel("playerLabel", NewGamePage.this, null,
-						new Object[] { item.getIndex() + 1 })));
-				item.add(new TextField("name", new PropertyModel(item.getModel(), "name")));
+			protected void populateItem(ListItem<IPlayer> item) {
+				item.add(new Label<String>("playerLabel", new StringResourceModel("playerLabel", NewGamePage.this,
+						null, new Object[] { item.getIndex() + 1 })));
+				item.add(new TextField<String>("name", new PropertyModel<String>(item.getModel(), "name")));
 			}
 		};
 		playerList.setReuseItems(true);
@@ -75,12 +73,12 @@ public class NewGamePage extends BasePage {
 		playersForm.add(new IFormValidator() {
 			private static final long serialVersionUID = 1L;
 
-			public FormComponent[] getDependentFormComponents() {
-				final List<TextField> playerFields = new ArrayList<TextField>();
+			public FormComponent<?>[] getDependentFormComponents() {
+				final List<TextField<String>> playerFields = new ArrayList<TextField<String>>();
 
-				playerList.visitChildren(TextField.class, new IVisitor() {
-					public Object component(Component component) {
-						playerFields.add((TextField) component);
+				playerList.visitChildren(TextField.class, new IVisitor<TextField<String>>() {
+					public Object component(TextField<String> component) {
+						playerFields.add(component);
 						return CONTINUE_TRAVERSAL;
 					}
 				});
@@ -88,10 +86,10 @@ public class NewGamePage extends BasePage {
 				return playerFields.toArray(new TextField[playerFields.size()]);
 			}
 
-			public void validate(Form form) {
+			public void validate(Form<?> form) {
 				boolean hasPlayer = false;
 
-				for (FormComponent formComponent : getDependentFormComponents()) {
+				for (FormComponent<?> formComponent : getDependentFormComponents()) {
 					if (formComponent.getConvertedInput() != null) {
 						hasPlayer = true;
 						break;
@@ -109,21 +107,21 @@ public class NewGamePage extends BasePage {
 		games.add(new StandardGame());
 		games.add(new MaxiGame());
 
-		IChoiceRenderer cr = new ChoiceRenderer() {
+		IChoiceRenderer<IGame> cr = new ChoiceRenderer<IGame>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getDisplayValue(Object object) {
-				IModel displayModel = new StringResourceModel("game.${class.simpleName}", NewGamePage.this, new Model(
-						(Serializable) object));
+			public Object getDisplayValue(IGame object) {
+				IModel<String> displayModel = new StringResourceModel("game.${class.simpleName}", NewGamePage.this,
+						new Model<IGame>(object));
 				return displayModel.getObject();
 			}
 		};
-		RadioChoice game = new RadioChoice("game", new PropertyModel(this, "game"), games, cr);
+		RadioChoice<IGame> game = new RadioChoice<IGame>("game", new PropertyModel<IGame>(this, "game"), games, cr);
 		game.setRequired(true);
 		playersForm.add(game);
 
-		playersForm.add(new Button("startGame", new StringResourceModel("startGame", this, null)));
+		playersForm.add(new Button<String>("startGame", new StringResourceModel("startGame", this, null)));
 	}
 
 	public void setGame(IGame game) {
@@ -135,7 +133,7 @@ public class NewGamePage extends BasePage {
 	}
 
 	@Override
-	protected IModel getPageTitleModel() {
+	protected IModel<String> getPageTitleModel() {
 		return new StringResourceModel("newGame", this, null);
 	}
 

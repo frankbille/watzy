@@ -23,7 +23,7 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 		super(label);
 	}
 
-	public ExpandableContentMenuItem(IModel labelModel) {
+	public ExpandableContentMenuItem(IModel<String> labelModel) {
 		super(labelModel);
 	}
 
@@ -31,8 +31,8 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 		this.markupIdProvider = markupIdProvider;
 	}
 
-	public MarkupContainer createLink(String wicketId) {
-		WebMarkupContainer link = new WebMarkupContainer(wicketId);
+	public MarkupContainer<Object> createLink(String wicketId) {
+		WebMarkupContainer<Object> link = new WebMarkupContainer<Object>(wicketId);
 		link.add(new SimpleAttributeModifier("href", "#"));
 		link.add(new JQueryBehavior() {
 			private static final long serialVersionUID = 1L;
@@ -53,11 +53,11 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 				response.renderOnDomReadyJavascript(jsConf.toString());
 			}
 		});
-		link.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel() {
+		link.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public String getObject() {
 				return "ExpandableContent.displayContent('" + markupIdProvider.getMarkupId() + "'); return false;";
 			}
 		}));

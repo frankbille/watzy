@@ -9,34 +9,35 @@ import org.apache.wicket.model.IModel;
 public class BookmarkableMenuItem extends AbstractSimpleLabelMenuItem {
 	private static final long serialVersionUID = 1L;
 
-	private final Class<? extends Page> pageClass;
+	private final Class<? extends Page<?>> pageClass;
 	private final PageParameters pageParameters;
 
-	public BookmarkableMenuItem(String label, Class<? extends Page> pageClass) {
+	public BookmarkableMenuItem(String label, Class<? extends Page<?>> pageClass) {
 		super(label);
 		this.pageClass = pageClass;
 		this.pageParameters = null;
 	}
 
-	public BookmarkableMenuItem(IModel labelModel, Class<? extends Page> pageClass) {
+	public BookmarkableMenuItem(IModel<String> labelModel, Class<? extends Page<?>> pageClass) {
 		super(labelModel);
 		this.pageClass = pageClass;
 		this.pageParameters = null;
 	}
 
-	public BookmarkableMenuItem(String label, Class<? extends Page> pageClass, PageParameters pageParameters) {
+	public BookmarkableMenuItem(String label, Class<? extends Page<?>> pageClass, PageParameters pageParameters) {
 		super(label);
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
 	}
 
-	public BookmarkableMenuItem(IModel labelModel, Class<? extends Page> pageClass, PageParameters pageParameters) {
+	public BookmarkableMenuItem(IModel<String> labelModel, Class<? extends Page<?>> pageClass,
+			PageParameters pageParameters) {
 		super(labelModel);
 		this.pageClass = pageClass;
 		this.pageParameters = pageParameters;
 	}
 
-	public MarkupContainer createLink(String wicketId) {
+	public MarkupContainer<?> createLink(String wicketId) {
 		return new BookmarkablePageLink(wicketId, pageClass, pageParameters);
 	}
 }

@@ -9,10 +9,10 @@ import org.examples.yatzy.score.SumScore;
 
 public abstract class ScoreResourceModelFactory {
 
-	public static IModel createModel(IModel scoreModel) {
+	public static <S extends IScore> IModel<String> createModel(IModel<S> scoreModel) {
 		String resourceKey = "";
 
-		IScore score = (IScore) scoreModel.getObject();
+		IScore score = scoreModel.getObject();
 
 		resourceKey = score.getClass().getSimpleName();
 
@@ -21,7 +21,7 @@ public abstract class ScoreResourceModelFactory {
 			resourceKey += "." + sumScore.getValue();
 		}
 
-		return new StringResourceModel(resourceKey, null, null) {
+		return new StringResourceModel(resourceKey, null) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

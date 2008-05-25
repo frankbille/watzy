@@ -8,9 +8,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.examples.yatzy.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.MultiPlayerTurn;
 import org.apache.wicket.examples.yatzy.YatzyApplication;
-import org.apache.wicket.examples.yatzy.MultiPlayerGame.Player;
 import org.apache.wicket.examples.yatzy.behaviours.AjaxSelfUpdatingTimerBehavior;
-import org.apache.wicket.examples.yatzy.behaviours.HeartBeatBehavior;
 import org.apache.wicket.examples.yatzy.pages.AuthenticatedBasePage;
 import org.apache.wicket.examples.yatzy.panels.GameResultPanel;
 import org.apache.wicket.examples.yatzy.panels.ScoreCardPanel;
@@ -24,8 +22,11 @@ import org.apache.wicket.util.time.Duration;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
+import org.examples.yatzy.ITurn;
+import org.examples.yatzy.score.IScoreCard;
+import org.examples.yatzy.score.ITurnScore;
 
-public class MultiPlayerGamePage extends AuthenticatedBasePage {
+public class MultiPlayerGamePage extends AuthenticatedBasePage<MultiPlayerGame> {
 	private static final long serialVersionUID = 1L;
 
 	public MultiPlayerGamePage() {
@@ -33,31 +34,26 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 	}
 
 	public MultiPlayerGamePage(IGame game) {
-		super(new Model(game));
-
 		if (game instanceof MultiPlayerGame == false) {
 			throw new RestartResponseException(MultiPlayerGameSetupPage.class);
 		}
 
-		MultiPlayerGame multiPlayerGame = (MultiPlayerGame) game;
+		setModel(new Model<MultiPlayerGame>((MultiPlayerGame) game));
 
-		Player me = multiPlayerGame.getMe();
-		add(new HeartBeatBehavior(Duration.ONE_SECOND, multiPlayerGame.getHeartBeatForPlayer(me)));
+		final PropertyModel<ITurn> turnModel = new PropertyModel<ITurn>(getModel(), "currentRound.currentTurn");
 
-		final PropertyModel turnModel = new PropertyModel(getModel(), "currentRound.currentTurn");
-
-		final WebMarkupContainer turnPanelWrapper = new WebMarkupContainer("turnPanelWrapper") {
+		final WebMarkupContainer<MultiPlayerGame> turnPanelWrapper = new WebMarkupContainer<MultiPlayerGame>(
+				"turnPanelWrapper", getModel()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onBeforeRender() {
 				super.onBeforeRender();
 
-				MultiPlayerGame multiPlayerGame = (MultiPlayerGame) MultiPlayerGamePage.this.getModelObject();
-				if (multiPlayerGame.isComplete()) {
+				if (getModelObject().isComplete()) {
 					// Show the result
-					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", MultiPlayerGamePage.this
-							.getModel());
+					GameResultPanel gameResultPanel = new GameResultPanel("turnPanel", new Model<IGame>(
+							getModelObject()));
 					gameResultPanel.setOutputMarkupId(true);
 					replace(gameResultPanel);
 				}
@@ -71,10 +67,9 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 				Object stateObject = null;
 
 				MultiPlayerTurn turn = (MultiPlayerTurn) turnModel.getObject();
-				MultiPlayerGame multiPlayerGame = (MultiPlayerGame) MultiPlayerGamePage.this.getModelObject();
 
-				if (multiPlayerGame.isReady() == false || multiPlayerGame.isComplete()) {
-					stateObject = multiPlayerGame.getInnerGame();
+				if (getModelObject().isReady() == false || getModelObject().isComplete()) {
+					stateObject = getModelObject().getInnerGame();
 				} else if (turn != null) {
 					stateObject = turn.getInnerTurn();
 				}
@@ -83,7 +78,7 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 			}
 
 			@Override
-			public boolean isEnabled(Component component) {
+			public boolean isEnabled(Component<?> component) {
 				boolean behaviourEnabled = selfUpdateEnabled();
 				return behaviourEnabled;
 			}
@@ -94,21 +89,20 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 		turnPanel.setOutputMarkupId(true);
 		turnPanelWrapper.add(turnPanel);
 
-		ScoreCardPanel scoreCardPanel = new ScoreCardPanel("scoreCard", turnModel, new PropertyModel(getModel(),
-				"scoreCard")) {
+		ScoreCardPanel scoreCardPanel = new ScoreCardPanel("scoreCard", turnModel, new PropertyModel<IScoreCard>(
+				getModel(), "scoreCard")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void combinationSelected(AjaxRequestTarget target, IModel scoreModel) {
-				MultiPlayerGame game = (MultiPlayerGame) MultiPlayerGamePage.this.getModelObject();
-
-				if (game.isComplete()) {
+			protected void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel) {
+				MultiPlayerGame multiPlayerGame = MultiPlayerGamePage.this.getModelObject();
+				if (multiPlayerGame.isComplete()) {
 					// Register the highscores
-					List<IPlayer> players = game.getPlayers();
+					List<IPlayer> players = multiPlayerGame.getPlayers();
 					for (IPlayer player : players) {
-						int score = game.getScoreCard().getScore(player);
-						YatzyApplication.get().registerHighscore(game.getInnerGame().getClass(), player.getName(),
-								score);
+						int score = multiPlayerGame.getScoreCard().getScore(player);
+						YatzyApplication.get().registerHighscore(multiPlayerGame.getInnerGame().getClass(),
+								player.getName(), score);
 					}
 
 					if (target != null) {
@@ -117,11 +111,11 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 						target.addComponent(this);
 					}
 				} else {
-					if (game.getCurrentRound().hasMoreTurns() == false) {
+					if (multiPlayerGame.getCurrentRound().hasMoreTurns() == false) {
 						newRound();
 					}
 
-					game.getCurrentRound().nextTurn();
+					multiPlayerGame.getCurrentRound().nextTurn();
 
 					if (target != null) {
 						target.addComponent(turnPanelWrapper);
@@ -130,16 +124,15 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 			}
 
 			@Override
-			protected boolean combinationSelectable(IModel scoreModel) {
-				MultiPlayerGame multiPlayerGame = (MultiPlayerGame) MultiPlayerGamePage.this.getModelObject();
-				return multiPlayerGame.isPlaying();
+			protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
+				return MultiPlayerGamePage.this.getModelObject().isPlaying();
 			}
 		};
 		scoreCardPanel.add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabled(Component component) {
+			public boolean isEnabled(Component<?> component) {
 				return selfUpdateEnabled();
 			}
 		});
@@ -153,24 +146,22 @@ public class MultiPlayerGamePage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected IModel getPageTitleModel() {
-		return new StringResourceModel("game.${innerGame.class.simpleName}", this, getModel());
+	protected IModel<String> getPageTitleModel() {
+		return new StringResourceModel("game.${innerGame.class.simpleName}", this, new PropertyModel<MultiPlayerGame>(
+				this, "game"));
 	}
 
 	private IRound newRound() {
-		IGame game = (IGame) getModelObject();
-		return game.newRound();
+		return getModelObject().newRound();
 	}
 
 	private boolean selfUpdateEnabled() {
 		boolean enabled = false;
 
-		MultiPlayerGame multiPlayerGame = (MultiPlayerGame) MultiPlayerGamePage.this.getModelObject();
-
-		if (multiPlayerGame.isComplete() == false) {
-			if (multiPlayerGame.isReady() == false) {
+		if (getModelObject().isComplete() == false) {
+			if (getModelObject().isReady() == false) {
 				enabled = true;
-			} else if (multiPlayerGame.isPlaying() == false) {
+			} else if (getModelObject().isPlaying() == false) {
 				enabled = true;
 			}
 		}

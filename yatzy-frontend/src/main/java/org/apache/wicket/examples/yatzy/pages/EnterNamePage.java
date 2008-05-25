@@ -10,12 +10,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.AdhocPlayer;
 
-public class EnterNamePage extends BasePage {
+public class EnterNamePage extends BasePage<Void> {
 
 	public EnterNamePage() {
 		final AdhocPlayer player = new AdhocPlayer();
 
-		Form form = new Form("form") {
+		Form<Object> form = new Form<Object>("form") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -29,15 +29,15 @@ public class EnterNamePage extends BasePage {
 		};
 		add(form);
 
-		TextField nameField = new TextField("name", new PropertyModel(player, "name"));
+		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(player, "name"));
 		nameField.setRequired(true);
 		form.add(nameField);
 
-		form.add(new Button("continue", new StringResourceModel("continue", this, null)));
+		form.add(new Button<String>("continue", new StringResourceModel("continue", this, null)));
 	}
 
 	@Override
-	protected IModel getPageTitleModel() {
+	protected IModel<String> getPageTitleModel() {
 		return new StringResourceModel("enterName", this, null);
 	}
 

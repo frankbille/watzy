@@ -19,25 +19,24 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IGame;
 
-public class HighscorePage extends BasePage {
+public class HighscorePage extends BasePage<Void> {
 
-	private static class GameHighscoresModel extends LoadableDetachableModel {
+	private static class GameHighscoresModel extends LoadableDetachableModel<List<Highscore>> {
 		private static final long serialVersionUID = 1L;
 
-		private final IModel highscoreModel;
+		private final IModel<List<Highscore>> highscoreModel;
 		private final Class<? extends IGame> gameType;
 
-		public GameHighscoresModel(IModel highscoreModel, Class<? extends IGame> gameType) {
+		public GameHighscoresModel(IModel<List<Highscore>> highscoreModel, Class<? extends IGame> gameType) {
 			this.highscoreModel = highscoreModel;
 			this.gameType = gameType;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
-		protected Object load() {
+		protected List<Highscore> load() {
 			List<Highscore> gameHighscores = new ArrayList<Highscore>();
 
-			List<Highscore> highscores = (List<Highscore>) highscoreModel.getObject();
+			List<Highscore> highscores = highscoreModel.getObject();
 
 			for (Highscore highscore : highscores) {
 				if (gameHighscores.size() < 10) {
@@ -51,21 +50,20 @@ public class HighscorePage extends BasePage {
 		}
 	}
 
-	private static class GameTypesModel extends LoadableDetachableModel {
+	private static class GameTypesModel extends LoadableDetachableModel<List<Class<? extends IGame>>> {
 		private static final long serialVersionUID = 1L;
 
-		private final IModel highscoreModel;
+		private final IModel<List<Highscore>> highscoreModel;
 
-		public GameTypesModel(IModel highscoreModel) {
+		public GameTypesModel(IModel<List<Highscore>> highscoreModel) {
 			this.highscoreModel = highscoreModel;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
-		protected Object load() {
+		protected List<Class<? extends IGame>> load() {
 			Set<Class<? extends IGame>> gameTypes = new HashSet<Class<? extends IGame>>();
 
-			List<Highscore> highscores = (List<Highscore>) highscoreModel.getObject();
+			List<Highscore> highscores = highscoreModel.getObject();
 			for (Highscore highscore : highscores) {
 				gameTypes.add(highscore.getGameType());
 			}
@@ -75,45 +73,46 @@ public class HighscorePage extends BasePage {
 	}
 
 	public HighscorePage() {
-		final IModel highscoreModel = new LoadableDetachableModel() {
+		final IModel<List<Highscore>> highscoreModel = new LoadableDetachableModel<List<Highscore>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Object load() {
+			protected List<Highscore> load() {
 				return YatzyApplication.get().getHighscores();
 			}
 		};
 
 		GameTypesModel gameTypesModel = new GameTypesModel(highscoreModel);
-		add(new ListView("gameTypes", gameTypesModel) {
+		add(new ListView<Class<? extends IGame>>("gameTypes", gameTypesModel) {
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected void populateItem(ListItem item) {
-				Class<? extends IGame> gameType = (Class<? extends IGame>) item.getModelObject();
+			protected void populateItem(ListItem<Class<? extends IGame>> item) {
+				Class<? extends IGame> gameType = item.getModelObject();
 
-				IModel gameTypeModel = new StringResourceModel("game." + gameType.getSimpleName(), this, null);
-				Label gameTypeLabel = new Label("gameType", gameTypeModel);
+				IModel<String> gameTypeModel = new StringResourceModel("game." + gameType.getSimpleName(), this, null);
+				Label<String> gameTypeLabel = new Label<String>("gameType", gameTypeModel);
 				item.add(gameTypeLabel);
 
 				GameHighscoresModel gameHighscoresModel = new GameHighscoresModel(highscoreModel, gameType);
 
-				item.add(new ListView("highscores", gameHighscoresModel) {
+				item.add(new ListView<Highscore>("highscores", gameHighscoresModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void populateItem(final ListItem item) {
-						item.add(new Label("rank", new AbstractReadOnlyModel() {
+					protected void populateItem(final ListItem<Highscore> item) {
+						item.add(new Label<Integer>("rank", new AbstractReadOnlyModel<Integer>() {
 							private static final long serialVersionUID = 1L;
 
 							@Override
-							public Object getObject() {
+							public Integer getObject() {
 								return item.getIndex() + 1;
 							}
 						}));
-						item.add(new Label("score", new PropertyModel(item.getModelObject(), "score")));
-						item.add(new Label("name", new PropertyModel(item.getModelObject(), "name")));
+						item
+								.add(new Label<Integer>("score", new PropertyModel<Integer>(item.getModelObject(),
+										"score")));
+						item.add(new Label<String>("name", new PropertyModel<String>(item.getModelObject(), "name")));
 					}
 				});
 
@@ -122,7 +121,7 @@ public class HighscorePage extends BasePage {
 	}
 
 	@Override
-	protected IModel getPageTitleModel() {
+	protected IModel<String> getPageTitleModel() {
 		return new StringResourceModel("highscore", this, null);
 	}
 

@@ -15,19 +15,19 @@ import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.score.IScoreCard;
 
-public class GameResultPanel extends Panel {
+public class GameResultPanel extends Panel<IGame> {
 	private static final long serialVersionUID = 1L;
 
-	public GameResultPanel(String id, final IModel gameModel) {
+	public GameResultPanel(String id, final IModel<IGame> gameModel) {
 		super(id, gameModel);
 
 		// Find winner
-		add(new Label("winnerPlayer", new AbstractReadOnlyModel() {
+		add(new Label<String>("winnerPlayer", new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
-				IGame game = (IGame) gameModel.getObject();
+			public String getObject() {
+				IGame game = gameModel.getObject();
 
 				int maxScore = 0;
 				IPlayer winner = null;
@@ -45,12 +45,12 @@ public class GameResultPanel extends Panel {
 		}));
 
 		// List of players sorted by score with the biggest score first
-		IModel model = new AbstractReadOnlyModel() {
+		IModel<List<IPlayer>> model = new AbstractReadOnlyModel<List<IPlayer>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
-				IGame game = (IGame) gameModel.getObject();
+			public List<IPlayer> getObject() {
+				IGame game = gameModel.getObject();
 				final IScoreCard scoreCard = game.getScoreCard();
 
 				List<IPlayer> players = game.getPlayers();
@@ -68,20 +68,20 @@ public class GameResultPanel extends Panel {
 				return players;
 			}
 		};
-		add(new ListView("scoreResults", model) {
+		add(new ListView<IPlayer>("scoreResults", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem item) {
+			protected void populateItem(final ListItem<IPlayer> item) {
 
-				item.add(new Label("player", new PropertyModel(item.getModel(), "name")));
-				item.add(new Label("score", new AbstractReadOnlyModel() {
+				item.add(new Label<String>("player", new PropertyModel<String>(item.getModel(), "name")));
+				item.add(new Label<Integer>("score", new AbstractReadOnlyModel<Integer>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
-						IGame game = (IGame) gameModel.getObject();
-						IPlayer player = (IPlayer) item.getModelObject();
+					public Integer getObject() {
+						IGame game = gameModel.getObject();
+						IPlayer player = item.getModelObject();
 
 						return game.getScoreCard().getScore(player);
 					}

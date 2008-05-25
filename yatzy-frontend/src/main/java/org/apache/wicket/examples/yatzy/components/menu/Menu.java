@@ -15,23 +15,23 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
-public class Menu extends Panel {
+public class Menu extends Panel<List<IMenuItem>> {
 	private static final long serialVersionUID = 1L;
 
-	private final Map<IExpandableContentMenuItem, Component> expandableComponents = new HashMap<IExpandableContentMenuItem, Component>();
+	private final Map<IExpandableContentMenuItem, Component<?>> expandableComponents = new HashMap<IExpandableContentMenuItem, Component<?>>();
 
-	public Menu(String id, final IModel model) {
+	public Menu(String id, final IModel<List<IMenuItem>> model) {
 		super(id, model);
 
-		IModel expandableContentModel = new LoadableDetachableModel() {
+		IModel<List<IExpandableContentMenuItem>> expandableContentModel = new LoadableDetachableModel<List<IExpandableContentMenuItem>>() {
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unchecked")
 			@Override
-			protected Object load() {
+			protected List<IExpandableContentMenuItem> load() {
 				expandableComponents.clear();
 
-				List<IMenuItem> menuItems = (List<IMenuItem>) model.getObject();
+				List<IMenuItem> menuItems = model.getObject();
 
 				for (IMenuItem menuItem : menuItems) {
 					if (menuItem instanceof IExpandableContentMenuItem) {
@@ -44,13 +44,12 @@ public class Menu extends Panel {
 			}
 		};
 
-		add(new ListView("contents", expandableContentModel) {
+		add(new ListView<IExpandableContentMenuItem>("contents", expandableContentModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item) {
-				IExpandableContentMenuItem expandableContentMenuItem = (IExpandableContentMenuItem) item
-						.getModelObject();
+			protected void populateItem(ListItem<IExpandableContentMenuItem> item) {
+				IExpandableContentMenuItem expandableContentMenuItem = item.getModelObject();
 
 				item.setOutputMarkupId(true);
 				expandableComponents.put(expandableContentMenuItem, item);
@@ -59,16 +58,16 @@ public class Menu extends Panel {
 			}
 		});
 
-		add(new ListView("items", model) {
+		add(new ListView<IMenuItem>("items", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem item) {
+			protected void populateItem(final ListItem<IMenuItem> item) {
 				item.setRenderBodyOnly(true);
 
-				IMenuItem menuItem = (IMenuItem) item.getModelObject();
+				IMenuItem menuItem = item.getModelObject();
 
-				item.add(new WebComponent("separator") {
+				item.add(new WebComponent<Object>("separator") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -80,7 +79,7 @@ public class Menu extends Panel {
 				// expandable item
 				if (menuItem instanceof IExpandableContentMenuItem) {
 					IExpandableContentMenuItem expandableContentMenuItem = (IExpandableContentMenuItem) menuItem;
-					final Component expandableComponent = expandableComponents.get(expandableContentMenuItem);
+					final Component<?> expandableComponent = expandableComponents.get(expandableContentMenuItem);
 					expandableContentMenuItem.setContentHolderMarkupIdProvider(new ContentHolderMarkupIdProvider() {
 						private static final long serialVersionUID = 1L;
 
@@ -90,7 +89,7 @@ public class Menu extends Panel {
 					});
 				}
 
-				MarkupContainer link = menuItem.createLink("link");
+				MarkupContainer<?> link = menuItem.createLink("link");
 				item.add(link);
 
 				link.add(menuItem.createLabelComponent("label"));

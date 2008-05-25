@@ -15,28 +15,28 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 
-public abstract class BasePage extends WebPage {
+public abstract class BasePage<T> extends WebPage<T> {
 
 	public BasePage() {
 		this(null);
 	}
 
-	public BasePage(IModel model) {
+	public BasePage(IModel<T> model) {
 		super(model);
 
-		add(new Menu("menu", new LoadableDetachableModel() {
+		add(new Menu("menu", new LoadableDetachableModel<List<IMenuItem>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Object load() {
+			protected List<IMenuItem> load() {
 				return BasePage.this.getMenuItems();
 			}
 		}));
 
-		add(new Label("pageTitle", getPageTitleModel()));
+		add(new Label<String>("pageTitle", getPageTitleModel()));
 	}
 
-	protected abstract IModel getPageTitleModel();
+	protected abstract IModel<String> getPageTitleModel();
 
 	public List<IMenuItem> getMenuItems() {
 		List<IMenuItem> menuItems = new ArrayList<IMenuItem>();
@@ -48,7 +48,7 @@ public abstract class BasePage extends WebPage {
 		menuItems.add(new ExpandableContentMenuItem(new StringResourceModel("about", this, null)) {
 			private static final long serialVersionUID = 1L;
 
-			public Component createExpandableContent(String wicketId) {
+			public Component<?> createExpandableContent(String wicketId) {
 				return new AboutPanel(wicketId).setRenderBodyOnly(true);
 			}
 		});

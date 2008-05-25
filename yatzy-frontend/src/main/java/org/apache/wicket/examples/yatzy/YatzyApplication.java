@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -43,7 +44,7 @@ public class YatzyApplication extends WebApplication {
 	}
 
 	@Override
-	public Class<?> getHomePage() {
+	public Class<? extends Page<?>> getHomePage() {
 		return NewGamePage.class;
 	}
 
