@@ -1,0 +1,3 @@
+INDEX VERSION 1.121+/Users/fb/Projects/Yatzy/.metadata/.plugins/org.eclipse.jdt.core
+2010254229.index
+2677120240.index

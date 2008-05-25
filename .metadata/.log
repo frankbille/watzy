@@ -1,0 +1,13 @@
+!SESSION 2008-05-25 21:42:28.605 -----------------------------------------------
+eclipse.buildId=M20080221-1800
+java.version=1.5.0_13
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=carbon, NL=en_US
+Framework arguments:  -keyring /Users/fb/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws carbon -arch x86 -keyring /Users/fb/.eclipse_keyring -consoleLog -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2008-05-25 21:42:36.454
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2008-05-25 21:44:53.958
+!MESSAGE VariableBlock: Classpath variable with null value: JUNIT_SRC_HOME

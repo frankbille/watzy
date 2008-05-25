@@ -1,7 +1,9 @@
 <projectDescription>
-  <name>yatzy</name>
+  <name>yatzy-frontend</name>
   <comment>Yatzy Dice Game</comment>
-  <projects/>
+  <projects>
+    <project>yatzy</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
