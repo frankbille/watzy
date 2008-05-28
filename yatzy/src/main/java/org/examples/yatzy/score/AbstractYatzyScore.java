@@ -5,6 +5,7 @@ import java.util.List;
 import org.examples.yatzy.ITurn;
 
 public abstract class AbstractYatzyScore extends AbstractTurnScore {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected int calculateScore(ITurn turn) {

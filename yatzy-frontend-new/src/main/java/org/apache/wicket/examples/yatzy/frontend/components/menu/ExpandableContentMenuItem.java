@@ -13,6 +13,7 @@ import org.apache.wicket.model.IModel;
 
 public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuItem implements
 		IExpandableContentMenuItem {
+	private static final long serialVersionUID = 1L;
 
 	public static final ResourceReference JS_EXPANDABLE_CONTENT = new JavascriptResourceReference(
 			ExpandableContentMenuItem.class, "expandable-content.js");
@@ -40,8 +41,6 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 			@Override
 			public void renderHead(IHeaderResponse response) {
 				super.renderHead(response);
-
-				String lf = System.getProperty("line.separator");
 
 				response.renderJavascriptReference(JS_EXPANDABLE_CONTENT);
 				response.renderOnDomReadyJavascript("ExpandableContent.initialize()");

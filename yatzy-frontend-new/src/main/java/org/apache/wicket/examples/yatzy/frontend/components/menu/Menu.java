@@ -26,7 +26,6 @@ public class Menu extends Panel<List<IMenuItem>> {
 		IModel<List<IExpandableContentMenuItem>> expandableContentModel = new LoadableDetachableModel<List<IExpandableContentMenuItem>>() {
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
 			@Override
 			protected List<IExpandableContentMenuItem> load() {
 				expandableComponents.clear();
@@ -79,14 +78,16 @@ public class Menu extends Panel<List<IMenuItem>> {
 				// expandable item
 				if (menuItem instanceof IExpandableContentMenuItem) {
 					IExpandableContentMenuItem expandableContentMenuItem = (IExpandableContentMenuItem) menuItem;
-					final Component<?> expandableComponent = expandableComponents.get(expandableContentMenuItem);
-					expandableContentMenuItem.setContentHolderMarkupIdProvider(new ContentHolderMarkupIdProvider() {
-						private static final long serialVersionUID = 1L;
+					final Component<?> expandableComponent = expandableComponents
+							.get(expandableContentMenuItem);
+					expandableContentMenuItem
+							.setContentHolderMarkupIdProvider(new ContentHolderMarkupIdProvider() {
+								private static final long serialVersionUID = 1L;
 
-						public String getMarkupId() {
-							return expandableComponent.getMarkupId();
-						}
-					});
+								public String getMarkupId() {
+									return expandableComponent.getMarkupId();
+								}
+							});
 				}
 
 				MarkupContainer<?> link = menuItem.createLink("link");

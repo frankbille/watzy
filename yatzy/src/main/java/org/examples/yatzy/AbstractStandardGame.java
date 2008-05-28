@@ -6,6 +6,7 @@ import java.util.List;
 import org.examples.yatzy.score.IScoreCard;
 
 public abstract class AbstractStandardGame implements IGame {
+	private static final long serialVersionUID = 1L;
 
 	private final List<IPlayer> players = new ArrayList<IPlayer>();
 	private IScoreCard scoreCard;

@@ -6,4 +6,6 @@ public interface IPlayer extends Serializable {
 
 	String getName();
 
+	void setName(String name);
+
 }

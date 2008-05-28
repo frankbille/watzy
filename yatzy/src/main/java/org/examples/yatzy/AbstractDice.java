@@ -1,6 +1,7 @@
 package org.examples.yatzy;
 
 public abstract class AbstractDice implements IDice {
+	private static final long serialVersionUID = 1L;
 
 	private int value = 1;
 

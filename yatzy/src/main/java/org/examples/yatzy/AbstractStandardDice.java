@@ -5,6 +5,7 @@ package org.examples.yatzy;
  * 4, 5, 6 or 1, 2, 3, 4 (i.e no gaps between the values).
  */
 public abstract class AbstractStandardDice extends AbstractDice {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected int doRoll() {

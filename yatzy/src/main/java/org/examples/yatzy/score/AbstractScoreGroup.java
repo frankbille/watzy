@@ -8,6 +8,7 @@ import java.util.Set;
 import org.examples.yatzy.IPlayer;
 
 public abstract class AbstractScoreGroup implements IScoreGroup {
+	private static final long serialVersionUID = 1L;
 
 	private final List<IScore> scores = new ArrayList<IScore>();
 

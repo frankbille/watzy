@@ -11,6 +11,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.examples.yatzy.IPlayer;
 
 public abstract class EnterNamePanel extends Panel<IPlayer> {
+	private static final long serialVersionUID = 1L;
 
 	public EnterNamePanel(String id, IModel<IPlayer> model) {
 		super(id, model);

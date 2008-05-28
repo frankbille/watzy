@@ -8,7 +8,7 @@ public class MultiPlayerRound implements IRound {
 	private static final long serialVersionUID = 1L;
 
 	private final IRound round;
-	private final MultiPlayerGame multiPlayerGame;
+	private transient final MultiPlayerGame multiPlayerGame;
 	private MultiPlayerTurn currentTurn;
 
 	public MultiPlayerRound(IRound round, MultiPlayerGame multiPlayerGame) {

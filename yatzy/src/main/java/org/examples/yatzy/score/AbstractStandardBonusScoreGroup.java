@@ -3,6 +3,7 @@ package org.examples.yatzy.score;
 import org.examples.yatzy.IPlayer;
 
 public abstract class AbstractStandardBonusScoreGroup extends AbstractScoreGroup implements IScoreGroup {
+	private static final long serialVersionUID = 1L;
 
 	public AbstractStandardBonusScoreGroup() {
 		super();

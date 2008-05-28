@@ -19,6 +19,11 @@ import org.examples.yatzy.score.ITurnScore;
 
 public abstract class ScorePanel extends Panel<ITurnScore> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ScorePanel(String id, final IModel<ITurn> turnModel, final IModel<ITurnScore> scoreModel) {
 		super(id, scoreModel);
 

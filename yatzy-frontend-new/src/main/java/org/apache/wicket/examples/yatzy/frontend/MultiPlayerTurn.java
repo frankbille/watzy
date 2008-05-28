@@ -11,7 +11,7 @@ public class MultiPlayerTurn implements ITurn {
 	private static final long serialVersionUID = 1L;
 
 	private final ITurn turn;
-	private final MultiPlayerGame multiPlayerGame;
+	private transient final MultiPlayerGame multiPlayerGame;
 
 	public MultiPlayerTurn(ITurn turn, MultiPlayerGame multiPlayerGame) {
 		this.turn = turn;

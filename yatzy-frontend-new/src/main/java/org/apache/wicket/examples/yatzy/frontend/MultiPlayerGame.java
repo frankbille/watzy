@@ -2,6 +2,7 @@ package org.apache.wicket.examples.yatzy.frontend;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.wicket.Session;
 import org.examples.yatzy.IGame;
@@ -16,33 +17,47 @@ public class MultiPlayerGame implements IGame {
 		SETTING_UP, STARTED, COMPLETE
 	}
 
-	private static class Player implements IPlayer, Serializable {
+	private static class Seat implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		private final IPlayer player;
 		private final Session session;
+		private final List<IPlayer> players = new CopyOnWriteArrayList<IPlayer>();
+		private boolean ready = false;
 
-		public Player(IPlayer player, Session session) {
-			this.player = player;
-			this.session = session;
+		public Seat() {
+			session = Session.get();
 		}
 
-		public IPlayer getPlayer() {
-			return player;
+		public boolean isReady() {
+			return ready;
+		}
+
+		public void ready() {
+			ready = true;
 		}
 
 		public Session getSession() {
 			return session;
 		}
 
-		public String getName() {
-			return player.getName();
+		public List<IPlayer> getPlayers() {
+			return players;
+		}
+
+		public void addPlayer(IPlayer player) {
+			players.add(player);
+		}
+
+		public void removePlayer(IPlayer player) {
+			players.remove(player);
 		}
 	}
 
 	private final IGame game;
 
 	private MultiPlayerRound currentRound;
+
+	private final List<Seat> seats = new CopyOnWriteArrayList<Seat>();
 
 	public MultiPlayerGame(IGame game) {
 		this.game = game;
@@ -54,14 +69,15 @@ public class MultiPlayerGame implements IGame {
 
 	public void addPlayer(IPlayer player) {
 		synchronized (game) {
-			Player localPlayer = new Player(player, Session.get());
-			game.addPlayer(localPlayer);
+			game.addPlayer(player);
+			getSeat().addPlayer(player);
 		}
 	}
 
 	public void removePlayer(IPlayer player) {
 		synchronized (game) {
 			game.removePlayer(player);
+			getSeat().removePlayer(player);
 		}
 	}
 
@@ -109,14 +125,35 @@ public class MultiPlayerGame implements IGame {
 		return currentRound;
 	}
 
+	public boolean isSeatReady() {
+		return getSeat().isReady();
+	}
+
+	public void seatReady() {
+		getSeat().ready();
+	}
+
+	public boolean isAllSeatsReady() {
+		boolean ready = true;
+
+		for (Seat seat : seats) {
+			if (seat.isReady() == false) {
+				ready = false;
+				break;
+			}
+		}
+
+		return ready;
+	}
+
 	public boolean isPlayingFromThisSeat(IPlayer player) {
 		boolean playingFromSeat = false;
 
-		Player innerPlayer = getPlayer(player);
-
-		if (innerPlayer != null) {
-			if (innerPlayer.getSession() == Session.get()) {
+		Seat seat = getSeat();
+		for (IPlayer p : seat.getPlayers()) {
+			if (p == player) {
 				playingFromSeat = true;
+				break;
 			}
 		}
 
@@ -133,20 +170,36 @@ public class MultiPlayerGame implements IGame {
 		}
 	}
 
-	private Player getPlayer(IPlayer player) {
-		Player innerPlayer = null;
+	public boolean isPlaying() {
+		boolean playing = false;
 
-		synchronized (game) {
-			for (IPlayer p : getPlayers()) {
-				Player localPlayer = (Player) p;
-				if (player == localPlayer) {
-					innerPlayer = localPlayer;
-					break;
-				}
+		if (currentRound != null) {
+			MultiPlayerTurn currentTurn = currentRound.getCurrentTurn();
+			if (currentTurn != null) {
+				IPlayer player = currentTurn.getPlayer();
+				playing = isPlayingFromThisSeat(player);
 			}
 		}
 
-		return innerPlayer;
+		return playing;
+	}
+
+	private Seat getSeat() {
+		Seat foundSeat = null;
+
+		for (Seat seat : seats) {
+			if (seat.getSession() == Session.get()) {
+				foundSeat = seat;
+				break;
+			}
+		}
+
+		if (foundSeat == null) {
+			foundSeat = new Seat();
+			seats.add(foundSeat);
+		}
+
+		return foundSeat;
 	}
 
 }

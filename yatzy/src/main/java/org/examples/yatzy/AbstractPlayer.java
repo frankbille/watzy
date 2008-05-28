@@ -1,6 +1,7 @@
 package org.examples.yatzy;
 
 public abstract class AbstractPlayer implements IPlayer {
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 

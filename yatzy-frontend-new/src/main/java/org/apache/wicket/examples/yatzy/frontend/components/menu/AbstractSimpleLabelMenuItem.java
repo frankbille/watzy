@@ -6,6 +6,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 public abstract class AbstractSimpleLabelMenuItem implements IMenuItem {
+	private static final long serialVersionUID = 1L;
+
 	private final IModel<String> labelModel;
 
 	public AbstractSimpleLabelMenuItem(String label) {

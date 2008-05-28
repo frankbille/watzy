@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractTurn implements ITurn {
+	private static final long serialVersionUID = 1L;
 
 	private final Map<IDice, Boolean> diceList = new LinkedHashMap<IDice, Boolean>();
 	private final IPlayer player;

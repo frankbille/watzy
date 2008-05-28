@@ -26,6 +26,7 @@ import org.examples.yatzy.score.IScoreGroup;
 import org.examples.yatzy.score.ITurnScore;
 
 public abstract class ScoreCardPanel extends Panel<IScoreCard> {
+	private static final long serialVersionUID = 1L;
 
 	private final RepeatingView<Object> scores;
 
@@ -196,6 +197,10 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 
 	protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
 		return true;
+	}
+
+	public IModel<ITurn> getTurnModel() {
+		return turnModel;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.ITurn;
 
 public abstract class AbstractTurnScore implements ITurnScore {
+	private static final long serialVersionUID = 1L;
 
 	private final Map<IPlayer, Integer> playerScores = new LinkedHashMap<IPlayer, Integer>();
 
