@@ -41,6 +41,8 @@ public class JQueryButtonBehavior extends JQueryBehavior {
 		super.renderHead(response);
 
 		response.renderJavascriptReference(JS_JQUERY_BUTTON);
+
+		response.renderOnDomReadyJavascript("initializeButtons()");
 	}
 
 	@Override

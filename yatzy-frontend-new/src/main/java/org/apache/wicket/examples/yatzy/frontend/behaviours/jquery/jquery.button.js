@@ -1,8 +1,11 @@
-$(document).ready(function(){
+function initializeButtons() {
 	$('a.btn').each(function(){
 		var b = $(this);
 		var tt = b.html() || b.val();
-		b.text('').css({cursor:'pointer'}).append(tt);
+		
+		var c = $('<span></span>').append('<span></span><i></i>').append(tt);
+		
+		b.text('').css({cursor:'pointer'}).append('<i></i>').append(c);
 	});
 	
 	$('input:submit,button[@type=button],button[@type=submit]').each(function(){
@@ -32,4 +35,4 @@ $(document).ready(function(){
 		$(this).remove();
 		b.text('').css({cursor:'pointer'}).append(tt);
 	});
-});
+}

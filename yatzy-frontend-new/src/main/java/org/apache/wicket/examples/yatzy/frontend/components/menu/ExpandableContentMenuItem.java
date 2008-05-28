@@ -44,13 +44,7 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 				String lf = System.getProperty("line.separator");
 
 				response.renderJavascriptReference(JS_EXPANDABLE_CONTENT);
-
-				StringBuilder jsConf = new StringBuilder();
-				jsConf.append("$('.expandableMenu').width('100%');").append(lf);
-				jsConf.append("$('.expandableMenu').bind('mouseleave', function() {").append(lf);
-				jsConf.append("$(this).find('.content').slideUp().removeClass('displayed');").append(lf);
-				jsConf.append("});").append(lf);
-				response.renderOnDomReadyJavascript(jsConf.toString());
+				response.renderOnDomReadyJavascript("ExpandableContent.initialize()");
 			}
 		});
 		link.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel<String>() {
@@ -58,7 +52,8 @@ public abstract class ExpandableContentMenuItem extends AbstractSimpleLabelMenuI
 
 			@Override
 			public String getObject() {
-				return "ExpandableContent.displayContent('" + markupIdProvider.getMarkupId() + "'); return false;";
+				return "ExpandableContent.displayContent('" + markupIdProvider.getMarkupId()
+						+ "'); return false;";
 			}
 		}));
 		return link;

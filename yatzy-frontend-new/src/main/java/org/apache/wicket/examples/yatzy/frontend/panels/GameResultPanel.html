@@ -1,0 +1,16 @@
+<wicket:panel>
+<h2><wicket:message key="gameCompleted">Game completed!</wicket:message></h2>
+<p>
+	<wicket:message key="theWinnerIs">The winner is:</wicket:message> <span wicket:id="winnerPlayer"></span>
+</p>
+<table class="scoreResult">
+	<thead>
+		<th><wicket:message key="player">Player</wicket:message></th>
+		<th><wicket:message key="score">Score</wicket:message></th>
+	</thead>
+	<tr wicket:id="scoreResults">
+		<td wicket:id="player"></td>
+		<td wicket:id="score"></td>
+	</tr>
+</table>
+</wicket:panel>
