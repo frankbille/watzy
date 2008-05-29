@@ -12,7 +12,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>yatzy-frontend-new</artifactId>
+	<artifactId>yatzy-frontend</artifactId>
 	<packaging>war</packaging>
 	
 	<name>Yatzy</name>
