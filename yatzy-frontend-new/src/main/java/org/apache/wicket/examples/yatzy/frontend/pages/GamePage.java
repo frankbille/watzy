@@ -3,14 +3,21 @@ package org.apache.wicket.examples.yatzy.frontend.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
+import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.CompoundAjaxTimerBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.ITimerListener;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.StateBasedSelfUpdatingListener;
+import org.apache.wicket.examples.yatzy.frontend.components.menu.BookmarkableMenuItem;
+import org.apache.wicket.examples.yatzy.frontend.components.menu.IMenuItem;
 import org.apache.wicket.examples.yatzy.frontend.panels.MainActionPanel;
 import org.apache.wicket.examples.yatzy.frontend.panels.ScoreCardPanel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -84,11 +91,22 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			protected void combinationSelected(AjaxRequestTarget target,
 					IModel<ITurnScore> scoreModel) {
 				MultiPlayerGame game = GamePage.this.getModelObject();
-				IRound currentRound = game.getCurrentRound();
-				if (currentRound.hasMoreTurns() == false) {
-					currentRound = game.newRound();
+				if (game.isComplete()) {
+					// Register high scores
+					IScoreCard scoreCard = game.getScoreCard();
+					List<IPlayer> players = scoreCard.getPlayers();
+					for (IPlayer player : players) {
+						int score = scoreCard.getScore(player);
+						YatzyApplication.get().registerHighscore(game.getInnerGame().getClass(),
+								player.getName(), score);
+					}
+				} else {
+					IRound currentRound = game.getCurrentRound();
+					if (currentRound.hasMoreTurns() == false) {
+						currentRound = game.newRound();
+					}
+					currentRound.nextTurn();
 				}
-				currentRound.nextTurn();
 
 				replaceMainActionPanel(target);
 			}
@@ -122,14 +140,42 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 		super.onBeforeRender();
 	}
 
-	private void replaceMainActionPanel(AjaxRequestTarget target) {
-		target.addComponent(mainActionPanel);
-	}
-
 	@Override
 	protected IModel<String> getPageTitleModel() {
 		return new StringResourceModel("game.${innerGame.class.simpleName}", this,
 				new PropertyModel<MultiPlayerGame>(this, "modelObject"));
+	}
+
+	@Override
+	protected void addMenuItems(List<IMenuItem> menuItems) {
+		final IBehavior endGameConfirm = new AttributeModifier("onclick", true,
+				new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						IModel<String> confirmText = new StringResourceModel(
+								"confirmQuitExistingGame", GamePage.this, null);
+
+						return "return confirm('" + confirmText.getObject() + "');";
+					}
+				});
+
+		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("newGame", this, null),
+				NewGamePage.class) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public MarkupContainer<?> createLink(String wicketId) {
+				MarkupContainer<?> link = super.createLink(wicketId);
+				link.add(endGameConfirm);
+				return link;
+			}
+		});
+	}
+
+	private void replaceMainActionPanel(AjaxRequestTarget target) {
+		target.addComponent(mainActionPanel);
 	}
 
 }

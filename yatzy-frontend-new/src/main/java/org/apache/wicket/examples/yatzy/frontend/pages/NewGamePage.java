@@ -33,11 +33,11 @@ import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.MaxiGame;
 import org.examples.yatzy.StandardGame;
 
-public class TestFrontPage extends BasePage<Void> {
+public class NewGamePage extends BasePage<Void> {
 
 	protected IGame game;
 
-	public TestFrontPage() {
+	public NewGamePage() {
 		CompoundAjaxTimerBehavior timerBehavior = new CompoundAjaxTimerBehavior(Duration.ONE_SECOND);
 		add(timerBehavior);
 
@@ -124,7 +124,7 @@ public class TestFrontPage extends BasePage<Void> {
 			@Override
 			public Object getDisplayValue(IGame object) {
 				IModel<String> displayModel = new StringResourceModel("game.${class.simpleName}",
-						TestFrontPage.this, new Model<IGame>(object));
+						NewGamePage.this, new Model<IGame>(object));
 				return displayModel.getObject();
 			}
 		};
@@ -138,7 +138,7 @@ public class TestFrontPage extends BasePage<Void> {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				MultiPlayerGame multiPlayerGame = new MultiPlayerGame(TestFrontPage.this.game);
+				MultiPlayerGame multiPlayerGame = new MultiPlayerGame(NewGamePage.this.game);
 				YatzyApplication.get().addGame(multiPlayerGame);
 				getRequestCycle().setResponsePage(new GamePage(multiPlayerGame));
 			}
