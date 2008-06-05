@@ -12,7 +12,10 @@ import org.apache.wicket.examples.yatzy.frontend.pages.HighscorePage;
 import org.apache.wicket.examples.yatzy.frontend.pages.NewGamePage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
+import org.examples.yatzy.AdhocPlayer;
 import org.examples.yatzy.IGame;
+import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.MaxiGame;
 
 public class YatzyApplication extends WebApplication {
 
@@ -56,10 +59,16 @@ public class YatzyApplication extends WebApplication {
 
 	public void resetHighscores() {
 		highscores = new ArrayList<Highscore>();
+
+		highscores.add(new Highscore(new MaxiGame(), new AdhocPlayer("Frank"), 140));
+		highscores.add(new Highscore(new MaxiGame(), new AdhocPlayer("Frank"), 130));
+		highscores.add(new Highscore(new MaxiGame(), new AdhocPlayer("Frank"), 120));
+		highscores.add(new Highscore(new MaxiGame(), new AdhocPlayer("Frank"), 110));
+		highscores.add(new Highscore(new MaxiGame(), new AdhocPlayer("Frank"), 100));
 	}
 
-	public void registerHighscore(Class<? extends IGame> gameType, String name, int score) {
-		highscores.add(new Highscore(gameType, name, score));
+	public void registerHighscore(IGame game, IPlayer player, int score) {
+		highscores.add(new Highscore(game, player, score));
 
 		Collections.sort(highscores);
 	}

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
+import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.CompoundAjaxTimerBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.ITimerListener;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.StateBasedSelfUpdatingListener;
@@ -97,8 +99,8 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 					List<IPlayer> players = scoreCard.getPlayers();
 					for (IPlayer player : players) {
 						int score = scoreCard.getScore(player);
-						YatzyApplication.get().registerHighscore(game.getInnerGame().getClass(),
-								player.getName(), score);
+						YatzyApplication.get()
+								.registerHighscore(game.getInnerGame(), player, score);
 					}
 				} else {
 					IRound currentRound = game.getCurrentRound();
@@ -148,18 +150,25 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 
 	@Override
 	protected void addMenuItems(List<IMenuItem> menuItems) {
-		final IBehavior endGameConfirm = new AttributeModifier("onclick", true,
-				new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
+		AbstractReadOnlyModel<String> confirmModel = new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					public String getObject() {
-						IModel<String> confirmText = new StringResourceModel(
-								"confirmQuitExistingGame", GamePage.this, null);
+			@Override
+			public String getObject() {
+				IModel<String> confirmText = new StringResourceModel("confirmQuitExistingGame",
+						GamePage.this, null);
 
-						return "return confirm('" + confirmText.getObject() + "');";
-					}
-				});
+				return "return confirm('" + confirmText.getObject() + "');";
+			}
+		};
+		final IBehavior endGameConfirm = new AttributeModifier("onclick", true, confirmModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component<?> component) {
+				return getModelObject().getGameStatus() != GameStatus.COMPLETE;
+			}
+		};
 
 		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("newGame", this, null),
 				NewGamePage.class) {

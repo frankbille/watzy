@@ -161,10 +161,10 @@ public class MultiPlayerGame implements IGame {
 	}
 
 	public GameStatus getGameStatus() {
-		if (currentRound == null || getPlayers().isEmpty()) {
-			return GameStatus.SETTING_UP;
-		} else if (isComplete()) {
+		if (isComplete() && getPlayers().isEmpty() == false) {
 			return GameStatus.COMPLETE;
+		} else if (currentRound == null) {
+			return GameStatus.SETTING_UP;
 		} else {
 			return GameStatus.STARTED;
 		}

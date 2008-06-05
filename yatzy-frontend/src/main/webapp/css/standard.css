@@ -218,6 +218,28 @@ span.rollLink img {
 	border-top: 1px solid #669966;
 }
 
+.highscore .rank {
+	height: 20px;
+	padding-left: 20px;	
+}
+
+.highscore .rank.r1 {
+	background: url(../images/medal_gold_3.png) no-repeat center left;
+}
+
+.highscore .rank.r2 {
+	background: url(../images/medal_silver_3.png) no-repeat center left;
+}
+
+.highscore .rank.r3 {
+	background: url(../images/medal_bronze_3.png) no-repeat center left;
+}
+
+.highscore .detailLink {
+	padding-left: 20px;
+	background: url(../images/magnifier.png) no-repeat center left;	
+}
+
 .btn {
 	display: block;
 	position: relative;

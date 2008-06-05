@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.examples.yatzy.frontend.Highscore;
 import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
 import org.apache.wicket.examples.yatzy.frontend.components.menu.BookmarkableMenuItem;
 import org.apache.wicket.examples.yatzy.frontend.components.menu.IMenuItem;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -105,17 +107,40 @@ public class HighscorePage extends BasePage<Void> {
 
 					@Override
 					protected void populateItem(final ListItem<Highscore> item) {
-						item.add(new Label<Integer>("rank", new AbstractReadOnlyModel<Integer>() {
+						Label<Integer> rank = new Label<Integer>("rank",
+								new AbstractReadOnlyModel<Integer>() {
+									private static final long serialVersionUID = 1L;
+
+									@Override
+									public Integer getObject() {
+										return item.getIndex() + 1;
+									}
+								});
+						IModel<String> topRankModel = new AbstractReadOnlyModel<String>() {
 							private static final long serialVersionUID = 1L;
 
 							@Override
-							public Integer getObject() {
-								return item.getIndex() + 1;
+							public String getObject() {
+								return "r" + (item.getIndex() + 1);
 							}
-						}));
+						};
+						rank.add(new AttributeAppender("class", topRankModel, " "));
+						item.add(rank);
+
 						item.add(new Label<Integer>("score", new PropertyModel<Integer>(item
-								.getModelObject(), "score")));
-						item.add(new Label<String>("name", new PropertyModel<String>(item
+								.getModel(), "score")));
+
+						Link<IGame> gameLink = new Link<IGame>("gameLink",
+								new PropertyModel<IGame>(item.getModel(), "game")) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								getRequestCycle().setResponsePage(new GamePage(getModelObject()));
+							}
+						};
+						item.add(gameLink);
+						gameLink.add(new Label<String>("name", new PropertyModel<String>(item
 								.getModelObject(), "name")));
 					}
 				});
