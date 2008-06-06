@@ -18,10 +18,6 @@ import org.examples.yatzy.score.IScore;
 import org.examples.yatzy.score.ITurnScore;
 
 public abstract class ScorePanel extends Panel<ITurnScore> {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public ScorePanel(String id, final IModel<ITurn> turnModel, final IModel<ITurnScore> scoreModel) {
@@ -51,12 +47,13 @@ public abstract class ScorePanel extends Panel<ITurnScore> {
 			}
 		};
 		add(combinationLink);
-		Label<String> combinationlabel = new Label<String>("combinationLabel", ScoreResourceModelFactory
-				.createModel(scoreModel));
+		Label<String> combinationlabel = new Label<String>("combinationLabel",
+				ScoreResourceModelFactory.createModel(scoreModel));
 		combinationlabel.setRenderBodyOnly(true);
 		combinationLink.add(combinationlabel);
 
-		add(new ListView<IPlayer>("players", new PropertyModel<List<IPlayer>>(scoreModel, "players")) {
+		add(new ListView<IPlayer>("players",
+				new PropertyModel<List<IPlayer>>(scoreModel, "players")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -94,7 +91,8 @@ public abstract class ScorePanel extends Panel<ITurnScore> {
 		});
 	}
 
-	protected abstract void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel);
+	protected abstract void combinationSelected(AjaxRequestTarget target,
+			IModel<ITurnScore> scoreModel);
 
 	protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
 		return true;

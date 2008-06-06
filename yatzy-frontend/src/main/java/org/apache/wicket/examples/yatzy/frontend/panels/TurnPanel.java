@@ -3,11 +3,13 @@ package org.apache.wicket.examples.yatzy.frontend.panels;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerTurn;
+import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryHotkeyBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryScrollToBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -16,6 +18,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IDice;
@@ -65,7 +68,7 @@ public class TurnPanel extends Panel<ITurn> {
 				holdLabel.setOutputMarkupId(true);
 				item.add(holdLabel);
 
-				AjaxFallbackLink<ITurn> holdLink = new AjaxFallbackLink<ITurn>("holdLink",
+				final AjaxFallbackLink<ITurn> holdLink = new AjaxFallbackLink<ITurn>("holdLink",
 						TurnPanel.this.getModel()) {
 					private static final long serialVersionUID = 1L;
 
@@ -97,6 +100,7 @@ public class TurnPanel extends Panel<ITurn> {
 						return null;
 					}
 				};
+				holdLink.setOutputMarkupId(true);
 				holdLink.add(new AttributeModifier("class", true,
 						new AbstractReadOnlyModel<String>() {
 							private static final long serialVersionUID = 1L;
@@ -115,6 +119,28 @@ public class TurnPanel extends Panel<ITurn> {
 								return className;
 							}
 						}));
+				holdLink.add(new JQueryHotkeyBehavior(new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						return "" + (item.getIndex() + 1);
+					}
+				}, new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						return "$('#" + holdLink.getMarkupId() + "').click();";
+					}
+				}) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean isEnabled(Component<?> component) {
+						return component.isEnabled();
+					}
+				});
 				item.add(holdLink);
 			}
 		};
@@ -156,6 +182,16 @@ public class TurnPanel extends Panel<ITurn> {
 		};
 		rollLink.add(new JQueryScrollToBehavior());
 		rollLink.setOutputMarkupId(true);
+
+		rollLink.add(new JQueryHotkeyBehavior(new Model<String>("r"),
+				new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						return "$('#" + rollLink.getMarkupId() + "').click();";
+					}
+				}));
 		add(rollLink);
 
 		rollLink.add(new Image<String>("rollImage", "roll_white.png"));

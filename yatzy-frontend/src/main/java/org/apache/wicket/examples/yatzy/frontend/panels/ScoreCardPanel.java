@@ -3,9 +3,15 @@ package org.apache.wicket.examples.yatzy.frontend.panels;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryHotkeyBehavior;
 import org.apache.wicket.examples.yatzy.frontend.panels.ScoreSumPanel.SumProvider;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -38,6 +44,63 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 		this.turnModel = turnModel;
 
 		setOutputMarkupId(true);
+
+		add(new HeaderContributor(new IHeaderContributor() {
+			private static final long serialVersionUID = 1L;
+
+			public void renderHead(IHeaderResponse response) {
+				response.renderJavascriptReference(new ResourceReference(ScoreCardPanel.class,
+						"scoreCardNavigation.js"));
+			}
+		}));
+
+		add(new JQueryHotkeyBehavior(new Model<String>("a"), new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				return "prev('" + getMarkupId() + "');";
+			}
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component<?> component) {
+				return ScoreCardPanel.this.isEnabled();
+			}
+		});
+
+		add(new JQueryHotkeyBehavior(new Model<String>("s"), new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				return "next('" + getMarkupId() + "');";
+			}
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component<?> component) {
+				return ScoreCardPanel.this.isEnabled();
+			}
+		});
+
+		add(new JQueryHotkeyBehavior(new Model<String>("v"), new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				return "select('" + getMarkupId() + "');";
+			}
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component<?> component) {
+				return ScoreCardPanel.this.isEnabled();
+			}
+		});
 
 		PropertyModel<List<IPlayer>> playersModel = new PropertyModel<List<IPlayer>>(
 				scoreCardModel, "players");

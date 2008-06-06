@@ -117,6 +117,12 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			protected boolean combinationSelectable(IModel<ITurnScore> scoreModel) {
 				return GamePage.this.getModelObject().isPlaying();
 			}
+
+			@Override
+			public boolean isEnabled() {
+				return GamePage.this.getModelObject().getGameStatus() == GameStatus.STARTED
+						&& GamePage.this.getModelObject().isPlaying();
+			}
 		};
 		scoreCardPanel.setOutputMarkupId(true);
 		ITimerListener listener = new StateBasedSelfUpdatingListener<ScoreCardPanel>(scoreCardPanel) {

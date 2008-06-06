@@ -7,7 +7,8 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 public class JQueryBehavior extends AbstractBehavior {
 	private static final long serialVersionUID = 1L;
 
-	public static final ResourceReference JS_JQUERY = new ResourceReference(JQueryBehavior.class, "jquery.js");
+	public static final ResourceReference JS_JQUERY = new ResourceReference(JQueryBehavior.class,
+			"jquery.js");
 
 	@Override
 	public void renderHead(IHeaderResponse response) {

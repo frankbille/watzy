@@ -145,6 +145,10 @@ span.rollLink img {
 	background-color: #F5F5F5;
 }
 
+.scoreCard a.selected {
+	background-color: #CCCCCC;
+}
+
 .scoreCard {
 	border-top: 1px solid #666666;
 	border-left: 1px solid #666666;
