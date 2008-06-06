@@ -7,10 +7,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryDimensionsBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryHotkeyBehavior;
 import org.apache.wicket.examples.yatzy.frontend.panels.ScoreSumPanel.SumProvider;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -45,14 +44,17 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 
 		setOutputMarkupId(true);
 
-		add(new HeaderContributor(new IHeaderContributor() {
+		add(new JQueryDimensionsBehavior() {
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void renderHead(IHeaderResponse response) {
+				super.renderHead(response);
+
 				response.renderJavascriptReference(new ResourceReference(ScoreCardPanel.class,
 						"scoreCardNavigation.js"));
 			}
-		}));
+		});
 
 		add(new JQueryHotkeyBehavior(new Model<String>("a"), new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
