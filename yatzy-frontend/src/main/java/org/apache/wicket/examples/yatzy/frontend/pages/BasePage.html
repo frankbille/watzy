@@ -7,17 +7,20 @@
 <link rel="StyleSheet" type="text/css" href="css/standard.css" />
 </head>
 <body>
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
-	<tr>
-		<td>
-			<span wicket:id="menu" />
-		</td>
-	</tr>
-	<tr>
-		<td align="center">
-			<wicket:child />
-		</td>
-	</tr>
-</table>
+
+	<h1>Watzy</h1>
+
+	<div class="leftmenu">
+
+		<div wicket:id="blocks"><div wicket:id="block"></div></div>
+
+	</div> <!-- leftmenu -->
+
+	<div class="content">
+	
+		<wicket:child />
+	
+	</div> <!-- content -->
+
 </body>
 </html>

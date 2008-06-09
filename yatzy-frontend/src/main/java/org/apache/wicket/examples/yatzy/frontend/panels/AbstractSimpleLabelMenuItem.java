@@ -1,4 +1,4 @@
-package org.apache.wicket.examples.yatzy.frontend.components.menu;
+package org.apache.wicket.examples.yatzy.frontend.panels;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;

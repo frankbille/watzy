@@ -133,7 +133,7 @@ public class TurnPanel extends Panel<ITurn> {
 					public String getObject() {
 						return "$('#" + holdLink.getMarkupId() + "').click();";
 					}
-				}) {
+				}, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -191,7 +191,7 @@ public class TurnPanel extends Panel<ITurn> {
 					public String getObject() {
 						return "$('#" + rollLink.getMarkupId() + "').click();";
 					}
-				}));
+				}, true));
 		add(rollLink);
 
 		rollLink.add(new Image<String>("rollImage", "roll_white.png"));

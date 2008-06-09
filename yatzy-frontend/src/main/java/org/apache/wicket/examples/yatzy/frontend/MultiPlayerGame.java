@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.examples.yatzy.frontend.panels.Chat;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
@@ -58,6 +59,8 @@ public class MultiPlayerGame implements IGame {
 	private MultiPlayerRound currentRound;
 
 	private final List<Seat> seats = new CopyOnWriteArrayList<Seat>();
+
+	private final Chat chat = new Chat();
 
 	public MultiPlayerGame(IGame game) {
 		this.game = game;
@@ -182,6 +185,10 @@ public class MultiPlayerGame implements IGame {
 		}
 
 		return playing;
+	}
+
+	public Chat getChat() {
+		return chat;
 	}
 
 	private Seat getSeat() {

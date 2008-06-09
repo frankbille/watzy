@@ -63,7 +63,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			public String getObject() {
 				return "prev('" + getMarkupId() + "');";
 			}
-		}) {
+		}, true) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -79,7 +79,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			public String getObject() {
 				return "next('" + getMarkupId() + "');";
 			}
-		}) {
+		}, true) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,7 +95,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			public String getObject() {
 				return "select('" + getMarkupId() + "');";
 			}
-		}) {
+		}, true) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

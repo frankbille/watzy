@@ -14,10 +14,17 @@ public class JQueryHotkeyBehavior extends JQueryBehavior {
 	private Component<?> component;
 	private final IModel<String> shortcut;
 	private final IModel<String> callback;
+	private final boolean disableInInput;
 
 	public JQueryHotkeyBehavior(IModel<String> shortcut, IModel<String> callback) {
+		this(shortcut, callback, false);
+	}
+
+	public JQueryHotkeyBehavior(IModel<String> shortcut, IModel<String> callback,
+			boolean disableInInput) {
 		this.callback = callback;
 		this.shortcut = shortcut;
+		this.disableInInput = disableInInput;
 	}
 
 	@Override
@@ -33,8 +40,11 @@ public class JQueryHotkeyBehavior extends JQueryBehavior {
 			response.renderJavascriptReference(JS_JQUERY_HOTKEYS);
 
 			StringBuilder b = new StringBuilder();
-			b.append("jQuery.hotkeys.add('").append(shortcut.getObject()).append("', function() {")
-					.append(callback.getObject()).append("});");
+			b.append("jQuery.hotkeys.add('").append(shortcut.getObject()).append("', ");
+			if (disableInInput) {
+				b.append("{disableInInput:true}, ");
+			}
+			b.append("function() {").append(callback.getObject()).append("});");
 
 			response.renderOnDomReadyJavascript(b.toString());
 		}

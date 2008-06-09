@@ -12,11 +12,11 @@ import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
-import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.CompoundAjaxTimerBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.ITimerListener;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.StateBasedSelfUpdatingListener;
-import org.apache.wicket.examples.yatzy.frontend.components.menu.BookmarkableMenuItem;
-import org.apache.wicket.examples.yatzy.frontend.components.menu.IMenuItem;
+import org.apache.wicket.examples.yatzy.frontend.panels.BookmarkableMenuItem;
+import org.apache.wicket.examples.yatzy.frontend.panels.ChatPanel;
+import org.apache.wicket.examples.yatzy.frontend.panels.IMenuItem;
 import org.apache.wicket.examples.yatzy.frontend.panels.MainActionPanel;
 import org.apache.wicket.examples.yatzy.frontend.panels.ScoreCardPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -24,7 +24,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.util.time.Duration;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
@@ -49,11 +48,6 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			setModel(new Model<MultiPlayerGame>(new MultiPlayerGame(game)));
 		}
 
-		// Create the compound ajax timer behavior, to update all the UI,
-		// simulating a push behavior.
-		CompoundAjaxTimerBehavior timerBehavior = new CompoundAjaxTimerBehavior(Duration.ONE_SECOND);
-		add(timerBehavior);
-
 		// Create the main action panel
 		mainActionPanel = new MainActionPanel("mainActionPanel", getModel()) {
 			private static final long serialVersionUID = 1L;
@@ -73,15 +67,15 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 				target.addComponent(scoreCardPanel);
 			}
 		};
-		timerBehavior.addListener(new StateBasedSelfUpdatingListener<MainActionPanel>(
-				mainActionPanel) {
-			private static final long serialVersionUID = 1L;
+		getTimerBehavior().addListener(
+				new StateBasedSelfUpdatingListener<MainActionPanel>(mainActionPanel) {
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			protected Object getStateObject(MainActionPanel component) {
-				return component.getStateObject();
-			}
-		});
+					@Override
+					protected Object getStateObject(MainActionPanel component) {
+						return component.getStateObject();
+					}
+				});
 		add(mainActionPanel);
 
 		IModel<ITurn> turnModel = new PropertyModel<ITurn>(getModel(), "currentRound.currentTurn");
@@ -139,7 +133,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 				return objects;
 			}
 		};
-		timerBehavior.addListener(listener);
+		getTimerBehavior().addListener(listener);
 		add(scoreCardPanel);
 	}
 
@@ -191,6 +185,15 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 
 	private void replaceMainActionPanel(AjaxRequestTarget target) {
 		target.addComponent(mainActionPanel);
+	}
+
+	@Override
+	public List<ILeftMenuBlock> getLeftMenuBlocks() {
+		List<ILeftMenuBlock> leftMenuBlocks = super.getLeftMenuBlocks();
+
+		leftMenuBlocks.add(new ChatPanel.ChatBlock(getModel(), getTimerBehavior()));
+
+		return leftMenuBlocks;
 	}
 
 }

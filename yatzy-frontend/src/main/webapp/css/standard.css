@@ -1,60 +1,123 @@
-html,body {
+html, body {
 	margin: 0;
 	padding: 0;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10.5pt;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 0.85em;
 }
 
-/* Fix png's in IE */
-img,div {
-	behavior: url(iepngfix.htc);
+h1 {
+	margin: 0;
+	padding: 0;
 }
 
-.expandableMenu {
-	background-color: #AAAAAA;
-	opacity: 0.98;
-	filter: alpha(opacity = 98);
-	position: absolute;
+h2 {
+	margin: 0;
+	padding: 0;
 }
 
-.expandableMenu .content {
+.leftmenu {
+	float: left;
+	width: 19em;
+	background-color: #99FF99;
+	border: 1px solid #339933;
+	border-left: 0;
+}
+
+.leftmenu h2 {
 	display: none;
 }
 
-.expandableMenu .linkBar {
-	text-align: center;
-	padding: 3px;
-	font-size: 0.8em;
-	border-bottom: 1px solid #666666;
+.content {
+	height: 100%;
+	padding: 0.9em;
+	padding-top: 0;
+	margin-left: 20em;
 }
 
-.expandableMenu .linkBar a {
-	color: #333333;
+.content h2 {
+	display: none;
+}
+
+.menu {
+	margin-bottom: 1.8em;
+}
+
+.menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.menu ul li a {
+	display: block;
+	border-bottom: 1px solid #339933;
 	text-decoration: none;
+	padding: 0.9em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	color: #000000;
 }
 
-.expandableMenu .linkBar a:hover {
-	text-decoration: underline;
+.menu ul li a:hover {
+	background-color: #CCFFCC;
 }
 
-.expandableMenu .linkBar .separator {
-	width: 15px;
-	height: 5px;
-	background: url(../images/separator.png) no-repeat center center;
+.chat {
+	margin: 0;
+	padding: 0.9em;
+	list-style: none;
 }
 
-.expandableMenuSeparator {
-	height: 20px;
+.chat .messages {
+	height: 19em;
+	overflow: auto;
+	border: 1px solid #339933;
+	padding: 0.2em;
+	background-color: #CCFFCC;
 }
 
-.title {
-	font-size: 2.5em;
+.chat .message {
+	display: block;
+}
+
+.chat .message .name {
 	font-weight: bold;
-	margin-top: 25px;
 }
 
-.description {
-	font-size: 0.9em;
+.chat .message.p1 {
+	color: #000066;
+}
+
+.chat .message.p2 {
+	color: #660000;
+}
+
+.chat .message.p3 {
+	color: #666600;
+}
+
+.chat .message.p4 {
+	color: #006666;
+}
+
+.chat .message.p5 {
+	color: #660066;
+}
+
+.chat form {
+	margin: 0;
+	padding: 0;
+}
+
+.chat form input.inputMessage {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border: 1px solid #339933;
+}
+
+.chat .players {
+	margin-bottom: 0.2em;
 }
 
 .dice .empty {
