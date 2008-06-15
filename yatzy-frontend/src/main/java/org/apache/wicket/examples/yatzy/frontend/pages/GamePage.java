@@ -191,7 +191,9 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 	public List<ILeftMenuBlock> getLeftMenuBlocks() {
 		List<ILeftMenuBlock> leftMenuBlocks = super.getLeftMenuBlocks();
 
-		leftMenuBlocks.add(new ChatPanel.ChatBlock(getModel(), getTimerBehavior()));
+		if (getModelObject().getGameStatus() != GameStatus.COMPLETE) {
+			leftMenuBlocks.add(new ChatPanel.ChatBlock(getModel(), getTimerBehavior()));
+		}
 
 		return leftMenuBlocks;
 	}

@@ -3,6 +3,7 @@ package org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.time.Duration;
@@ -25,6 +26,11 @@ public class CompoundAjaxTimerBehavior extends AbstractAjaxTimerBehavior {
 		for (ITimerListener listener : timerListeners) {
 			listener.tick(target);
 		}
+	}
+
+	@Override
+	public boolean isEnabled(Component<?> component) {
+		return timerListeners.isEmpty() == false;
 	}
 
 }

@@ -2,14 +2,10 @@ package org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractBehavior;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class StateBasedSelfUpdatingListener<T extends Component<?>> extends
 		ComponentSelfUpdatingListener<T> {
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger log = LoggerFactory.getLogger(StateBasedSelfUpdatingListener.class);
 
 	private final IObjectState objectState;
 
@@ -35,12 +31,10 @@ public class StateBasedSelfUpdatingListener<T extends Component<?>> extends
 
 	@Override
 	protected boolean shouldUpdate(T component) {
-		log.debug("Updating state for: " + component);
 		return objectState.updateState(getStateObject(component));
 	}
 
 	private void updateState() {
-		log.debug("Updating state for: " + getComponent());
 		this.objectState.updateState(getStateObject(getComponent()));
 	}
 
