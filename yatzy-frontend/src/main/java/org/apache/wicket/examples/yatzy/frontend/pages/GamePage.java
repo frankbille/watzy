@@ -12,6 +12,7 @@ import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
+import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.HeartBeatListener;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.ITimerListener;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.StateBasedSelfUpdatingListener;
 import org.apache.wicket.examples.yatzy.frontend.panels.BookmarkableMenuItem;
@@ -47,6 +48,10 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 		} else {
 			setModel(new Model<MultiPlayerGame>(new MultiPlayerGame(game)));
 		}
+
+		// Seat heart beat
+		getTimerBehavior().addListener(
+				new HeartBeatListener(getModelObject().getHeartBeatForCurrentSeat()));
 
 		// Create the main action panel
 		mainActionPanel = new MainActionPanel("mainActionPanel", getModel()) {

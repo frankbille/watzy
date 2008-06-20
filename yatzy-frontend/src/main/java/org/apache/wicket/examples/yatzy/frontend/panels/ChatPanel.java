@@ -132,6 +132,7 @@ public class ChatPanel extends Panel<MultiPlayerGame> {
 				message = null;
 				target.addComponent(messageField);
 				target.addComponent(messagesContainer);
+				target.focusComponent(messageField);
 			}
 
 			@Override

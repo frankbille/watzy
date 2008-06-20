@@ -1,10 +1,12 @@
 package org.apache.wicket.examples.yatzy.frontend;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.HeartBeatListener.IHeartBeat;
 import org.apache.wicket.examples.yatzy.frontend.panels.Chat;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
@@ -18,15 +20,37 @@ public class MultiPlayerGame implements IGame {
 		SETTING_UP, STARTED, COMPLETE
 	}
 
-	private static class Seat implements Serializable {
+	/**
+	 * Health of the seat or the game.
+	 */
+	public static enum Health {
+		GOOD(1), BAD(2), FAILING(3), DEAD(4);
+
+		private int rate;
+
+		private Health(int rate) {
+			this.rate = rate;
+		}
+
+		public int getRate() {
+			return rate;
+		}
+	}
+
+	/**
+	 * A seat is a browser, which one or more players are playing from.
+	 */
+	private static class Seat implements Serializable, IHeartBeat {
 		private static final long serialVersionUID = 1L;
 
 		private final Session session;
 		private final List<IPlayer> players = new CopyOnWriteArrayList<IPlayer>();
 		private boolean ready = false;
+		private Date lastHeartBeat;
 
 		public Seat() {
 			session = Session.get();
+			beat();
 		}
 
 		public boolean isReady() {
@@ -51,6 +75,14 @@ public class MultiPlayerGame implements IGame {
 
 		public void removePlayer(IPlayer player) {
 			players.remove(player);
+		}
+
+		public void beat() {
+			lastHeartBeat = new Date();
+		}
+
+		public long getDurationSinceLastHeartBeat() {
+			return System.currentTimeMillis() - lastHeartBeat.getTime();
 		}
 	}
 
@@ -189,6 +221,44 @@ public class MultiPlayerGame implements IGame {
 
 	public Chat getChat() {
 		return chat;
+	}
+
+	public IHeartBeat getHeartBeatForCurrentSeat() {
+		return getSeat();
+	}
+
+	public Health getSeatHealth() {
+		return getSeatHealth(getSeat());
+	}
+
+	private Health getSeatHealth(Seat seat) {
+		Health health = null;
+
+		long durationSinceLastHeartBeat = seat.getDurationSinceLastHeartBeat();
+		if (durationSinceLastHeartBeat < 3000) {
+			health = Health.GOOD;
+		} else if (durationSinceLastHeartBeat < 10000) {
+			health = Health.BAD;
+		} else if (durationSinceLastHeartBeat < 30000) {
+			health = Health.FAILING;
+		} else {
+			health = Health.DEAD;
+		}
+
+		return health;
+	}
+
+	public Health getGameHealth() {
+		Health health = Health.DEAD;
+
+		for (Seat seat : seats) {
+			Health seatHealth = getSeatHealth(seat);
+			if (seatHealth.getRate() < health.getRate()) {
+				health = seatHealth;
+			}
+		}
+
+		return health;
 	}
 
 	private Seat getSeat() {

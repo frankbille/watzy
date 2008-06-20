@@ -25,6 +25,8 @@ public class YatzyApplication extends WebApplication {
 
 	private List<Highscore> highscores;
 
+	private MultiPlayerGameCleanup multiPlayerGameCleanup;
+
 	@Override
 	protected void init() {
 		mountBookmarkablePage("/highscore", HighscorePage.class);
@@ -32,6 +34,14 @@ public class YatzyApplication extends WebApplication {
 		mount(new HybridUrlCodingStrategy("/game", GamePage.class, true));
 
 		resetHighscores();
+
+		multiPlayerGameCleanup = new MultiPlayerGameCleanup(this);
+		new Thread(multiPlayerGameCleanup).start();
+	}
+
+	@Override
+	protected void onDestroy() {
+		multiPlayerGameCleanup.stop();
 	}
 
 	@Override
@@ -53,6 +63,10 @@ public class YatzyApplication extends WebApplication {
 		}
 
 		return availableGames;
+	}
+
+	public List<MultiPlayerGame> getAllGames() {
+		return games;
 	}
 
 	public void resetHighscores() {
