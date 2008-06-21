@@ -17,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IGame;
@@ -94,8 +95,7 @@ public class HighscorePage extends BasePage<Void> {
 			protected void populateItem(ListItem<Class<? extends IGame>> item) {
 				Class<? extends IGame> gameType = item.getModelObject();
 
-				IModel<String> gameTypeModel = new StringResourceModel("game."
-						+ gameType.getSimpleName(), this, null);
+				IModel<String> gameTypeModel = new StringResourceModel("game.${simpleName}", this, new Model<Class<? extends IGame>>(gameType));
 				Label<String> gameTypeLabel = new Label<String>("gameType", gameTypeModel);
 				item.add(gameTypeLabel);
 

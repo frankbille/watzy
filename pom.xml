@@ -72,11 +72,6 @@
 				<version>1.4-m2</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket-extensions</artifactId>
-				<version>1.4-m2</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-math</groupId>
 				<artifactId>commons-math</artifactId>
 				<version>1.2</version>

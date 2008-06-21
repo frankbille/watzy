@@ -271,7 +271,8 @@ span.rollLink img {
 
 .highscore h2 {
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 5px;
+	display: block;
 }
 
 .highscore table th,.highscore table td {
