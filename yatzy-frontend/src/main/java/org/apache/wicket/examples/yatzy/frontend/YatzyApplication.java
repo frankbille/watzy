@@ -10,6 +10,7 @@ import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
 import org.apache.wicket.examples.yatzy.frontend.pages.GamePage;
 import org.apache.wicket.examples.yatzy.frontend.pages.HighscorePage;
 import org.apache.wicket.examples.yatzy.frontend.pages.NewGamePage;
+import org.apache.wicket.examples.yatzy.frontend.persistence.HibernatePersistence;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.examples.yatzy.IGame;
@@ -23,8 +24,6 @@ public class YatzyApplication extends WebApplication {
 
 	private final List<MultiPlayerGame> games = new CopyOnWriteArrayList<MultiPlayerGame>();
 
-	private List<Highscore> highscores;
-
 	private MultiPlayerGameCleanup multiPlayerGameCleanup;
 
 	@Override
@@ -33,10 +32,10 @@ public class YatzyApplication extends WebApplication {
 		mountBookmarkablePage("/newgame", NewGamePage.class);
 		mount(new HybridUrlCodingStrategy("/game", GamePage.class, true));
 
-		resetHighscores();
-
 		multiPlayerGameCleanup = new MultiPlayerGameCleanup(this);
 		new Thread(multiPlayerGameCleanup).start();
+		
+		getHighscores();
 	}
 
 	@Override
@@ -69,18 +68,13 @@ public class YatzyApplication extends WebApplication {
 		return games;
 	}
 
-	public void resetHighscores() {
-		highscores = new ArrayList<Highscore>();
-	}
-
 	public void registerHighscore(IGame game, IPlayer player, int score) {
-		highscores.add(new Highscore(game, player, score));
-
-		Collections.sort(highscores);
+		Highscore highscore = new Highscore(game, player, score);
+		HibernatePersistence.saveHighscore(highscore);
 	}
 
 	public List<Highscore> getHighscores() {
-		return Collections.unmodifiableList(highscores);
+		return Collections.unmodifiableList(HibernatePersistence.getHighscores());
 	}
 
 }
