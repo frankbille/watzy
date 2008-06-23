@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -36,8 +37,16 @@ public abstract class BasePage<T> extends WebPage<T> {
 		timerBehavior = new CompoundAjaxTimerBehavior(Duration.ONE_SECOND);
 		add(timerBehavior);
 
-		add(new ListView<ILeftMenuBlock>("blocks", new PropertyModel<List<ILeftMenuBlock>>(this,
-				"leftMenuBlocks")) {
+		IModel<List<ILeftMenuBlock>> leftMenuBlocks = new LoadableDetachableModel<List<ILeftMenuBlock>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<ILeftMenuBlock> load() {
+				return getLeftMenuBlocks();
+			}
+		};
+		
+		ListView<ILeftMenuBlock> blocks = new ListView<ILeftMenuBlock>("blocks", leftMenuBlocks) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -47,7 +56,9 @@ public abstract class BasePage<T> extends WebPage<T> {
 				ILeftMenuBlock block = item.getModelObject();
 				item.add(block.createMenuBlock("block"));
 			}
-		});
+		};
+		blocks.setReuseItems(true);
+		add(blocks);
 
 		add(new Label<String>("pageTitle", getPageTitleModel()));
 	}

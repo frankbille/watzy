@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.wicket.Session;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.HeartBeatListener.IHeartBeat;
 import org.apache.wicket.examples.yatzy.frontend.panels.Chat;
+import org.apache.wicket.util.lang.Objects;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
@@ -265,7 +266,7 @@ public class MultiPlayerGame implements IGame {
 		Seat foundSeat = null;
 
 		for (Seat seat : seats) {
-			if (seat.getSession() == Session.get()) {
+			if (Objects.equal(seat.getSession().getId(), Session.get().getId())) {
 				foundSeat = seat;
 				break;
 			}
