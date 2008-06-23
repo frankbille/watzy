@@ -14,11 +14,9 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.examples.yatzy.IGame;
 
@@ -105,33 +103,24 @@ public class HighscorePage extends BasePage<Void> {
 				item.add(new ListView<Highscore>("highscores", gameHighscoresModel) {
 					private static final long serialVersionUID = 1L;
 
+					private int previousScore = -1;
+					
 					@Override
 					protected void populateItem(final ListItem<Highscore> item) {
-						Label<Integer> rank = new Label<Integer>("rank",
-								new AbstractReadOnlyModel<Integer>() {
-									private static final long serialVersionUID = 1L;
-
-									@Override
-									public Integer getObject() {
-										return item.getIndex() + 1;
-									}
-								});
-						IModel<String> topRankModel = new AbstractReadOnlyModel<String>() {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public String getObject() {
-								return "r" + (item.getIndex() + 1);
-							}
-						};
-						rank.add(new AttributeAppender("class", topRankModel, " "));
+						final Highscore highScore = item.getModelObject();
+						
+						boolean displayRank = previousScore == -1 || previousScore != highScore.getScore();
+						previousScore = highScore.getScore();
+						String theRank = displayRank ? ""+(item.getIndex() + 1) : "&nbsp;";
+						
+						Label<Integer> rank = new Label<Integer>("rank", theRank);
+						rank.setEscapeModelStrings(false);
+						rank.add(new AttributeAppender("class", new Model<String>("r" + theRank), " "));
 						item.add(rank);
 
-						item.add(new Label<Integer>("score", new PropertyModel<Integer>(item
-								.getModel(), "score")));
+						item.add(new Label<Integer>("score", ""+highScore.getScore()));
 
-						Link<IGame> gameLink = new Link<IGame>("gameLink",
-								new PropertyModel<IGame>(item.getModel(), "game")) {
+						Link<IGame> gameLink = new Link<IGame>("gameLink", new Model<IGame>(highScore.getGame())) {
 							private static final long serialVersionUID = 1L;
 
 							@Override
@@ -140,8 +129,7 @@ public class HighscorePage extends BasePage<Void> {
 							}
 						};
 						item.add(gameLink);
-						gameLink.add(new Label<String>("name", new PropertyModel<String>(item
-								.getModelObject(), "name")));
+						gameLink.add(new Label<String>("name", highScore.getName()));
 					}
 				});
 
