@@ -3,9 +3,11 @@ package org.apache.wicket.examples.yatzy.frontend.persistence;
 import java.util.List;
 
 import org.apache.wicket.examples.yatzy.frontend.Highscore;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.criterion.Order;
 
 public class HibernatePersistence {
 	
@@ -53,7 +55,10 @@ public class HibernatePersistence {
 	public static List<Highscore> getHighscores() {
 		Session session = getSessionFactory().openSession();
 		session.beginTransaction();
-		List<Highscore> list = session.createCriteria(Highscore.class).list();
+		Criteria c = session.createCriteria(Highscore.class);
+		c.addOrder(Order.desc("score"));
+		c.addOrder(Order.desc("timestamp"));
+		List<Highscore> list = c.list();
 		session.getTransaction().commit();
 		session.close();
 		
