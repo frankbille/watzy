@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.examples.yatzy.GamePrinter;
 import org.examples.yatzy.IDice;
 import org.examples.yatzy.IGame;
 import org.examples.yatzy.ITurn;
@@ -39,7 +38,6 @@ abstract class AbstractAIPlayer implements AIPlayer {
 
 		while (turn.mayRoll() && scoreSet == false) {
 			turn.roll();
-			System.out.println("ROLLED: " + GamePrinter.dumpTurn(turn));
 
 			IAction action = determineAction(turn, game);
 
@@ -73,16 +71,11 @@ abstract class AbstractAIPlayer implements AIPlayer {
 						}
 					}
 				}
-
-				System.out.println("ROLL (W: " + action.getWeight() + "): " + GamePrinter.dumpTurn(turn));
 			} else if (action instanceof ScoreAction) {
 				ScoreAction scoreAction = (ScoreAction) action;
 				ITurnScore turnScore = scoreAction.getTurnScore();
 				turnScore.setTurn(turn);
 				scoreSet = true;
-
-				System.out.println("SELECT SCORE (W: " + action.getWeight() + "): "
-						+ GamePrinter.dumpScore(turnScore, this));
 			} else if (action instanceof NoAction) {
 				// Do nothing
 			} else {
