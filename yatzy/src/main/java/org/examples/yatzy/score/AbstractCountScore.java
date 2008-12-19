@@ -8,6 +8,9 @@ import org.examples.yatzy.ITurn;
 public abstract class AbstractCountScore extends AbstractTurnScore {
 	private static final long serialVersionUID = 1L;
 
+	public AbstractCountScore() {
+	}
+
 	@Override
 	protected int calculateScore(ITurn turn) {
 		int score = 0;
@@ -38,5 +41,12 @@ public abstract class AbstractCountScore extends AbstractTurnScore {
 	protected abstract int getNumberOfGroups();
 
 	protected abstract int getGroupCount();
+
+	@Override
+	public abstract AbstractCountScore copy();
+
+	protected AbstractCountScore(AbstractCountScore s) {
+		super(s);
+	}
 
 }

@@ -6,4 +6,6 @@ public interface ITurnScore extends IScore {
 
 	void setTurn(ITurn turn);
 
+	ITurnScore copy();
+
 }

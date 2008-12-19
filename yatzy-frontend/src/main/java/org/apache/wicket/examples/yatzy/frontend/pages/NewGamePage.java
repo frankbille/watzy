@@ -32,6 +32,7 @@ import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.MaxiGame;
 import org.examples.yatzy.StandardGame;
+import org.examples.yatzy.ai.MaxiYatzyAIPlayer;
 
 public class NewGamePage extends BasePage<Void> {
 
@@ -42,6 +43,21 @@ public class NewGamePage extends BasePage<Void> {
 		add(timerBehavior);
 
 		createNewGameForm();
+
+		add(new Link<MultiPlayerGame>("testAiGame") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				IGame game = new MaxiGame();
+				for (int i = 1; i <= 10; i++) {
+					MaxiYatzyAIPlayer player = new MaxiYatzyAIPlayer();
+					player.setName("P" + i);
+					game.addPlayer(player);
+				}
+				getRequestCycle().setResponsePage(new GamePage(game));
+			}
+		});
 
 		createGameList(timerBehavior);
 	}
@@ -56,11 +72,10 @@ public class NewGamePage extends BasePage<Void> {
 			}
 		};
 
-		WebMarkupContainer<List<MultiPlayerGame>> gameList = new WebMarkupContainer<List<MultiPlayerGame>>(
-				"gameList", gamesModel);
-		timerBehavior
-				.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer<List<MultiPlayerGame>>>(
-						gameList));
+		WebMarkupContainer<List<MultiPlayerGame>> gameList = new WebMarkupContainer<List<MultiPlayerGame>>("gameList",
+				gamesModel);
+		timerBehavior.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer<List<MultiPlayerGame>>>(
+				gameList));
 		add(gameList);
 
 		gameList.add(new ListView<MultiPlayerGame>("games", gamesModel) {
@@ -70,8 +85,8 @@ public class NewGamePage extends BasePage<Void> {
 			protected void populateItem(final ListItem<MultiPlayerGame> item) {
 				item.add(new Label<Integer>("number", new Model<Integer>(item.getIndex() + 1)));
 
-				item.add(new Label<String>("game", new StringResourceModel(
-						"game.${innerGame.class.simpleName}", this, item.getModel())));
+				item.add(new Label<String>("game", new StringResourceModel("game.${innerGame.class.simpleName}", this,
+						item.getModel())));
 
 				IModel<String> playersModel = new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
@@ -123,13 +138,12 @@ public class NewGamePage extends BasePage<Void> {
 
 			@Override
 			public Object getDisplayValue(IGame object) {
-				IModel<String> displayModel = new StringResourceModel("game.${class.simpleName}",
-						NewGamePage.this, new Model<IGame>(object));
+				IModel<String> displayModel = new StringResourceModel("game.${class.simpleName}", NewGamePage.this,
+						new Model<IGame>(object));
 				return displayModel.getObject();
 			}
 		};
-		RadioChoice<IGame> game = new RadioChoice<IGame>("game", new PropertyModel<IGame>(this,
-				"game"), games, cr);
+		RadioChoice<IGame> game = new RadioChoice<IGame>("game", new PropertyModel<IGame>(this, "game"), games, cr);
 		game.setRequired(true);
 		newGameForm.add(game);
 
@@ -138,9 +152,7 @@ public class NewGamePage extends BasePage<Void> {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				MultiPlayerGame multiPlayerGame = new MultiPlayerGame(NewGamePage.this.game);
-				YatzyApplication.get().addGame(multiPlayerGame);
-				getRequestCycle().setResponsePage(new GamePage(multiPlayerGame));
+				getRequestCycle().setResponsePage(new GamePage(NewGamePage.this.game));
 			}
 		};
 		createGame.add(new JQueryButtonBehavior(ButtonColor.GREEN));

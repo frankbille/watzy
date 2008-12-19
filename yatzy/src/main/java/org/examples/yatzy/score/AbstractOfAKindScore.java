@@ -7,6 +7,9 @@ import org.examples.yatzy.ITurn;
 public abstract class AbstractOfAKindScore extends AbstractTurnScore {
 	private static final long serialVersionUID = 1L;
 
+	public AbstractOfAKindScore() {
+	}
+
 	@Override
 	protected int calculateScore(ITurn turn) {
 		int score = 0;
@@ -26,6 +29,13 @@ public abstract class AbstractOfAKindScore extends AbstractTurnScore {
 		return score;
 	}
 
-	protected abstract int getValueCount();
+	public abstract int getValueCount();
+
+	@Override
+	public abstract AbstractOfAKindScore copy();
+
+	protected AbstractOfAKindScore(AbstractOfAKindScore s) {
+		super(s);
+	}
 
 }

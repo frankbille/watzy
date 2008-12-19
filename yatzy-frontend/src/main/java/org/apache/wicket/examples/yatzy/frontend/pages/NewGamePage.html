@@ -1,4 +1,11 @@
 <wicket:extend>
+<h2><wicket:message key="highscoresReset"></wicket:message></h2>
+<p>
+	<wicket:message key="highscoreAiDescription"></wicket:message>
+</p>
+
+<hr />
+
 <h2><wicket:message key="createNewGame"></wicket:message></h2>
 <form wicket:id="newGame">
 	<span wicket:id="game" />
@@ -6,6 +13,8 @@
 		<a wicket:id="createGame"><wicket:message key="createGame"></wicket:message></a>
 	</p>
 </form>
+
+<a wicket:id="testAiGame">Test AI game (10 ai players)</a>
 
 <hr />
 

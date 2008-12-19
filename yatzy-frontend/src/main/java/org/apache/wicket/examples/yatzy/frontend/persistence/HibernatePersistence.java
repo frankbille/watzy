@@ -10,12 +10,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Order;
 
 public class HibernatePersistence {
-	
+
 	private static SessionFactory sessionFactory;
-	
+
 	private static SessionFactory createSessionFactory() {
 		AnnotationConfiguration cfg = new AnnotationConfiguration();
-		
+
 		cfg.addAnnotatedClass(Highscore.class);
 		cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		cfg.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
@@ -25,24 +25,24 @@ public class HibernatePersistence {
 		cfg.setProperty("hibernate.current_session_context_class", "thread");
 		cfg.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider");
 		cfg.setProperty("hibernate.hbm2ddl.auto", "update");
-		
+
 		return cfg.buildSessionFactory();
 	}
-	
+
 	private synchronized static SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
 			sessionFactory = createSessionFactory();
-			
+
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 			session.createSQLQuery("SET WRITE_DELAY 0 MILLIS").executeUpdate();
 			session.getTransaction().commit();
 			session.close();
 		}
-		
+
 		return sessionFactory;
 	}
-	
+
 	public static void saveHighscore(Highscore highscore) {
 		Session session = getSessionFactory().openSession();
 		session.beginTransaction();
@@ -50,7 +50,7 @@ public class HibernatePersistence {
 		session.getTransaction().commit();
 		session.close();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static List<Highscore> getHighscores() {
 		Session session = getSessionFactory().openSession();
@@ -61,8 +61,8 @@ public class HibernatePersistence {
 		List<Highscore> list = c.list();
 		session.getTransaction().commit();
 		session.close();
-		
+
 		return list;
 	}
-	
+
 }

@@ -10,6 +10,8 @@ import org.apache.wicket.model.IModel;
 import org.examples.yatzy.AdhocPlayer;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
+import org.examples.yatzy.MaxiGame;
+import org.examples.yatzy.ai.MaxiYatzyAIPlayer;
 
 public abstract class GameAdminPanel extends Panel<MultiPlayerGame> {
 	private static final long serialVersionUID = 1L;
@@ -17,8 +19,7 @@ public abstract class GameAdminPanel extends Panel<MultiPlayerGame> {
 	public GameAdminPanel(String id, IModel<MultiPlayerGame> model) {
 		super(id, model);
 
-		AjaxLink<MultiPlayerGame> addNewPlayerLink = new AjaxLink<MultiPlayerGame>("addNewPlayer",
-				model) {
+		AjaxLink<MultiPlayerGame> addNewPlayerLink = new AjaxLink<MultiPlayerGame>("addNewPlayer", model) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -31,6 +32,25 @@ public abstract class GameAdminPanel extends Panel<MultiPlayerGame> {
 		};
 		addNewPlayerLink.add(new JQueryButtonBehavior());
 		add(addNewPlayerLink);
+
+		AjaxLink<MultiPlayerGame> addNewAIPlayerLink = new AjaxLink<MultiPlayerGame>("addNewAIPlayer", model) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				IPlayer player = new MaxiYatzyAIPlayer();
+				getModelObject().addPlayer(player);
+
+				onNewPlayerAdded(target, player);
+			}
+
+			@Override
+			public boolean isVisible() {
+				return getModelObject().getInnerGame() instanceof MaxiGame;
+			}
+		};
+		addNewAIPlayerLink.add(new JQueryButtonBehavior());
+		add(addNewAIPlayerLink);
 
 		AjaxLink<MultiPlayerGame> startGame = new AjaxLink<MultiPlayerGame>("startGame", model) {
 			private static final long serialVersionUID = 1L;
@@ -49,8 +69,7 @@ public abstract class GameAdminPanel extends Panel<MultiPlayerGame> {
 
 			@Override
 			public boolean isVisible() {
-				return getModelObject().getPlayers().isEmpty() == false
-						&& getModelObject().isSeatReady() == false;
+				return getModelObject().getPlayers().isEmpty() == false && getModelObject().isSeatReady() == false;
 			}
 		};
 		startGame.add(new JQueryButtonBehavior(ButtonColor.GREEN));

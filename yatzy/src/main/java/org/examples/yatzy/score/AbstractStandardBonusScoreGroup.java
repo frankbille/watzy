@@ -28,4 +28,8 @@ public abstract class AbstractStandardBonusScoreGroup extends AbstractScoreGroup
 
 	public abstract int getBonus(IPlayer player);
 
+	protected AbstractStandardBonusScoreGroup(AbstractStandardBonusScoreGroup s) {
+		super(s);
+	}
+
 }

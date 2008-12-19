@@ -10,11 +10,13 @@ import org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer.HeartBeat
 import org.apache.wicket.examples.yatzy.frontend.panels.Chat;
 import org.apache.wicket.util.lang.Objects;
 import org.examples.yatzy.IGame;
+import org.examples.yatzy.IGameWrapper;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.IRound;
+import org.examples.yatzy.ai.AIPlayer;
 import org.examples.yatzy.score.IScoreCard;
 
-public class MultiPlayerGame implements IGame {
+public class MultiPlayerGame implements IGame, IGameWrapper {
 	private static final long serialVersionUID = 1L;
 
 	public static enum GameStatus {
@@ -213,7 +215,7 @@ public class MultiPlayerGame implements IGame {
 			MultiPlayerTurn currentTurn = currentRound.getCurrentTurn();
 			if (currentTurn != null) {
 				IPlayer player = currentTurn.getPlayer();
-				playing = isPlayingFromThisSeat(player);
+				playing = isPlayingFromThisSeat(player) && player instanceof AIPlayer == false;
 			}
 		}
 

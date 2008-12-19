@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.examples.yatzy.IDice;
 import org.examples.yatzy.IPlayer;
@@ -14,6 +15,9 @@ public abstract class AbstractTurnScore implements ITurnScore {
 	private static final long serialVersionUID = 1L;
 
 	private final Map<IPlayer, Integer> playerScores = new LinkedHashMap<IPlayer, Integer>();
+
+	public AbstractTurnScore() {
+	}
 
 	public void addPlayer(IPlayer player) {
 		if (playerScores.containsKey(player) == false) {
@@ -125,6 +129,21 @@ public abstract class AbstractTurnScore implements ITurnScore {
 		if (playerScores.containsKey(player) == false) {
 			throw new IllegalArgumentException("Player not found in the score list. Perhaps it hasn't been added?");
 		}
+	}
+
+	public abstract AbstractTurnScore copy();
+
+	protected AbstractTurnScore(AbstractTurnScore s) {
+		Set<IPlayer> players = s.playerScores.keySet();
+		for (IPlayer player : players) {
+			Integer playerScore = s.playerScores.get(player);
+			this.playerScores.put(player, playerScore);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
 	}
 
 }

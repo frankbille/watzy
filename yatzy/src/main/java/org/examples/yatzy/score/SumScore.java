@@ -34,4 +34,20 @@ public class SumScore extends AbstractTurnScore {
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " (" + value + ")";
+	}
+
+	@Override
+	public SumScore copy() {
+		return new SumScore(this);
+	}
+
+	private SumScore(SumScore s) {
+		super(s);
+
+		this.value = s.value;
+	}
+
 }

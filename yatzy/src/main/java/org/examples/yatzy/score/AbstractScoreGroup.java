@@ -12,6 +12,9 @@ public abstract class AbstractScoreGroup implements IScoreGroup {
 
 	private final List<IScore> scores = new ArrayList<IScore>();
 
+	public AbstractScoreGroup() {
+	}
+
 	public List<IScore> getScores() {
 		return scores;
 	}
@@ -86,6 +89,15 @@ public abstract class AbstractScoreGroup implements IScoreGroup {
 		}
 
 		return complete;
+	}
+
+	public abstract AbstractScoreGroup copy();
+
+	protected AbstractScoreGroup(AbstractScoreGroup s) {
+		List<IScore> sList = s.scores;
+		for (IScore score : sList) {
+			this.scores.add(score.copy());
+		}
 	}
 
 }

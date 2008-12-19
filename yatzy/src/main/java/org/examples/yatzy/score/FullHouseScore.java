@@ -7,6 +7,9 @@ import org.examples.yatzy.ITurn;
 public class FullHouseScore extends AbstractTurnScore {
 	private static final long serialVersionUID = 1L;
 
+	public FullHouseScore() {
+	}
+
 	@Override
 	protected int calculateScore(ITurn turn) {
 		int score = 0;
@@ -45,6 +48,15 @@ public class FullHouseScore extends AbstractTurnScore {
 		}
 
 		return score;
+	}
+
+	@Override
+	public AbstractTurnScore copy() {
+		return new FullHouseScore(this);
+	}
+
+	private FullHouseScore(FullHouseScore s) {
+		super(s);
 	}
 
 }

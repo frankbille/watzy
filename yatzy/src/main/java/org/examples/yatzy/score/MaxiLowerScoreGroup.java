@@ -23,4 +23,13 @@ public class MaxiLowerScoreGroup extends AbstractScoreGroup {
 		addScore(new MaxiYatzyScore());
 	}
 
+	@Override
+	public AbstractScoreGroup copy() {
+		return new MaxiLowerScoreGroup(this);
+	}
+
+	private MaxiLowerScoreGroup(MaxiLowerScoreGroup s) {
+		super(s);
+	}
+
 }

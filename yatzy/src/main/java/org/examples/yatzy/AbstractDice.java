@@ -29,4 +29,32 @@ public abstract class AbstractDice implements IDice {
 
 	protected abstract int doRoll();
 
+	@Override
+	public boolean equals(Object obj) {
+		boolean equals = false;
+
+		if (obj != null) {
+			if (obj instanceof IDice) {
+				IDice dice = (IDice) obj;
+
+				if (dice.hasValue() == hasValue()) {
+					if (hasValue()) {
+						if (dice.getValue() == getValue()) {
+							equals = true;
+						}
+					} else {
+						equals = true;
+					}
+				}
+			}
+		}
+
+		return equals;
+	}
+
+	@Override
+	public String toString() {
+		return "" + getValue();
+	}
+
 }

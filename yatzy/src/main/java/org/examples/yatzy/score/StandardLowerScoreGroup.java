@@ -19,4 +19,13 @@ public class StandardLowerScoreGroup extends AbstractScoreGroup {
 		addScore(new YatzyScore());
 	}
 
+	@Override
+	public StandardLowerScoreGroup copy() {
+		return new StandardLowerScoreGroup(this);
+	}
+
+	private StandardLowerScoreGroup(StandardLowerScoreGroup s) {
+		super(s);
+	}
+
 }

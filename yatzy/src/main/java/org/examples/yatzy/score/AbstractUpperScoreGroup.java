@@ -27,4 +27,8 @@ public abstract class AbstractUpperScoreGroup extends AbstractStandardBonusScore
 
 	protected abstract int getValueCount();
 
+	protected AbstractUpperScoreGroup(AbstractUpperScoreGroup s) {
+		super(s);
+	}
+
 }

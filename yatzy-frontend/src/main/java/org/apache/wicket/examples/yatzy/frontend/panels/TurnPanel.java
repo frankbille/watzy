@@ -33,43 +33,41 @@ public class TurnPanel extends Panel<ITurn> {
 	public TurnPanel(String id, IModel<ITurn> turnModel) {
 		super(id, turnModel);
 
-		final ListView<IDice> diceList = new ListView<IDice>("diceList",
-				new PropertyModel<List<IDice>>(turnModel, "diceList")) {
+		final ListView<IDice> diceList = new ListView<IDice>("diceList", new PropertyModel<List<IDice>>(turnModel,
+				"diceList")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final ListItem<IDice> item) {
 				item.setOutputMarkupId(true);
 
-				final IModel<String> holdModel = new StringResourceModel("hold", TurnPanel.this,
-						null);
-				final Label<String> holdLabel = new Label<String>("hold",
-						new AbstractReadOnlyModel<String>() {
-							private static final long serialVersionUID = 1L;
+				final IModel<String> holdModel = new StringResourceModel("hold", TurnPanel.this, null);
+				final Label<String> holdLabel = new Label<String>("hold", new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
 
-							@Override
-							public String getObject() {
-								IDice dice = item.getModelObject();
-								ITurn turn = TurnPanel.this.getModelObject();
+					@Override
+					public String getObject() {
+						IDice dice = item.getModelObject();
+						ITurn turn = TurnPanel.this.getModelObject();
 
-								String label = null;
+						String label = null;
 
-								if (turn.shouldHold(dice)) {
-									label = holdModel.getObject();
-								} else {
-									label = "&nbsp;";
-								}
+						if (turn.shouldHold(dice)) {
+							label = holdModel.getObject();
+						} else {
+							label = "&nbsp;";
+						}
 
-								return label;
-							}
+						return label;
+					}
 
-						});
+				});
 				holdLabel.setEscapeModelStrings(false);
 				holdLabel.setOutputMarkupId(true);
 				item.add(holdLabel);
 
-				final AjaxFallbackLink<ITurn> holdLink = new AjaxFallbackLink<ITurn>("holdLink",
-						TurnPanel.this.getModel()) {
+				final AjaxFallbackLink<ITurn> holdLink = new AjaxFallbackLink<ITurn>("holdLink", TurnPanel.this
+						.getModel()) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -86,8 +84,12 @@ public class TurnPanel extends Panel<ITurn> {
 					@Override
 					public boolean isEnabled() {
 						ITurn turn = getModelObject();
-						IDice dice = item.getModelObject();
-						return dice.hasValue() && TurnPanel.this.isEnabled() && turn.mayRoll();
+						if (turn != null) {
+							IDice dice = item.getModelObject();
+							return dice.hasValue() && TurnPanel.this.isEnabled() && turn.mayRoll();
+						} else {
+							return false;
+						}
 					}
 
 					@Override
@@ -101,24 +103,23 @@ public class TurnPanel extends Panel<ITurn> {
 					}
 				};
 				holdLink.setOutputMarkupId(true);
-				holdLink.add(new AttributeModifier("class", true,
-						new AbstractReadOnlyModel<String>() {
-							private static final long serialVersionUID = 1L;
+				holdLink.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
 
-							@Override
-							public String getObject() {
-								String className;
-								IDice dice = item.getModelObject();
+					@Override
+					public String getObject() {
+						String className;
+						IDice dice = item.getModelObject();
 
-								if (dice.hasValue()) {
-									className = "dice_" + dice.getValue();
-								} else {
-									className = "empty";
-								}
+						if (dice.hasValue()) {
+							className = "dice_" + dice.getValue();
+						} else {
+							className = "empty";
+						}
 
-								return className;
-							}
-						}));
+						return className;
+					}
+				}));
 				holdLink.add(new JQueryHotkeyBehavior(new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
@@ -183,15 +184,14 @@ public class TurnPanel extends Panel<ITurn> {
 		rollLink.add(new JQueryScrollToBehavior());
 		rollLink.setOutputMarkupId(true);
 
-		rollLink.add(new JQueryHotkeyBehavior(new Model<String>("r"),
-				new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
+		rollLink.add(new JQueryHotkeyBehavior(new Model<String>("r"), new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					public String getObject() {
-						return "$('#" + rollLink.getMarkupId() + "').click();";
-					}
-				}, true));
+			@Override
+			public String getObject() {
+				return "$('#" + rollLink.getMarkupId() + "').click();";
+			}
+		}, true));
 		add(rollLink);
 
 		rollLink.add(new Image<String>("rollImage", "roll_white.png"));
@@ -211,8 +211,7 @@ public class TurnPanel extends Panel<ITurn> {
 			}
 		};
 
-		turnLabel = new Label<String>("turnLabel", new StringResourceModel("rollsLeft", this,
-				rollsLeftModel)) {
+		turnLabel = new Label<String>("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

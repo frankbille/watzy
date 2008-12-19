@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
 import org.examples.yatzy.IDice;
 import org.examples.yatzy.IPlayer;
+import org.examples.yatzy.IRound;
 import org.examples.yatzy.ITurn;
+import org.examples.yatzy.ai.AIPlayer;
 
 public class MultiPlayerTurn implements ITurn {
 	private static final long serialVersionUID = 1L;
@@ -16,6 +18,30 @@ public class MultiPlayerTurn implements ITurn {
 	public MultiPlayerTurn(ITurn turn, MultiPlayerGame multiPlayerGame) {
 		this.turn = turn;
 		this.multiPlayerGame = multiPlayerGame;
+
+		if (this.turn.getPlayer() instanceof AIPlayer) {
+			final AIPlayer aiPlayer = (AIPlayer) this.turn.getPlayer();
+			Runnable aiTurn = new Runnable() {
+				public void run() {
+					try {
+						// Thread.sleep(500);
+
+						aiPlayer.handleTurn(MultiPlayerTurn.this.turn, MultiPlayerTurn.this.multiPlayerGame);
+
+						if (MultiPlayerTurn.this.multiPlayerGame.isComplete() == false) {
+							IRound currentRound = MultiPlayerTurn.this.multiPlayerGame.getCurrentRound();
+							if (currentRound.hasMoreTurns() == false) {
+								currentRound = MultiPlayerTurn.this.multiPlayerGame.newRound();
+							}
+							currentRound.nextTurn();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			new Thread(aiTurn).start();
+		}
 	}
 
 	public void changeHold(IDice dice) {
@@ -36,7 +62,8 @@ public class MultiPlayerTurn implements ITurn {
 
 	public boolean mayRoll() {
 		return multiPlayerGame.getGameStatus() == GameStatus.STARTED
-				&& multiPlayerGame.isPlayingFromThisSeat(getPlayer()) && turn.mayRoll();
+				&& multiPlayerGame.isPlayingFromThisSeat(getPlayer()) && turn.mayRoll()
+				&& getPlayer() instanceof AIPlayer == false;
 	}
 
 	public void roll() {

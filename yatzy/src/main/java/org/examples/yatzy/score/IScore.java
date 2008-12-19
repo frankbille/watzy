@@ -22,4 +22,6 @@ public interface IScore extends Serializable {
 	 */
 	boolean isComplete();
 
+	IScore copy();
+
 }

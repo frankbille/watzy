@@ -5,6 +5,9 @@ import org.examples.yatzy.ITurn;
 public abstract class AbstractStraightScore extends AbstractTurnScore {
 	private static final long serialVersionUID = 1L;
 
+	public AbstractStraightScore() {
+	}
+
 	@Override
 	protected int calculateScore(ITurn turn) {
 		int score = 0;
@@ -29,5 +32,12 @@ public abstract class AbstractStraightScore extends AbstractTurnScore {
 	protected abstract int[] getStraight();
 
 	protected abstract int getStraightScore();
+
+	@Override
+	public abstract AbstractStraightScore copy();
+
+	protected AbstractStraightScore(AbstractStraightScore s) {
+		super(s);
+	}
 
 }

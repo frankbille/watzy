@@ -46,12 +46,13 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			MultiPlayerGame multiPlayerGame = (MultiPlayerGame) game;
 			setModel(new Model<MultiPlayerGame>(multiPlayerGame));
 		} else {
-			setModel(new Model<MultiPlayerGame>(new MultiPlayerGame(game)));
+			MultiPlayerGame mpg = new MultiPlayerGame(game);
+			YatzyApplication.get().addGame(mpg);
+			setModel(new Model<MultiPlayerGame>(mpg));
 		}
 
 		// Seat heart beat
-		getTimerBehavior().addListener(
-				new HeartBeatListener(getModelObject().getHeartBeatForCurrentSeat()));
+		getTimerBehavior().addListener(new HeartBeatListener(getModelObject().getHeartBeatForCurrentSeat()));
 
 		// Create the main action panel
 		mainActionPanel = new MainActionPanel("mainActionPanel", getModel()) {
@@ -72,15 +73,14 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 				target.addComponent(scoreCardPanel);
 			}
 		};
-		getTimerBehavior().addListener(
-				new StateBasedSelfUpdatingListener<MainActionPanel>(mainActionPanel) {
-					private static final long serialVersionUID = 1L;
+		getTimerBehavior().addListener(new StateBasedSelfUpdatingListener<MainActionPanel>(mainActionPanel) {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected Object getStateObject(MainActionPanel component) {
-						return component.getStateObject();
-					}
-				});
+			@Override
+			protected Object getStateObject(MainActionPanel component) {
+				return component.getStateObject();
+			}
+		});
 		add(mainActionPanel);
 
 		IModel<ITurn> turnModel = new PropertyModel<ITurn>(getModel(), "currentRound.currentTurn");
@@ -89,8 +89,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void combinationSelected(AjaxRequestTarget target,
-					IModel<ITurnScore> scoreModel) {
+			protected void combinationSelected(AjaxRequestTarget target, IModel<ITurnScore> scoreModel) {
 				MultiPlayerGame game = GamePage.this.getModelObject();
 				if (game.isComplete()) {
 					// Register high scores
@@ -98,8 +97,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 					List<IPlayer> players = scoreCard.getPlayers();
 					for (IPlayer player : players) {
 						int score = scoreCard.getScore(player);
-						YatzyApplication.get()
-								.registerHighscore(game.getInnerGame(), player, score);
+						YatzyApplication.get().registerHighscore(game.getInnerGame(), player, score);
 					}
 				} else {
 					IRound currentRound = game.getCurrentRound();
@@ -149,8 +147,8 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 
 	@Override
 	protected IModel<String> getPageTitleModel() {
-		return new StringResourceModel("game.${innerGame.class.simpleName}", this,
-				new PropertyModel<MultiPlayerGame>(this, "modelObject"));
+		return new StringResourceModel("game.${innerGame.class.simpleName}", this, new PropertyModel<MultiPlayerGame>(
+				this, "modelObject"));
 	}
 
 	@Override
@@ -160,8 +158,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 
 			@Override
 			public String getObject() {
-				IModel<String> confirmText = new StringResourceModel("confirmQuitExistingGame",
-						GamePage.this, null);
+				IModel<String> confirmText = new StringResourceModel("confirmQuitExistingGame", GamePage.this, null);
 
 				return "return confirm('" + confirmText.getObject() + "');";
 			}
@@ -175,8 +172,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			}
 		};
 
-		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("newGame", this, null),
-				NewGamePage.class) {
+		menuItems.add(new BookmarkableMenuItem(new StringResourceModel("newGame", this, null), NewGamePage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
