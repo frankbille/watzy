@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -34,7 +33,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.string.Strings;
 import org.examples.yatzy.IPlayer;
 
-public class ChatPanel extends Panel<MultiPlayerGame> {
+public class ChatPanel extends GenericPanel<MultiPlayerGame> {
 	private static final long serialVersionUID = 1L;
 
 	public static class ChatBlock implements ILeftMenuBlock {
@@ -48,7 +47,7 @@ public class ChatPanel extends Panel<MultiPlayerGame> {
 			this.timerBehavior = timerBehavior;
 		}
 
-		public Component<?> createMenuBlock(String wicketId) {
+		public Component createMenuBlock(String wicketId) {
 			return new ChatPanel(wicketId, model, timerBehavior);
 		}
 
@@ -61,7 +60,7 @@ public class ChatPanel extends Panel<MultiPlayerGame> {
 	private IPlayer player;
 	private String message;
 	private final TextField<String> messageField;
-	private final WebMarkupContainer<Chat> messagesContainer;
+	private final WebMarkupContainer messagesContainer;
 
 	private ChatPanel(String id, IModel<MultiPlayerGame> model,
 			CompoundAjaxTimerBehavior timerBehavior) {
@@ -69,10 +68,10 @@ public class ChatPanel extends Panel<MultiPlayerGame> {
 
 		add(new SimpleAttributeModifier("class", "chat"));
 
-		messagesContainer = new WebMarkupContainer<Chat>("messagesContainer",
+		messagesContainer = new WebMarkupContainer("messagesContainer",
 				new PropertyModel<Chat>(model, "chat"));
 		messagesContainer.setOutputMarkupId(true);
-		timerBehavior.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer<Chat>>(
+		timerBehavior.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer>(
 				messagesContainer));
 		messagesContainer.add(new JQueryScrollToBehavior() {
 			private static final long serialVersionUID = 1L;
@@ -108,9 +107,9 @@ public class ChatPanel extends Panel<MultiPlayerGame> {
 				};
 				item.add(new AttributeAppender("class", true, playerColor, " "));
 
-				item.add(new Label<String>("name", item.getModelObject().getPlayer().getName()));
+				item.add(new Label("name", item.getModelObject().getPlayer().getName()));
 
-				item.add(new Label<String>("message", item.getModelObject().getMessage()));
+				item.add(new Label("message", item.getModelObject().getMessage()));
 			}
 		});
 

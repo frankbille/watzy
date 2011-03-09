@@ -3,7 +3,7 @@ package org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractBehavior;
 
-public class StateBasedSelfUpdatingListener<T extends Component<?>> extends
+public class StateBasedSelfUpdatingListener<T extends Component> extends
 		ComponentSelfUpdatingListener<T> {
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class StateBasedSelfUpdatingListener<T extends Component<?>> extends
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void beforeRender(Component<?> component) {
+			public void beforeRender(Component component) {
 				updateState();
 			}
 		});
@@ -39,7 +39,7 @@ public class StateBasedSelfUpdatingListener<T extends Component<?>> extends
 	}
 
 	protected Object getStateObject(T component) {
-		return component.getModelObject();
+		return component.getDefaultModelObject();
 	}
 
 }

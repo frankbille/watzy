@@ -11,7 +11,7 @@ public class JQueryHotkeyBehavior extends JQueryBehavior {
 	public static final ResourceReference JS_JQUERY_HOTKEYS = new ResourceReference(
 			JQueryHotkeyBehavior.class, "jquery.hotkeys.js");
 
-	private Component<?> component;
+	private Component component;
 	private final IModel<String> shortcut;
 	private final IModel<String> callback;
 	private final boolean disableInInput;
@@ -28,7 +28,7 @@ public class JQueryHotkeyBehavior extends JQueryBehavior {
 	}
 
 	@Override
-	public void bind(Component<?> component) {
+	public void bind(Component component) {
 		this.component = component;
 	}
 

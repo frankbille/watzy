@@ -72,10 +72,9 @@ public class NewGamePage extends BasePage<Void> {
 			}
 		};
 
-		WebMarkupContainer<List<MultiPlayerGame>> gameList = new WebMarkupContainer<List<MultiPlayerGame>>("gameList",
+		WebMarkupContainer gameList = new WebMarkupContainer("gameList",
 				gamesModel);
-		timerBehavior.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer<List<MultiPlayerGame>>>(
-				gameList));
+		timerBehavior.addListener(new StateBasedSelfUpdatingListener<WebMarkupContainer>(gameList));
 		add(gameList);
 
 		gameList.add(new ListView<MultiPlayerGame>("games", gamesModel) {
@@ -83,9 +82,9 @@ public class NewGamePage extends BasePage<Void> {
 
 			@Override
 			protected void populateItem(final ListItem<MultiPlayerGame> item) {
-				item.add(new Label<Integer>("number", new Model<Integer>(item.getIndex() + 1)));
+				item.add(new Label("number", new Model<Integer>(item.getIndex() + 1)));
 
-				item.add(new Label<String>("game", new StringResourceModel("game.${innerGame.class.simpleName}", this,
+				item.add(new Label("game", new StringResourceModel("game.${innerGame.class.simpleName}", this,
 						item.getModel())));
 
 				IModel<String> playersModel = new AbstractReadOnlyModel<String>() {
@@ -111,7 +110,7 @@ public class NewGamePage extends BasePage<Void> {
 						return b.toString();
 					}
 				};
-				item.add(new Label<String>("players", playersModel));
+				item.add(new Label("players", playersModel));
 
 				item.add(new Link<MultiPlayerGame>("join", item.getModel()) {
 					private static final long serialVersionUID = 1L;
@@ -147,7 +146,7 @@ public class NewGamePage extends BasePage<Void> {
 		game.setRequired(true);
 		newGameForm.add(game);
 
-		AjaxSubmitLink<Void> createGame = new AjaxSubmitLink<Void>("createGame") {
+		AjaxSubmitLink createGame = new AjaxSubmitLink("createGame") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame.GameStatus;
 import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -16,7 +15,7 @@ import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.ITurn;
 
-public abstract class MainActionPanel extends Panel<MultiPlayerGame> {
+public abstract class MainActionPanel extends GenericPanel<MultiPlayerGame> {
 	private static final long serialVersionUID = 1L;
 
 	private static final String CONTENT = "content";
@@ -32,14 +31,14 @@ public abstract class MainActionPanel extends Panel<MultiPlayerGame> {
 
 		setOutputMarkupId(true);
 
-		add(new WebComponent<Void>(CONTENT));
+		add(new WebComponent(CONTENT));
 	}
 
 	@Override
 	protected void onBeforeRender() {
 		super.onBeforeRender();
 
-		Component<?> content = null;
+		Component content = null;
 
 		Action action = getCurrentAction();
 
@@ -69,7 +68,7 @@ public abstract class MainActionPanel extends Panel<MultiPlayerGame> {
 		} else if (action == Action.COMPLETE) {
 			content = new GameResultPanel(CONTENT, new Model<IGame>(getModelObject()));
 		} else {
-			content = new WebComponent<Void>(CONTENT);
+			content = new WebComponent(CONTENT);
 		}
 
 		content.setOutputMarkupId(true);
@@ -85,7 +84,7 @@ public abstract class MainActionPanel extends Panel<MultiPlayerGame> {
 		if (getModelObject().isPlaying()) {
 			stateObject = null;
 		} else if (action == Action.PLAYING) {
-			stateObject = get(CONTENT).getModelObject();
+			stateObject = get(CONTENT).getDefaultModelObject();
 		} else {
 			stateObject = action;
 		}

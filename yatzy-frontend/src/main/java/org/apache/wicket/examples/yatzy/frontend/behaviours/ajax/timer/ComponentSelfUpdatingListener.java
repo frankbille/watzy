@@ -3,7 +3,7 @@ package org.apache.wicket.examples.yatzy.frontend.behaviours.ajax.timer;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
-public class ComponentSelfUpdatingListener<T extends Component<?>> implements ITimerListener {
+public class ComponentSelfUpdatingListener<T extends Component> implements ITimerListener {
 	private static final long serialVersionUID = 1L;
 
 	private final T component;

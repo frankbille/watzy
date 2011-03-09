@@ -15,7 +15,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -25,10 +24,10 @@ import org.examples.yatzy.IDice;
 import org.examples.yatzy.IRollTurn;
 import org.examples.yatzy.ITurn;
 
-public class TurnPanel extends Panel<ITurn> {
+public class TurnPanel extends GenericPanel<ITurn> {
 	private static final long serialVersionUID = 1L;
 	private final AjaxFallbackLink<ITurn> rollLink;
-	private final Label<String> turnLabel;
+	private final Label turnLabel;
 
 	public TurnPanel(String id, IModel<ITurn> turnModel) {
 		super(id, turnModel);
@@ -42,7 +41,7 @@ public class TurnPanel extends Panel<ITurn> {
 				item.setOutputMarkupId(true);
 
 				final IModel<String> holdModel = new StringResourceModel("hold", TurnPanel.this, null);
-				final Label<String> holdLabel = new Label<String>("hold", new AbstractReadOnlyModel<String>() {
+				final Label holdLabel = new Label("hold", new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -138,7 +137,7 @@ public class TurnPanel extends Panel<ITurn> {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public boolean isEnabled(Component<?> component) {
+					public boolean isEnabled(Component component) {
 						return component.isEnabled();
 					}
 				});
@@ -194,7 +193,7 @@ public class TurnPanel extends Panel<ITurn> {
 		}, true));
 		add(rollLink);
 
-		rollLink.add(new Image<String>("rollImage", "roll_white.png"));
+		rollLink.add(new Image("rollImage", "roll_white.png"));
 
 		IModel<ITurn> rollsLeftModel = new AbstractReadOnlyModel<ITurn>() {
 			private static final long serialVersionUID = 1L;
@@ -211,7 +210,7 @@ public class TurnPanel extends Panel<ITurn> {
 			}
 		};
 
-		turnLabel = new Label<String>("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
+		turnLabel = new Label("turnLabel", new StringResourceModel("rollsLeft", this, rollsLeftModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

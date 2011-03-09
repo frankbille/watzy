@@ -5,7 +5,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.examples.yatzy.frontend.MultiPlayerGame;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryButtonBehavior;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryButtonBehavior.ButtonColor;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.examples.yatzy.AdhocPlayer;
 import org.examples.yatzy.IPlayer;
@@ -13,7 +12,7 @@ import org.examples.yatzy.IRound;
 import org.examples.yatzy.MaxiGame;
 import org.examples.yatzy.ai.MaxiYatzyAIPlayer;
 
-public abstract class GameAdminPanel extends Panel<MultiPlayerGame> {
+public abstract class GameAdminPanel extends GenericPanel<MultiPlayerGame> {
 	private static final long serialVersionUID = 1L;
 
 	public GameAdminPanel(String id, IModel<MultiPlayerGame> model) {

@@ -41,9 +41,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://svn.frankbille.dk/watzy/trunk</connection>
-		<developerConnection>scm:svn:http://svn.frankbille.dk/watzy/trunk</developerConnection>
-		<url>scm:svn:http://svn.frankbille.dk/watzy/trunk</url>
+		<connection>scm:git:git://github.com/frankbille/watzy.git</connection>
+		<developerConnection>scm:git:git@github.com:frankbille/watzy.git</developerConnection>
+		<url>scm:git:https://frankbille@github.com/frankbille/watzy.git</url>
 	</scm>
 	
 	<modules>
@@ -69,7 +69,7 @@
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket</artifactId>
-				<version>1.4-m2</version>
+				<version>1.4.16</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-math</groupId>
@@ -92,11 +92,6 @@
 				<version>1.2.14</version>
 			</dependency>
 			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>2.1_3</version>
-			</dependency>
-			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.3</version>
@@ -105,19 +100,14 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate</artifactId>
-				<version>3.2.6.ga</version>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.6.1.Final</version>
 			</dependency>
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.3.0.ga</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-commons-annotations</artifactId>
-				<version>3.3.0.ga</version>
-			</dependency>
+	            <groupId>javassist</groupId>
+	            <artifactId>javassist</artifactId>
+	            <version>3.12.1.GA</version>
+	        </dependency>
 			<dependency>
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
@@ -164,4 +154,11 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>jboss-public</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
 </project>

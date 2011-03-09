@@ -7,8 +7,8 @@ import org.apache.wicket.MarkupContainer;
 
 public interface IMenuItem extends Serializable {
 
-	MarkupContainer<?> createLink(String wicketId);
+	MarkupContainer createLink(String wicketId);
 
-	Component<?> createLabelComponent(String wicketId);
+	Component createLabelComponent(String wicketId);
 
 }

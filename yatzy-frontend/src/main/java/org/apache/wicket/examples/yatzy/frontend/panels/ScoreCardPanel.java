@@ -15,7 +15,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -30,10 +29,10 @@ import org.examples.yatzy.score.IScoreCard;
 import org.examples.yatzy.score.IScoreGroup;
 import org.examples.yatzy.score.ITurnScore;
 
-public abstract class ScoreCardPanel extends Panel<IScoreCard> {
+public abstract class ScoreCardPanel extends GenericPanel<IScoreCard> {
 	private static final long serialVersionUID = 1L;
 
-	private final RepeatingView<Object> scores;
+	private final RepeatingView scores;
 
 	private final IModel<ITurn> turnModel;
 
@@ -67,7 +66,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabled(Component<?> component) {
+			public boolean isEnabled(Component component) {
 				return ScoreCardPanel.this.isEnabled();
 			}
 		});
@@ -83,7 +82,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabled(Component<?> component) {
+			public boolean isEnabled(Component component) {
 				return ScoreCardPanel.this.isEnabled();
 			}
 		});
@@ -99,7 +98,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabled(Component<?> component) {
+			public boolean isEnabled(Component component) {
 				return ScoreCardPanel.this.isEnabled();
 			}
 		});
@@ -123,14 +122,14 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 						return turn != null && turn.getPlayer() == player ? "currentPlayer" : null;
 					}
 				}));
-				item.add(new Label<String>("playerName", new PropertyModel<String>(item.getModel(),
+				item.add(new Label("playerName", new PropertyModel<String>(item.getModel(),
 						"name")).setRenderBodyOnly(true));
 			}
 		};
 		add(players);
 
 		// Body
-		scores = new RepeatingView<Object>("scores");
+		scores = new RepeatingView("scores");
 		add(scores);
 
 		addScores(scoreCardModel.getObject());
@@ -168,7 +167,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 					}
 				};
 
-				Label<String> totalLabel = new Label<String>("total", model);
+				Label totalLabel = new Label("total", model);
 				totalLabel.setRenderBodyOnly(true);
 				totalLabel.setEscapeModelStrings(false);
 				item.add(totalLabel);
@@ -179,7 +178,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 	private void addScores(IScoreGroup scoreGroup) {
 		for (IScore score : scoreGroup.getScores()) {
 			if (score instanceof ITurnScore) {
-				WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(scores
+				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores
 						.newChildId());
 				scores.add(scoreContainer);
 
@@ -213,7 +212,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 				if (childScoreGroup instanceof AbstractStandardBonusScoreGroup) {
 					final AbstractStandardBonusScoreGroup bonusScoreGroup = (AbstractStandardBonusScoreGroup) childScoreGroup;
 
-					WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(
+					WebMarkupContainer scoreContainer = new WebMarkupContainer(
 							scores.newChildId());
 					scores.add(scoreContainer);
 
@@ -234,7 +233,7 @@ public abstract class ScoreCardPanel extends Panel<IScoreCard> {
 					scoreContainer.add(scoreSumPanel);
 				}
 
-				WebMarkupContainer<Object> scoreContainer = new WebMarkupContainer<Object>(scores
+				WebMarkupContainer scoreContainer = new WebMarkupContainer(scores
 						.newChildId());
 				scores.add(scoreContainer);
 

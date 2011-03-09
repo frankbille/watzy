@@ -29,7 +29,7 @@ public class CompoundAjaxTimerBehavior extends AbstractAjaxTimerBehavior {
 	}
 
 	@Override
-	public boolean isEnabled(Component<?> component) {
+	public boolean isEnabled(Component component) {
 		return timerListeners.isEmpty() == false;
 	}
 

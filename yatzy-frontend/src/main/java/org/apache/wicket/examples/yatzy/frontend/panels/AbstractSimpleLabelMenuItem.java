@@ -18,8 +18,8 @@ public abstract class AbstractSimpleLabelMenuItem implements IMenuItem {
 		this.labelModel = labelModel;
 	}
 
-	public Component<String> createLabelComponent(String wicketId) {
-		return new Label<String>(wicketId, labelModel);
+	public Component createLabelComponent(String wicketId) {
+		return new Label(wicketId, labelModel);
 	}
 
 }

@@ -167,7 +167,7 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabled(Component<?> component) {
+			public boolean isEnabled(Component component) {
 				return getModelObject().getGameStatus() != GameStatus.COMPLETE;
 			}
 		};
@@ -176,8 +176,8 @@ public final class GamePage extends BasePage<MultiPlayerGame> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public MarkupContainer<?> createLink(String wicketId) {
-				MarkupContainer<?> link = super.createLink(wicketId);
+			public MarkupContainer createLink(String wicketId) {
+				MarkupContainer link = super.createLink(wicketId);
 				link.add(endGameConfirm);
 				return link;
 			}

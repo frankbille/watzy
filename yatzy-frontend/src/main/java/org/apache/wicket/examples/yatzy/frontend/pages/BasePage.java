@@ -19,10 +19,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.time.Duration;
 
-public abstract class BasePage<T> extends WebPage<T> {
+public abstract class BasePage<T> extends WebPage {
 
 	public static interface ILeftMenuBlock extends Serializable {
-		Component<?> createMenuBlock(String wicketId);
+		Component createMenuBlock(String wicketId);
 	}
 
 	private CompoundAjaxTimerBehavior timerBehavior;
@@ -60,7 +60,7 @@ public abstract class BasePage<T> extends WebPage<T> {
 		blocks.setReuseItems(true);
 		add(blocks);
 
-		add(new Label<String>("pageTitle", getPageTitleModel()));
+		add(new Label("pageTitle", getPageTitleModel()));
 	}
 
 	protected abstract IModel<String> getPageTitleModel();
@@ -87,6 +87,24 @@ public abstract class BasePage<T> extends WebPage<T> {
 
 	protected CompoundAjaxTimerBehavior getTimerBehavior() {
 		return timerBehavior;
+	}
+
+	public void setModel(IModel<T> model) {
+		setDefaultModel(model);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public IModel<T> getModel() {
+		return (IModel<T>) getDefaultModel();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T getModelObject() {
+		return (T) getDefaultModelObject();
+	}
+	
+	public void setModelObject(T modelObject) {
+		setDefaultModelObject(modelObject);
 	}
 
 }

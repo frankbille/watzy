@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -15,14 +14,14 @@ import org.examples.yatzy.IGame;
 import org.examples.yatzy.IPlayer;
 import org.examples.yatzy.score.IScoreCard;
 
-public class GameResultPanel extends Panel<IGame> {
+public class GameResultPanel extends GenericPanel<IGame> {
 	private static final long serialVersionUID = 1L;
 
 	public GameResultPanel(String id, final IModel<IGame> gameModel) {
 		super(id, gameModel);
 
 		// Find winner
-		add(new Label<String>("winnerPlayer", new AbstractReadOnlyModel<String>() {
+		add(new Label("winnerPlayer", new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -74,8 +73,8 @@ public class GameResultPanel extends Panel<IGame> {
 			@Override
 			protected void populateItem(final ListItem<IPlayer> item) {
 
-				item.add(new Label<String>("player", new PropertyModel<String>(item.getModel(), "name")));
-				item.add(new Label<Integer>("score", new AbstractReadOnlyModel<Integer>() {
+				item.add(new Label("player", new PropertyModel<String>(item.getModel(), "name")));
+				item.add(new Label("score", new AbstractReadOnlyModel<Integer>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override

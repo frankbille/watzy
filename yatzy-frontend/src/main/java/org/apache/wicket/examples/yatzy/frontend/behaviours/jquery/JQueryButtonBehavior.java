@@ -46,7 +46,7 @@ public class JQueryButtonBehavior extends JQueryBehavior {
 	}
 
 	@Override
-	public void bind(Component<?> component) {
+	public void bind(Component component) {
 		super.bind(component);
 
 		component.add(new AttributeAppender("class", true, new Model<String>(buttonColor

@@ -44,7 +44,7 @@ public class YatzyApplication extends WebApplication {
 	}
 
 	@Override
-	public Class<? extends Page<?>> getHomePage() {
+	public Class<? extends Page> getHomePage() {
 		return NewGamePage.class;
 	}
 

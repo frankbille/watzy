@@ -19,7 +19,7 @@ public class TestGamePage {
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
 
-			public Page<?> getTestPage() {
+			public Page getTestPage() {
 				return new GamePage(new MaxiGame());
 			}
 		});
@@ -41,14 +41,14 @@ public class TestGamePage {
 			tester.clickLink("mainActionPanel:content:rollLink");
 			
 			// 2. Select available score
-			RepeatingView<?> listView = (RepeatingView<?>) tester.getComponentFromLastRenderedPage("scoreCardPanel:scores");
+			RepeatingView listView = (RepeatingView) tester.getComponentFromLastRenderedPage("scoreCardPanel:scores");
 			int scoreCount = listView.size();
 			for (int i = 1; i <= scoreCount; i++) {
 				String scorePanelPath = "scoreCardPanel:scores:"+i+":scorePanel";
-				Component<?> scorePanel = tester.getComponentFromLastRenderedPage(scorePanelPath);
+				Component scorePanel = tester.getComponentFromLastRenderedPage(scorePanelPath);
 				if (scorePanel instanceof ScorePanel) {
 					String combinationLinkPath = scorePanelPath+":combinationLink";
-					Component<?> combinationLink = tester.getComponentFromLastRenderedPage(combinationLinkPath);
+					Component combinationLink = tester.getComponentFromLastRenderedPage(combinationLinkPath);
 					if (combinationLink.isEnabled()) {
 						tester.clickLink(combinationLinkPath);
 						break;

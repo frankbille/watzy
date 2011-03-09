@@ -5,12 +5,11 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.examples.yatzy.frontend.behaviours.jquery.JQueryButtonBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.examples.yatzy.IPlayer;
 
-public abstract class EnterNamePanel extends Panel<IPlayer> {
+public abstract class EnterNamePanel extends GenericPanel<IPlayer> {
 	private static final long serialVersionUID = 1L;
 
 	public EnterNamePanel(String id, IModel<IPlayer> model) {
@@ -21,7 +20,7 @@ public abstract class EnterNamePanel extends Panel<IPlayer> {
 
 		nameForm.add(new TextField<String>("name", new PropertyModel<String>(model, "name")));
 
-		AjaxSubmitLink<Void> changeNameLink = new AjaxSubmitLink<Void>("changeName") {
+		AjaxSubmitLink changeNameLink = new AjaxSubmitLink("changeName") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

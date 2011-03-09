@@ -94,7 +94,7 @@ public class HighscorePage extends BasePage<Void> {
 				Class<? extends IGame> gameType = item.getModelObject();
 
 				IModel<String> gameTypeModel = new StringResourceModel("game.${simpleName}", this, new Model<Class<? extends IGame>>(gameType));
-				Label<String> gameTypeLabel = new Label<String>("gameType", gameTypeModel);
+				Label gameTypeLabel = new Label("gameType", gameTypeModel);
 				item.add(gameTypeLabel);
 
 				GameHighscoresModel gameHighscoresModel = new GameHighscoresModel(highscoreModel,
@@ -113,12 +113,12 @@ public class HighscorePage extends BasePage<Void> {
 						previousScore = highScore.getScore();
 						String theRank = displayRank ? ""+(item.getIndex() + 1) : "&nbsp;";
 						
-						Label<Integer> rank = new Label<Integer>("rank", theRank);
+						Label rank = new Label("rank", theRank);
 						rank.setEscapeModelStrings(false);
 						rank.add(new AttributeAppender("class", new Model<String>("r" + theRank), " "));
 						item.add(rank);
 
-						item.add(new Label<Integer>("score", ""+highScore.getScore()));
+						item.add(new Label("score", ""+highScore.getScore()));
 
 						Link<IGame> gameLink = new Link<IGame>("gameLink", new Model<IGame>(highScore.getGame())) {
 							private static final long serialVersionUID = 1L;
@@ -129,7 +129,7 @@ public class HighscorePage extends BasePage<Void> {
 							}
 						};
 						item.add(gameLink);
-						gameLink.add(new Label<String>("name", highScore.getName()));
+						gameLink.add(new Label("name", highScore.getName()));
 					}
 				});
 

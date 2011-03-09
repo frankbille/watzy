@@ -17,7 +17,7 @@ import org.examples.yatzy.ITurn;
 import org.examples.yatzy.score.IScore;
 import org.examples.yatzy.score.ITurnScore;
 
-public abstract class ScorePanel extends Panel<ITurnScore> {
+public abstract class ScorePanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	public ScorePanel(String id, final IModel<ITurn> turnModel, final IModel<ITurnScore> scoreModel) {
@@ -47,7 +47,7 @@ public abstract class ScorePanel extends Panel<ITurnScore> {
 			}
 		};
 		add(combinationLink);
-		Label<String> combinationlabel = new Label<String>("combinationLabel",
+		Label combinationlabel = new Label("combinationLabel",
 				ScoreResourceModelFactory.createModel(scoreModel));
 		combinationlabel.setRenderBodyOnly(true);
 		combinationLink.add(combinationlabel);
@@ -83,7 +83,7 @@ public abstract class ScorePanel extends Panel<ITurnScore> {
 						}
 					}
 				};
-				Label<String> scoreLabel = new Label<String>("score", model);
+				Label scoreLabel = new Label("score", model);
 				scoreLabel.setEscapeModelStrings(false);
 				scoreLabel.setRenderBodyOnly(true);
 				item.add(scoreLabel);
