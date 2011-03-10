@@ -68,8 +68,8 @@
 		
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
-				<version>1.4.16</version>
+				<artifactId>wicket-core</artifactId>
+				<version>1.5-rc2</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-math</groupId>
