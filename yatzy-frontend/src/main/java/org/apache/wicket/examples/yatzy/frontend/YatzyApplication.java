@@ -2,6 +2,7 @@ package org.apache.wicket.examples.yatzy.frontend;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
+import org.apache.wicket.examples.yatzy.frontend.dao.YatzyGameDao;
 import org.apache.wicket.examples.yatzy.frontend.dao.objectify.ObjectifyYatzyGameDao;
 import org.apache.wicket.examples.yatzy.frontend.pages.FrontPage;
 import org.apache.wicket.examples.yatzy.frontend.pages.GamePage;
@@ -15,7 +16,7 @@ public class YatzyApplication extends WebApplication {
 		return (YatzyApplication) WebApplication.get();
 	}
 	
-	private ObjectifyYatzyGameDao yatzyGameDao;
+	private YatzyGameDao yatzyGameDao;
 	
 	@Override
 	protected void init() {
@@ -36,7 +37,7 @@ public class YatzyApplication extends WebApplication {
 		return new YatzySession(request);
 	}
 	
-	public ObjectifyYatzyGameDao getYatzyGameDao() {
+	public YatzyGameDao getYatzyGameDao() {
 		return yatzyGameDao;
 	};
 

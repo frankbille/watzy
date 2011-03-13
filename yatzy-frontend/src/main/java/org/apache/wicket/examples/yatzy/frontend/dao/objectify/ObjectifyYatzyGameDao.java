@@ -2,13 +2,14 @@ package org.apache.wicket.examples.yatzy.frontend.dao.objectify;
 
 import java.util.UUID;
 
+import org.apache.wicket.examples.yatzy.frontend.dao.YatzyGameDao;
 import org.apache.wicket.examples.yatzy.frontend.models.YatzyGame;
 import org.examples.yatzy.IGame;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
-public class ObjectifyYatzyGameDao {
+public class ObjectifyYatzyGameDao implements YatzyGameDao {
 
 	private Objectify objectify;
 
