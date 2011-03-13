@@ -2,7 +2,7 @@ package org.examples.yatzy.score;
 
 import org.examples.yatzy.IPlayer;
 
-public abstract class AbstractStandardBonusScoreGroup extends AbstractScoreGroup implements IScoreGroup {
+public abstract class AbstractStandardBonusScoreGroup extends AbstractScoreGroup implements IScoreGroup, IBonusScoreGroup {
 	private static final long serialVersionUID = 1L;
 
 	public AbstractStandardBonusScoreGroup() {
