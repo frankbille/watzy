@@ -1,0 +1,97 @@
+html, body {
+	margin: 0;
+	font-family: Verdana, Arial, sans-serif;
+    background: #785329 url(../images/background.png);
+}
+
+#outer {
+	width: 60%;
+	min-width: 550px;
+	min-height: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow:0px 0px 10em black;
+	-webkit-box-shadow:0px 0px 10em black;
+	-moz-box-shadow:0px 0px 10em black;
+	-webkit-border-bottom-right-radius: 14px;
+	-webkit-border-bottom-left-radius: 14px;
+	-moz-border-radius-bottomright: 14px;
+	-moz-border-radius-bottomleft: 14px;
+	border-bottom-right-radius: 14px;
+	border-bottom-left-radius: 14px;
+	background-color: #F5F5F5;
+	border: 1px solid #333333;
+	border-top: 0;
+	opacity: 0.9;
+}
+
+#topbar {
+	height: 75px;	
+}
+
+.diceBar {
+	border-top: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+	background-color: #CCCCCC;
+}
+
+.diceBar .dices {
+	margin: auto;
+	width: 384px;
+}
+
+.diceBar .dices a {
+	display: block;
+	height: 64px;
+	width: 64px;
+	background: url(../images/dices.png);
+	float: left;
+}
+
+.diceBar .dices a.dice1 {
+	background-position: 0 0;
+}
+
+.diceBar .dices a.dice1:hover {
+	background-position: -64px 0;
+}
+
+.diceBar .dices a.dice2 {
+	background-position: 0 -64px;
+}
+
+.diceBar .dices a.dice2:hover {
+	background-position: -64px -64px;
+}
+
+.diceBar .dices a.dice3 {
+	background-position: 0 -128px;
+}
+
+.diceBar .dices a.dice3:hover {
+	background-position: -64px -128px;
+}
+
+.diceBar .dices a.dice4 {
+	background-position: 0 -192px;
+}
+
+.diceBar .dices a.dice4:hover {
+	background-position: -64px -192px;
+}
+
+.diceBar .dices a.dice5 {
+	background-position: 0 -256px;
+}
+
+.diceBar .dices a.dice5:hover {
+	background-position: -64px -256px;
+}
+
+.diceBar .dices a.dice6 {
+	background-position: 0 -320px;
+}
+
+.diceBar .dices a.dice6:hover {
+	background-position: -64px -320px;
+}

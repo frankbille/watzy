@@ -1,6 +1,7 @@
 package org.apache.wicket.examples.yatzy.frontend;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.examples.yatzy.frontend.pages.FrontPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
 public class YatzyApplication extends WebApplication {
@@ -11,8 +12,7 @@ public class YatzyApplication extends WebApplication {
 
 	@Override
 	public Class<? extends Page> getHomePage() {
-		return null;
+		return FrontPage.class;
 	}
-	
 
 }
