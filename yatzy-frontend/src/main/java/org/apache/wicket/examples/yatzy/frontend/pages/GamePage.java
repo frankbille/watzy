@@ -1,28 +1,34 @@
 package org.apache.wicket.examples.yatzy.frontend.pages;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.examples.yatzy.frontend.YatzyApplication;
 import org.apache.wicket.examples.yatzy.frontend.components.ChannelComponent;
+import org.apache.wicket.examples.yatzy.frontend.dao.YatzyGameDao;
+import org.apache.wicket.examples.yatzy.frontend.models.YatzyGame;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
+import org.examples.yatzy.MaxiGame;
 
 
 public class GamePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 
-	public GamePage() {
-		String gameKey = "adh5erv45ygeshwergs";
+	public GamePage(PageParameters pageParameters) {
+		YatzyGameDao yatzyGameDao = YatzyApplication.get().getYatzyGameDao();
+		
+		StringValue gameKeyString = pageParameters.get(0);
+		if (gameKeyString.isEmpty()) {
+			MaxiGame maxiGame = new MaxiGame();
+			YatzyGame yatzyGame = yatzyGameDao.createGame(maxiGame);
+			PageParameters params = new PageParameters();
+			params.set(0, yatzyGame.getKey());
+			throw new RestartResponseException(GamePage.class, params);
+		}
+		
+		String gameKey = gameKeyString.toString();
+		YatzyGame yatzyGame = yatzyGameDao.getYatzyGame(gameKey);
 		
 		add(new ChannelComponent("channelComponent", gameKey));
-		
-		add(new AjaxLink<Void>("testLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				send(YatzyApplication.get(), Broadcast.BREADTH, ChannelComponent.TRIGGER_UPDATE_EVENT);
-			}
-		});
 	}
 	
 }
