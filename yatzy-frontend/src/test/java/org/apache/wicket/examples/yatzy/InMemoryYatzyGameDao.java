@@ -16,6 +16,15 @@ public class InMemoryYatzyGameDao implements YatzyGameDao {
 	public YatzyGame getYatzyGame(String gameKey) {
 		return games.get(gameKey);
 	}
+	
+	@Override
+	public void saveYatzyGame(YatzyGame yatzyGame) {
+		if (yatzyGame.getKey() == null) {
+			throw new IllegalArgumentException("You must create the game first using the createGame method");
+		}
+		
+		games.put(yatzyGame.getKey(), yatzyGame);
+	}
 
 	@Override
 	public YatzyGame createGame(IGame game) {

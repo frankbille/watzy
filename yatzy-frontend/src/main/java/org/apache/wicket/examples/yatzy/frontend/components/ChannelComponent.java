@@ -1,5 +1,6 @@
 package org.apache.wicket.examples.yatzy.frontend.components;
 
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.apphosting.api.ApiProxy.CallNotFoundException;
 
 /**
  * Component that links Apache Wicket and Google App Engines Channel API. It
@@ -89,7 +91,15 @@ public class ChannelComponent extends Panel {
 		this.channelName = channelName;
 		
 		ChannelService channelService = ChannelServiceFactory.getChannelService();
-		channelToken = channelService.createChannel(channelName);
+		try {
+			channelToken = channelService.createChannel(channelName);
+		} catch (CallNotFoundException e) {
+			if (YatzyApplication.get().getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT) {
+				channelToken = "DUMMY";
+			} else {
+				throw e;
+			}
+		}
 		
 		ajaxCallback = new AjaxCallback();
 		add(ajaxCallback);
@@ -110,7 +120,13 @@ public class ChannelComponent extends Panel {
 	public void onEvent(IEvent<?> event) {
 		if (event.getPayload() instanceof ChannelUpdateEventPayload) {
 			ChannelService channelService = ChannelServiceFactory.getChannelService();
-			channelService.sendMessage(new ChannelMessage(channelName, "do"));
+			try {
+				channelService.sendMessage(new ChannelMessage(channelName, "do"));
+			} catch (CallNotFoundException e) {
+				if (YatzyApplication.get().getConfigurationType() != RuntimeConfigurationType.DEVELOPMENT) {
+					throw e;
+				}
+			}
 		}
 	}
 

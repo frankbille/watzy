@@ -6,6 +6,8 @@ import org.examples.yatzy.IGame;
 public interface YatzyGameDao {
 
 	YatzyGame getYatzyGame(String gameKey);
+	
+	void saveYatzyGame(YatzyGame yatzyGame);
 
 	YatzyGame createGame(IGame game);
 

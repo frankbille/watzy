@@ -25,6 +25,15 @@ public class ObjectifyYatzyGameDao implements YatzyGameDao {
 		objectify.put(yatzyGame);
 		return yatzyGame;
 	}
+	
+	@Override
+	public void saveYatzyGame(YatzyGame yatzyGame) {
+		if (yatzyGame.getKey() == null) {
+			throw new IllegalArgumentException("You must create the game first using the createGame method");
+		}
+		
+		objectify.put(yatzyGame);
+	}
 
 	public YatzyGame getYatzyGame(String gameKey) {
 		return objectify.get(YatzyGame.class, gameKey);
