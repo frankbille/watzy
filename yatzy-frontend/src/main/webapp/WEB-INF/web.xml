@@ -22,6 +22,10 @@
 			<param-name>configuration</param-name>
 			<param-value>DEPLOYMENT</param-value>
 		</init-param>
+		<init-param>
+			<param-name>applicationContext</param-name>
+			<param-value>/applicationContext.xml</param-value>
+		</init-param>
 	</filter>
 
 	<filter-mapping>
