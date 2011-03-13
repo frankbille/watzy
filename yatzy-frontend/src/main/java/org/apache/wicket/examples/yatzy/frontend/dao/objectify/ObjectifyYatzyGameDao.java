@@ -1,4 +1,4 @@
-package org.apache.wicket.examples.yatzy.frontend.dao;
+package org.apache.wicket.examples.yatzy.frontend.dao.objectify;
 
 import java.util.UUID;
 
@@ -8,11 +8,11 @@ import org.examples.yatzy.IGame;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
-public class YatzyGameDao {
+public class ObjectifyYatzyGameDao {
 
 	private Objectify objectify;
 
-	public YatzyGameDao() {
+	public ObjectifyYatzyGameDao() {
 		ObjectifyService.register(YatzyGame.class);
 		objectify = ObjectifyService.begin();
 	}

@@ -15,6 +15,7 @@ public class YatzyGame implements Serializable {
 	private String key;
 	@Serialized
 	private IGame game;
+	private boolean started;
 
 	public void setKey(String key) {
 		this.key = key;
@@ -30,6 +31,14 @@ public class YatzyGame implements Serializable {
 
 	public IGame getGame() {
 		return game;
+	}
+
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+
+	public boolean isStarted() {
+		return started;
 	}
 	
 }
