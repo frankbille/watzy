@@ -20,7 +20,7 @@
 		</init-param>
 		<init-param>
 			<param-name>configuration</param-name>
-			<param-value>DEVELOPMENT</param-value>
+			<param-value>DEPLOYMENT</param-value>
 		</init-param>
 	</filter>
 
