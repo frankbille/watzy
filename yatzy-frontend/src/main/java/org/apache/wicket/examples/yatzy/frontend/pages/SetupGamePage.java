@@ -6,6 +6,7 @@ import org.apache.wicket.examples.yatzy.frontend.dao.YatzyGameDao;
 import org.apache.wicket.examples.yatzy.frontend.models.YatzyGame;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.examples.yatzy.AdhocPlayer;
 import org.examples.yatzy.MaxiGame;
 
 public class SetupGamePage extends BasePage {
@@ -26,6 +27,8 @@ public class SetupGamePage extends BasePage {
 		String gameKey = gameKeyString.toString();
 		YatzyGame yatzyGame = yatzyGameDao.getYatzyGame(gameKey);
 		
+		yatzyGame.getGame().addPlayer(new AdhocPlayer("Frank"));
+		yatzyGame.getGame().addPlayer(new AdhocPlayer("Bodil"));
 		yatzyGame.setStarted(true);
 		yatzyGameDao.saveYatzyGame(yatzyGame);
 

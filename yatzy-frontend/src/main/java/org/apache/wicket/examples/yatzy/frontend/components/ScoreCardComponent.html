@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<wicket:panel>
+<table class="scoreCard">
+	<thead>
+		<tr>
+			<th>&nbsp;</th>
+			<th wicket:id="playerNames">
+				<span wicket:id="name"></span>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr wicket:id="scores">
+			<td wicket:id="scoreLabel"></td>
+			<td wicket:id="playerScores">
+				<span wicket:id="score"></span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</wicket:panel>
+</body>
+</html>
